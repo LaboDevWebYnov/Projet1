@@ -4,11 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var swig = require('swig');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var config = require('./config');
 
 var app = express();
 
@@ -17,6 +20,12 @@ app.engine('html', swig.renderFile);
 
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
+
+mongoose.connect(config.database.server,  function(err){
+  if(err) console.log(err);
+
+  console.log("Connected to the database");
+});
 
 
 // uncomment after placing your favicon in /public
