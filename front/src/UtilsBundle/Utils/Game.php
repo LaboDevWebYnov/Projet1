@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Pandaks
- * Date: 09/12/2015
- * Time: 12:08
- */
 
 namespace UtilsBundle;
 
 
-class Game
+public class Game
 {
     public $name;
     public $releaseDate;
