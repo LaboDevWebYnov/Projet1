@@ -1,2 +1,39 @@
 .idea
 node_modules
+
+
+# Cache and logs (Symfony2)
+front/app/cache/*
+front/app/logs/*
+!front/app/cache/.gitkeep
+!front/app/logs/.gitkeep
+
+
+# Parameters
+front/app/config/parameters.yml
+front/app/config/parameters.ini
+
+# Managed by Composer
+front/app/bootstrap.php.cache
+front/var/bootstrap.php.cache
+front/bin/*
+!front/bin/console
+!front/bin/symfony_requirements
+front/vendor/*
+
+# Assets and user uploads
+front/web/bundles/
+front/web/uploads/
+
+# Assets managed by Bower
+front/web/assets/vendor/
+
+# PHPUnit
+front/app/phpunit.xml
+front/phpunit.xml
+
+# Build data
+front/build/
+
+# Composer PHAR
+front/composer.phar
