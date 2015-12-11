@@ -1,6 +1,9 @@
 .idea
 node_modules
 
+#back cache & logs
+back/log/*
+
 
 # Cache and logs (Symfony2)
 front/app/cache/*
