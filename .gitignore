@@ -2,7 +2,8 @@
 node_modules
 
 #back cache & logs
-back/log/*
+back/logs/
+back/logs/*
 
 
 # Cache and logs (Symfony2)

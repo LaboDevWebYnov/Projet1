@@ -1,0 +1,44 @@
+{
+  "server": {
+    "mongo": {
+      "connectionString": "mongodb://root:root@ds059694.mongolab.com:59694/projet1labo",
+      "options": {
+        "server": {
+          "poolSize": 10
+        }
+      }
+    },
+    "swagger": {
+      "specFilePath": "./api/swagger.json",
+      "ui": true,
+      "apiDoc": true
+    },
+    "instance": {
+      "name": "mobile-server-instance1",
+      "port": 3002,
+      "log4js": {
+        "appenders": [
+          {
+            "type": "dateFile",
+            "filename": "./logs/server.log",
+            "pattern": "-yyyy-MM-dd"
+          },
+          {
+            "type": "console"
+          }
+        ],
+        "replaceConsole": true,
+        "levels": {
+          "[all]": "DEBUG",
+          "server.logger": "DEBUG",
+          "server.core": "DEBUG"
+        }
+      }
+    },
+    "http": {
+      "compression": true,
+      "cors": true,
+      "responseTime": true
+    }
+  }
+}
