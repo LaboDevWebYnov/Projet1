@@ -1,5 +1,11 @@
 utils:
-    resource: "@UtilsBundle/Resources/config/routing.yml"
+    resource: "@UtilsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+hello:
+    resource: "@HelloBundle/Controller/"
+    type:     annotation
     prefix:   /
 
 app:

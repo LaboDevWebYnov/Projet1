@@ -3,7 +3,7 @@
 namespace UtilsBundle;
 
 
-public class Player
+class Player
 {
     public $user;
     public $login;
