@@ -3,7 +3,7 @@
 namespace UtilsBundle;
 
 
-public class Game
+class Game
 {
     public $name;
     public $releaseDate;
