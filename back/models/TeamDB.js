@@ -17,4 +17,13 @@ var Team = new Schema({
     updated_at: { type: Date, required: true, default: new Date() }
 });
 
+Team.pre('save', function(next){
+    var now = new Date();
+    this.updated_at = now;
+    if ( !this.created_at ) {
+        this.created_at = now;
+    }
+    next();
+});
+
 exports.Team = mongoose.model('Team', Team);

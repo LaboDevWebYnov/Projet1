@@ -14,4 +14,13 @@ var Game = new Schema({
     updated_at: { type: Date, required: true, default: new Date() }
 });
 
+Game.pre('save', function(next){
+    var now = new Date();
+    this.updated_at = now;
+    if ( !this.created_at ) {
+        this.created_at = now;
+    }
+    next();
+});
+
 exports.Game = mongoose.model('Game', Game);

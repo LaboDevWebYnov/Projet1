@@ -2,6 +2,7 @@
  * Created by Leon on 09/12/2015.
  */
 var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
 var Schema = mongoose.Schema;
 
 var User = new Schema({
@@ -18,6 +19,34 @@ var User = new Schema({
     friends: { type: [{ type: Schema.ObjectId, ref: 'User'}], required: true },
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
+});
+
+User.pre('save', function (next) {
+    var user = this;
+    var now = new Date();
+
+    //mis � jour �l�ment de controle(Created_at, Updated_at)
+    this.updated_at = now;
+    if ( !this.created_at ) {
+        this.created_at = now;
+    }
+
+    if (this.isModified('password') || this.isNew) {
+        bcrypt.genSalt(10, function (err, salt) {
+            if (err) {
+                return next(err);
+            }
+            bcrypt.hash(user.password, salt, function (err, hash) {
+                if (err) {
+                    return next(err);
+                }
+                user.password = hash;
+                next();
+            });
+        });
+    } else {
+        return next();
+    }
 });
 
 exports.User = mongoose.model('User', User);
