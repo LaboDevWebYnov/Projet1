@@ -12,6 +12,12 @@ front/app/logs/*
 !front/app/cache/.gitkeep
 !front/app/logs/.gitkeep
 
+# Cache and logs (Symfony3)
+front/var/cache/*
+front/var/logs/*
+!front/app/cache/.gitkeep
+!front/app/logs/.gitkeep
+
 
 # Parameters
 front/app/config/parameters.yml
@@ -41,3 +47,4 @@ front/build/
 
 # Composer PHAR
 front/composer.phar
+front/var/cache/*

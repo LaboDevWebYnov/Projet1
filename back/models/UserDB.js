@@ -12,11 +12,11 @@ var User = new Schema({
     birthDate: { type: Date, required: true},
     email: { type: String, required: true },
     password: { type: String, required: true},
-    address: { type: Schema.ObjectId, ref: 'Address', required: true },
+    address: { type: Schema.ObjectId, ref: 'Address', required: false },
     phoneNumber: { type: String, required: true},
     admin: { type: Boolean, required: true },
     active: { type: Boolean, required: true, default: true },
-    friends: { type: [{ type: Schema.ObjectId, ref: 'User'}], required: true },
+    friends: { type: [{ type: Schema.ObjectId, ref: 'User'}], required: false },
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
 });

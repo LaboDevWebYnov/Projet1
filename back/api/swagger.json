@@ -81,7 +81,7 @@
         }
       }
     },
-    "/users/{userId}": {
+    "/users/getUserById/{userId}": {
       "get": {
         "x-swagger-router-controller": "Users",
         "operationId": "getUserById",
@@ -95,7 +95,77 @@
             "in": "path",
             "description": "User ID to search for.",
             "required": true,
-            "type": "integer"
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Retrieved User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/getUserByUsername/{username}": {
+      "get": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "getUserByUsername",
+        "tags": [
+          "/users"
+        ],
+        "description": "Gets `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Username to search for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Retrieved User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "put": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "updateUser",
+        "tags": [
+          "/users"
+        ],
+        "description": "upgrade `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId to update for.",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -259,7 +329,10 @@
           "type": "boolean"
         },
         "friends": {
-          "type": "string"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
         },
         "active": {
           "type": "boolean"

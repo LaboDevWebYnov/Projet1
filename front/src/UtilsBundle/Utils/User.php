@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Pandaks
- * Date: 09/12/2015
- * Time: 12:21
- */
 
 namespace UtilsBundle;
 
@@ -16,7 +10,7 @@ class User
     public $username;
     public $birthDate;
     public $email;
-    public $password,
+    public $password;
     public $avatar;
     public $address;
     public $phoneNumber;

@@ -3,13 +3,15 @@
  * Created by PhpStorm.
  * User: Pandaks
  * Date: 09/12/2015
- * Time: 12:05
+ * Time: 14:33
  */
 
 namespace UtilsBundle;
 
 
-class GameBDD
+class Guzzle
 {
-
+    public function hello(){
+        return "hello";
+    }
 }
