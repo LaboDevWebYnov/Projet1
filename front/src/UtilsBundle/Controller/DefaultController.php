@@ -15,7 +15,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $users=$this->guzzle();
-        return $this->render('UtilsBundle:Default:index.html.twig',(array("hello"=>$users)));
+        return $this->render('UtilsBundle:Default:index.html.twig',(array("users"=>$users)));
     }
 
     public function guzzle(){
