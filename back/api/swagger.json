@@ -115,6 +115,111 @@
           }
         }
       }
+    },
+    "/games": {
+      "get": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "getGames",
+        "tags": [
+          "/games"
+        ],
+        "description": "Gets `Game` objects.\nOptional query param of **size** determines\nsize of returned array\n",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Games",
+            "schema": {
+              "title": "ArrayOfGames",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Game"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/games/{gameId}": {
+      "get": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "getGameById",
+        "tags": [
+          "/games"
+        ],
+        "description": "Gets `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "Game ID to search for.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'Game' object.",
+            "schema": {
+              "title": "Retrieved Game object",
+              "type": "object",
+              "$ref": "#/definitions/Game"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/games/addGame": {
+      "post": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "addGame",
+        "tags": [
+          "/games"
+        ],
+        "description": "Adds new `Game` object to the DB.",
+        "parameters": [
+          {
+            "name": "game",
+            "in": "body",
+            "description": "Game object to insert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Game"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Game has been successfully added to the DB"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -184,6 +289,35 @@
         },
         "line": {
           "type": "string"
+        }
+      }
+    },
+    "Game": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "releaseDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "multiPlayer": {
+          "type": "boolean"
+        },
+        "editor": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date"
         }
       }
     },
