@@ -154,7 +154,10 @@
           "type": "boolean"
         },
         "friends": {
-          "type": "string"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
         },
         "active": {
           "type": "boolean"
