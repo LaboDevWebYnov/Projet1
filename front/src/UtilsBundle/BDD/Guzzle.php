@@ -11,7 +11,7 @@ namespace UtilsBundle;
 
 class Guzzle
 {
-    function hello(){
+    public function hello(){
         return "hello";
     }
 }

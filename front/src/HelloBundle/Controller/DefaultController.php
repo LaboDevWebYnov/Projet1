@@ -14,4 +14,12 @@ class DefaultController extends Controller
     {
         return $this->render('HelloBundle:Default:index.html.twig',array("name"=>$name));
     }
+
+    /**
+     * @Route("/hello")
+     */
+    public function worldAction($name)
+    {
+        return $this->render('HelloBundle:Default:index.html.twig',array("name"=>"world"));
+    }
 }

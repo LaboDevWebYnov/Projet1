@@ -1,9 +1,0 @@
-86e50d,127.0.0.1,GET,http://localhost:8000/,1452096063,,200
-db989a,127.0.0.1,GET,http://localhost:8000/hello/anduin,1452096071,ab548c,200
-ab548c,127.0.0.1,GET,http://localhost:8000/hello/anduin,1452096071,,404
-52360b,127.0.0.1,GET,http://localhost:8000/hello/,1452096085,34b37a,200
-34b37a,127.0.0.1,GET,http://localhost:8000/hello/,1452096085,,404
-d0fcc0,127.0.0.1,GET,http://localhost:8000/hello/anduin,1452096175,,200
-3560ca,127.0.0.1,GET,http://localhost:8000/web/app_dev/hello/anduin,1452096647,d74303,200
-d74303,127.0.0.1,GET,http://localhost:8000/web/app_dev/hello/anduin,1452096647,,404
-9ad00c,127.0.0.1,GET,http://localhost:8000/hello/anduin,1452096654,,200
