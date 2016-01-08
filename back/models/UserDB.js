@@ -15,6 +15,7 @@ var User = new Schema({
     address: { type: Schema.ObjectId, ref: 'Address', required: true },
     phoneNumber: { type: String, required: true},
     admin: { type: Boolean, required: true },
+    active: { type: Boolean, required: true, default: true },
     friends: { type: [{ type: Schema.ObjectId, ref: 'User'}], required: true },
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
