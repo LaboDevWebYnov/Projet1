@@ -15,7 +15,7 @@
     },
     "instance": {
       "name": "mobile-server-instance1",
-      "port": 3002,
+      "port": 3000,
       "log4js": {
         "appenders": [
           {

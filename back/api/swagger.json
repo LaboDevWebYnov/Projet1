@@ -1,108 +1,203 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Project 1 API",
-        "description": "Send forward your gaming community using Project 1 API",
-        "version": "1.0"
-    },
-    "produces": [
-        "application/json"
-    ],
-    "host": "localhost:3000",
-    "basePath": "/api",
-    "paths": {
-        "/users": {
-            "get": {
-                "x-swagger-router-controller": "Users",
-                "operationId": "getUsers",
-                "tags": [
-                    "/users"
-                ],
-                "description": "Gets `User` objects.\nOptional query param of **size** determines\nsize of returned array\n",
-                "parameters": [
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "description": "Size of array",
-                        "required": false,
-                        "type": "number",
-                        "format": "double"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "title": "ArrayOfUsers",
-                            "type": "array",
-                            "items": {
-                                "title": "User",
-                                "type": "object",
-                                "properties": {
-                                    "firstname": {
-                                        "type": "string"
-                                    },
-                                    "lastname": {
-                                        "type": "string"
-                                    },
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "birthDate": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password"
-                                    },
-                                    "avatar": {
-                                        "type": "string"
-                                    },
-                                    "address": {
-                                        "type": "object",
-                                        "properties": {
-                                            "postCode": {
-                                                "type": "string",
-                                                "format": "integer"
-                                            },
-                                            "city": {
-                                                "type": "string"
-                                            },
-                                            "country": {
-                                                "type": "string"
-                                            },
-                                            "line": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "phoneNumber": {
-                                        "type": "string"
-                                    },
-                                    "admin": {
-                                        "type": "boolean"
-                                    },
-                                    "friends": {
-                                        "type": "string"
-                                    },
-                                    "created_at": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "updated_at": {
-                                        "type": "string",
-                                        "format": "date"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+  "swagger": "2.0",
+  "info": {
+    "title": "Project 1 API",
+    "description": "Send forward your gaming community using Project 1 API",
+    "version": "1.0.0"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "paths": {
+    "/users": {
+      "get": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "getUsers",
+        "tags": [
+          "/users"
+        ],
+        "description": "Gets `User` objects.\nOptional query param of **size** determines\nsize of returned array\n",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Users",
+            "schema": {
+              "title": "ArrayOfUsers",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
             }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
         }
+      }
+    },
+    "/users/addUser": {
+      "post": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "addUser",
+        "tags": [
+          "/users"
+        ],
+        "description": "Adds new `User` object to the DB.",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object to insert",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User has been successfully added to the DB"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "getUserById",
+        "tags": [
+          "/users"
+        ],
+        "description": "Gets `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID to search for.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Retrieved User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "birthDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "format": "password"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "#/definitions/Address"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        },
+        "friends": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "postCode": {
+          "type": "string",
+          "format": "integer"
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "line": {
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }
