@@ -10,7 +10,7 @@ var logger = require('log4js').getLogger('controller.Games'),
     Util = require('./util.js'),
     Game = mongoose.model('Game');
 
-//Path : /games
+//Path: GET api/games
 module.exports.getGames = function getGames(req, res, next) {
     logger.info('Getting all games from db...');
     // Code necessary to consume the Game API and respond
@@ -19,12 +19,13 @@ module.exports.getGames = function getGames(req, res, next) {
             return next(err.message);
         }
 
+        //TODO Add null object catching to response 404 to the front side (in case of no game in DB ?!)
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(result || {}, null, 2));
     });
 };
 
-//Path : /games/addGame
+//Path: GET api/games/addGame
 module.exports.addGame = function addGame(req, res, next) {
     logger.info('Adding new game...');
     // Code necessary to consume the Game API and respond
@@ -53,7 +54,7 @@ module.exports.addGame = function addGame(req, res, next) {
     });
 };
 
-// Path : /games/getGameById/{gameId}
+// Path: GET api/games/getGameById/{gameId}
 module.exports.getGameById = function getGameById(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
@@ -68,6 +69,8 @@ module.exports.getGameById = function getGameById(req, res, next) {
                 return next(err.message);
 
             logger.debug(game);
+
+            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(game || {}, null, 2));
         }
@@ -75,7 +78,7 @@ module.exports.getGameById = function getGameById(req, res, next) {
 };
 
 
-// Path : /games/getGameByName/{gameName}
+// Path: GET api/games/getGameByName/{gameName}
 module.exports.getGameByName = function getGameByName(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
@@ -90,6 +93,8 @@ module.exports.getGameByName = function getGameByName(req, res, next) {
                 return next(err.message);
 
             logger.debug(game);
+
+            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(game || {}, null, 2));
         }

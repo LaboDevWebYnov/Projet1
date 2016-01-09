@@ -12,7 +12,7 @@ var logger = require('log4js').getLogger('Users'),
     AddressDB = require('../models/AddressDB'),
     Address = mongoose.model('Address');
 
-//Path : /users
+//Path: GET api/users
 module.exports.getUsers = function getUsers(req, res, next) {
     logger.info('Getting all users from db...');
     // Code necessary to consume the User API and respond
@@ -20,13 +20,13 @@ module.exports.getUsers = function getUsers(req, res, next) {
         if (err) {
             return next(err.message);
         }
-
+        //TODO Add null object catching to response 404 to the front side (in case of no game in DB ?!)
         res.setHeader('Content-Type', 'application/json');
         res.status(200).end(JSON.stringify(result || {}, null, 2));
     });
 };
 
-//Path : /users/addUser
+//Path: GET api/users/addUser
 module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
     // Code necessary to consume the User API and respond
@@ -57,7 +57,7 @@ module.exports.addUser = function addUser(req, res, next) {
     });
 };
 
-// Path : /users/getUserById/{userId}
+// Path: GET api/users/getUserById/{userId}
 module.exports.getUserById = function getUserById(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
@@ -72,13 +72,14 @@ module.exports.getUserById = function getUserById(req, res, next) {
                 return next(err.message);
 
             logger.debug(user);
+            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(user || {}, null, 2));
         }
     );
 };
 
-// Path : /users/getUserByUsername/{username}
+// Path: GET api/users/getUserByUsername/{username}
 module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
@@ -93,12 +94,14 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
                 return next(err.message);
 
             logger.debug(user);
+
+            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(user || {}, null, 2));
         }
     );
 };
-// Path : /users/{username}
+// Path: PUT api/users/{username}
 module.exports.updateUser = function updateUser(req, res, next) {
 
 };
