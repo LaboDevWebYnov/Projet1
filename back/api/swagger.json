@@ -123,7 +123,7 @@
         "tags": [
           "/users"
         ],
-        "description": "Gets `User` object specified by its ID.",
+        "description": "Gets `User` object specified by its username.",
         "parameters": [
           {
             "name": "username",
@@ -158,7 +158,7 @@
         "tags": [
           "/users"
         ],
-        "description": "upgrade `User` object specified by its ID.",
+        "description": "Update `User` object specified by its ID.",
         "parameters": [
           {
             "name": "userId",
@@ -172,7 +172,7 @@
           "200": {
             "description": "A 'User' object.",
             "schema": {
-              "title": "Retrieved User object",
+              "title": "Updated User object",
               "type": "object",
               "$ref": "#/definitions/User"
             }
@@ -224,41 +224,6 @@
         }
       }
     },
-    "/games/{gameId}": {
-      "get": {
-        "x-swagger-router-controller": "Games",
-        "operationId": "getGameById",
-        "tags": [
-          "/games"
-        ],
-        "description": "Gets `User` object specified by its ID.",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "description": "Game ID to search for.",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A 'Game' object.",
-            "schema": {
-              "title": "Retrieved Game object",
-              "type": "object",
-              "$ref": "#/definitions/Game"
-            }
-          },
-          "default": {
-            "description": "Unexpected error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/games/addGame": {
       "post": {
         "x-swagger-router-controller": "Games",
@@ -281,6 +246,41 @@
         "responses": {
           "200": {
             "description": "Game has been successfully added to the DB"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/games/getGameById/{gameId}": {
+      "get": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "getGameById",
+        "tags": [
+          "/games"
+        ],
+        "description": "Gets `Game` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "Game ID to search for.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'Game' object.",
+            "schema": {
+              "title": "Retrieved Game object",
+              "type": "object",
+              "$ref": "#/definitions/Game"
+            }
           },
           "default": {
             "description": "Unexpected error",
