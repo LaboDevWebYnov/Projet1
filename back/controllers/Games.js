@@ -7,6 +7,7 @@ var logger = require('log4js').getLogger('controller.Games'),
     mongoose = require('mongoose'),
     gameDB = require('../models/GameDB'),
     sanitizer = require('sanitizer'),
+    _ = require('lodash'),
     Util = require('./util.js'),
     Game = mongoose.model('Game');
 
@@ -14,14 +15,18 @@ var logger = require('log4js').getLogger('controller.Games'),
 module.exports.getGames = function getGames(req, res, next) {
     logger.info('Getting all games from db...');
     // Code necessary to consume the Game API and respond
-    Game.find({}, function (err, result) {
+    Game.find({}, function (err, games) {
         if (err) {
             return next(err.message);
         }
-
-        //TODO Add null object catching to response 404 to the front side (in case of no game in DB ?!)
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
+        if (_.isNull(games) || _.isEmpty(games)) {
+            res.set('Content-Type', 'application/json');
+            res.status(404).json(JSON.stringify(games || {}, null, 2));
+        }
+        else {
+            res.set('Content-Type', 'application/json');
+            res.end(JSON.stringify(games || {}, null, 2));
+        }
     });
 };
 
@@ -44,12 +49,14 @@ module.exports.addGame = function addGame(req, res, next) {
         if (err)
             return next(err.message);
 
-        res.json({
-            game: game,
-            success: true,
-            status: 200
-
-        });
+        if (_.isNull(game) || _.isEmpty(game)) {
+            res.set('Content-Type', 'application/json');
+            res.status(404).json(JSON.stringify(game || {}, null, 2));
+        }
+        else {
+            res.set('Content-Type', 'application/json');
+            res.end(JSON.stringify(game || {}, null, 2));
+        }
 
     });
 };
@@ -69,10 +76,14 @@ module.exports.getGameById = function getGameById(req, res, next) {
                 return next(err.message);
 
             logger.debug(game);
-
-            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(game || {}, null, 2));
+            if (_.isNull(game) || _.isEmpty(game)) {
+                res.set('Content-Type', 'application/json');
+                res.status(404).json(JSON.stringify(game || {}, null, 2));
+            }
+            else {
+                res.set('Content-Type', 'application/json');
+                res.end(JSON.stringify(game || {}, null, 2));
+            }
         }
     );
 };
@@ -94,9 +105,20 @@ module.exports.getGameByName = function getGameByName(req, res, next) {
 
             logger.debug(game);
 
-            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(game || {}, null, 2));
+            if (_.isNull(game) || _.isEmpty(game)) {
+                res.set('Content-Type', 'application/json');
+                res.status(404).json(JSON.stringify(game || {}, null, 2));
+            }
+            else {
+                res.set('Content-Type', 'application/json');
+                res.status(200).end(JSON.stringify(game || {}, null, 2));
+            }
         }
     );
+};
+
+// Path: PUT api/games/{gameId}
+module.exports.updateGame = function updateGame(req, res, next) {
+    res.set('Content-Type', 'application/json');
+    res.status(200).json({message:'updateGame function not implemented yet'});
 };

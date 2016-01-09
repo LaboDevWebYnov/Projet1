@@ -6,6 +6,7 @@
 var logger = require('log4js').getLogger('Users'),
     mongoose = require('mongoose'),
     sanitizer = require('sanitizer'),
+    _ = require('lodash'),
     Util = require('./util.js'),
     UserDB = require('../models/UserDB'),
     User = mongoose.model('User'),
@@ -16,13 +17,18 @@ var logger = require('log4js').getLogger('Users'),
 module.exports.getUsers = function getUsers(req, res, next) {
     logger.info('Getting all users from db...');
     // Code necessary to consume the User API and respond
-    User.find({}, function (err, result) {
+    User.find({}, function (err, users) {
         if (err) {
             return next(err.message);
         }
-        //TODO Add null object catching to response 404 to the front side (in case of no game in DB ?!)
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).end(JSON.stringify(result || {}, null, 2));
+        if (_.isNull(users) || _.isEmpty(users)) {
+            res.set('Content-Type', 'application/json');
+            res.status(404).json(JSON.stringify(users || {}, null, 2));
+        }
+        else {
+            res.set('Content-Type', 'application/json');
+            res.end(JSON.stringify(users || {}, null, 2));
+        }
     });
 };
 
@@ -31,7 +37,7 @@ module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
     // Code necessary to consume the User API and respond
     var user = new User({
-        firstname: sanitizer.escape(req.body.username),
+        firstname: sanitizer.escape(req.body.firstname),
         lastname: sanitizer.escape(req.body.lastname),
         username: sanitizer.escape(req.body.username),
         birthDate: sanitizer.escape(req.body.birthDate),
@@ -47,12 +53,20 @@ module.exports.addUser = function addUser(req, res, next) {
         if (err)
             return next(err.message);
 
-        res.json({
-            user: user,
-            success: true,
-            status: 200
-
-        });
+        if (_.isNull(user) || _.isEmpty(user)) {
+            res.set('Content-Type', 'application/json');
+            res.status(404).json(JSON.stringify(user || {}, null, 2));
+        }
+        else {
+            res.set('Content-Type', 'application/json');
+            res.status(200).end(JSON.stringify(user || {}, null, 2));
+        }
+        //res.json({
+        //    user: user,
+        //    success: true,
+        //    status: 200
+        //
+        //});
 
     });
 };
@@ -72,9 +86,14 @@ module.exports.getUserById = function getUserById(req, res, next) {
                 return next(err.message);
 
             logger.debug(user);
-            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(user || {}, null, 2));
+            if (_.isNull(user) || _.isEmpty(user)) {
+                res.set('Content-Type', 'application/json');
+                res.status(404).json(JSON.stringify(user || {}, null, 2));
+            }
+            else {
+                res.set('Content-Type', 'application/json');
+                res.status(200).end(JSON.stringify(user || {}, null, 2));
+            }
         }
     );
 };
@@ -95,13 +114,19 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
 
             logger.debug(user);
 
-            //TODO Add null object catching to response 404 to the front side (in case of user bad input)
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(user || {}, null, 2));
+            if (_.isNull(user) || _.isEmpty(user)) {
+                res.set('Content-Type', 'application/json');
+                res.status(404).json(JSON.stringify(user || {}, null, 2));
+            }
+            else {
+                res.set('Content-Type', 'application/json');
+                res.status(200).end(JSON.stringify(user || {}, null, 2));
+            }
         }
     );
 };
 // Path: PUT api/users/{username}
 module.exports.updateUser = function updateUser(req, res, next) {
-
+    res.set('Content-Type', 'application/json');
+    res.status(200).json({message:'updateUser function not implemented yet'});
 };
