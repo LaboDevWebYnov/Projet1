@@ -61,13 +61,6 @@ module.exports.addUser = function addUser(req, res, next) {
             res.set('Content-Type', 'application/json');
             res.status(200).end(JSON.stringify(user || {}, null, 2));
         }
-        //res.json({
-        //    user: user,
-        //    success: true,
-        //    status: 200
-        //
-        //});
-
     });
 };
 
