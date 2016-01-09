@@ -128,7 +128,7 @@
           {
             "name": "username",
             "in": "path",
-            "description": "Username to search for.",
+            "description": "Username of User to search for.",
             "required": true,
             "type": "string"
           }
@@ -163,7 +163,7 @@
           {
             "name": "userId",
             "in": "path",
-            "description": "userId to update for.",
+            "description": "userId of User object to update.",
             "required": true,
             "type": "string"
           }
@@ -268,9 +268,44 @@
           {
             "name": "gameId",
             "in": "path",
-            "description": "Game ID to search for.",
+            "description": "gameId of Game object to search for.",
             "required": true,
-            "type": "integer"
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'Game' object.",
+            "schema": {
+              "title": "Retrieved Game object",
+              "type": "object",
+              "$ref": "#/definitions/Game"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/games/getGameByName/{gameName}": {
+      "get": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "getGameByName",
+        "tags": [
+          "/games"
+        ],
+        "description": "Gets `Game` object specified by its name.",
+        "parameters": [
+          {
+            "name": "gameName",
+            "in": "path",
+            "description": "Game's name to search for.",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

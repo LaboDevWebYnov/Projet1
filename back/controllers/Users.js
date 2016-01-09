@@ -59,8 +59,8 @@ module.exports.addUser = function addUser(req, res, next) {
 
 // Path : /users/getUserById/{userId}
 module.exports.getUserById = function getUserById(req, res, next) {
-    logger.info('BaseUrl:' + req.originalUrl);
-    logger.info('Path:' + req.path);
+    logger.debug('BaseUrl:' + req.originalUrl);
+    logger.debug('Path:' + req.path);
 
     logger.info('Getting the user with id:' + Util.getPathParams(req)[3]);
     // Code necessary to consume the User API and respond
@@ -71,7 +71,7 @@ module.exports.getUserById = function getUserById(req, res, next) {
             if (err)
                 return next(err.message);
 
-            logger.info(user);
+            logger.debug(user);
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(user || {}, null, 2));
         }
@@ -80,10 +80,10 @@ module.exports.getUserById = function getUserById(req, res, next) {
 
 // Path : /users/getUserByUsername/{username}
 module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
-    logger.info('BaseUrl:' + req.originalUrl);
-    logger.info('Path:' + req.path);
+    logger.debug('BaseUrl:' + req.originalUrl);
+    logger.debug('Path:' + req.path);
 
-    logger.info('Getting the user with id:' + Util.getPathParams(req)[3]);
+    logger.info('Getting the user with username:' + Util.getPathParams(req)[3]);
     // Code necessary to consume the User API and respond
 
     User.findOne(
@@ -92,7 +92,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
             if (err)
                 return next(err.message);
 
-            logger.info(user);
+            logger.debug(user);
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(user || {}, null, 2));
         }

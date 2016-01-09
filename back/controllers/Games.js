@@ -7,6 +7,7 @@ var logger = require('log4js').getLogger('controller.Games'),
     mongoose = require('mongoose'),
     gameDB = require('../models/GameDB'),
     sanitizer = require('sanitizer'),
+    Util = require('./util.js'),
     Game = mongoose.model('Game');
 
 //Path : /games
@@ -25,7 +26,7 @@ module.exports.getGames = function getGames(req, res, next) {
 
 //Path : /games/addGame
 module.exports.addGame = function addGame(req, res, next) {
-    logger.info('Adding new user...');
+    logger.info('Adding new game...');
     // Code necessary to consume the Game API and respond
     var game = new Game({
         name: sanitizer.escape(req.body.name),
@@ -54,27 +55,43 @@ module.exports.addGame = function addGame(req, res, next) {
 
 // Path : /games/getGameById/{gameId}
 module.exports.getGameById = function getGameById(req, res, next) {
-    logger.info('Getting all games from db...');
-    // Code necessary to consume the Game API and respond
-    Game.find({}, function (err, result) {
-        if (err) {
-            return next(err.message);
-        }
+    logger.debug('BaseUrl:' + req.originalUrl);
+    logger.debug('Path:' + req.path);
 
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(result || {}, null, 2));
-    });
+    logger.info('Getting the game with id:' + Util.getPathParams(req)[3]);
+    // Code necessary to consume the Game API and respond
+
+    Game.findById(
+        Util.getPathParams(req)[3],
+        function (err, game) {
+            if (err)
+                return next(err.message);
+
+            logger.debug(game);
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(game || {}, null, 2));
+        }
+    );
 };
 
 
-// Path : /games/getGameByName/{gameId}
+// Path : /games/getGameByName/{gameName}
 module.exports.getGameByName = function getGameByName(req, res, next) {
-    logger.info('BaseUrl:' + req.originalUrl);
-    logger.info('Path:' + req.path);
-    logger.info('Getting the user with id:' + req.params[0]);
-    // Code necessary to consume the Weather API and respond
+    logger.debug('BaseUrl:' + req.originalUrl);
+    logger.debug('Path:' + req.path);
 
-    res.json({"message": "not implemented yet"});
+    logger.info('Getting the game with name:' + Util.getPathParams(req)[3]);
+    // Code necessary to consume the Game API and respond
 
-    //@TODO implement the function
+    Game.findOne(
+        {name: Util.getPathParams(req)[3]},
+        function (err, game) {
+            if (err)
+                return next(err.message);
+
+            logger.debug(game);
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(game || {}, null, 2));
+        }
+    );
 };
