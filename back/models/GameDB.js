@@ -10,6 +10,7 @@ var Game = new Schema({
     multiPlayer: { type: Boolean, required: true },
     description: { type: String, required: true },
     editor: { type: String, required: true },
+    active: { type: Boolean, required: true, default: true },
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
 });

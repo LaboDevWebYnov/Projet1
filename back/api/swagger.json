@@ -378,6 +378,50 @@
           }
         }
       }
+    },
+    "/games/deleteGame/{gameId}": {
+      "put": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "deleteGame",
+        "tags": [
+          "/games"
+        ],
+        "description": "Deactivates the 'Game' object specified by its ID.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "gameId of Game object to deactivate.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "gameObject",
+            "in": "body",
+            "description": "Game object that will update the old one.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Game"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'Game' object.",
+            "schema": {
+              "title": "Updated Game object",
+              "type": "object",
+              "$ref": "#/definitions/Game"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

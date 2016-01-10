@@ -129,7 +129,8 @@ module.exports.updateGame = function updateGame(req, res, next) {
                 releaseDate: req.body.releaseDate,
                 multiPlayer: req.body.multiPlayer,
                 description: req.body.description,
-                editor: req.body.editor
+                editor: req.body.editor,
+                active: req.body.active
             }
         },
         {new: true}, //means we want the DB to return the updated document instead of the old one
@@ -137,10 +138,31 @@ module.exports.updateGame = function updateGame(req, res, next) {
             if (err)
                 return next(err.message);
 
-            logger.debug("Updated game object: \n"+updatedGame);
+            logger.debug("Updated game object: \n" + updatedGame);
             res.set('Content-Type', 'application/json');
             res.status(200).end(JSON.stringify(updatedGame || {}, null, 2));
 
         });
+};
 
+// Path: PUT api/games/deleteGame/{gameId}
+module.exports.deleteGame = function deleteGame(req, res, next) {
+
+    Game.findOneAndUpdate(
+        {_id: Util.getPathParams(req)[3]},
+        {
+            $set: {
+                active: false
+            }
+        },
+        {new: true}, //means we want the DB to return the updated document instead of the old one
+        function (err, updatedGame) {
+            if (err)
+                return next(err.message);
+
+            logger.debug("Deactivated game object: \n" + updatedGame);
+            res.set('Content-Type', 'application/json');
+            res.status(200).end(JSON.stringify(updatedGame || {}, null, 2));
+
+        });
 };
