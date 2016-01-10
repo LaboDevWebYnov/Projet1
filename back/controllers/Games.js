@@ -117,8 +117,30 @@ module.exports.getGameByName = function getGameByName(req, res, next) {
     );
 };
 
-// Path: PUT api/games/{gameId}
+// Path: PUT api/games/updateGame/{gameId}
 module.exports.updateGame = function updateGame(req, res, next) {
-    res.set('Content-Type', 'application/json');
-    res.status(200).json({message:'updateGame function not implemented yet'});
+
+    Game.findOneAndUpdate(
+        {_id: Util.getPathParams(req)[3]},
+        {
+            $set: {
+                //TODO Check that it won't set not updated attributes to 'null'
+                name: req.body.name,
+                releaseDate: req.body.releaseDate,
+                multiPlayer: req.body.multiPlayer,
+                description: req.body.description,
+                editor: req.body.editor
+            }
+        },
+        {new: true}, //means we want the DB to return the updated document instead of the old one
+        function (err, updatedGame) {
+            if (err)
+                return next(err.message);
+
+            logger.debug("Updated game object: \n"+updatedGame);
+            res.set('Content-Type', 'application/json');
+            res.status(200).end(JSON.stringify(updatedGame || {}, null, 2));
+
+        });
+
 };

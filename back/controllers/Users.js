@@ -118,8 +118,10 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
         }
     );
 };
-// Path: PUT api/users/{username}
+// Path: PUT api/users/updateUser/{userId}
 module.exports.updateUser = function updateUser(req, res, next) {
+    /*TODO @Thomas Je t'ai ajouté un param userObject en entrée dans le
+    TODO swagger.json car il nous faut forcément un objet en entrée pour pouvoir màj*/
     res.set('Content-Type', 'application/json');
     res.status(200).json({message:'updateUser function not implemented yet'});
 };

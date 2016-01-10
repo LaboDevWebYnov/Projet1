@@ -151,7 +151,7 @@
         }
       }
     },
-    "/users/{userId}": {
+    "/users/updateUser/{userId}": {
       "put": {
         "x-swagger-router-controller": "Users",
         "operationId": "updateUser",
@@ -166,6 +166,15 @@
             "description": "userId of User object to update.",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "userObject",
+            "in": "body",
+            "description": "User object that will update the old one.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           }
         ],
         "responses": {
@@ -313,6 +322,50 @@
             "description": "A 'Game' object.",
             "schema": {
               "title": "Retrieved Game object",
+              "type": "object",
+              "$ref": "#/definitions/Game"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/games/updateGame/{gameId}": {
+      "put": {
+        "x-swagger-router-controller": "Games",
+        "operationId": "updateGame",
+        "tags": [
+          "/games"
+        ],
+        "description": "Update `Game` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "gameId of Game object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "gameObject",
+            "in": "body",
+            "description": "Game object that will update the old one.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Game"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'Game' object.",
+            "schema": {
+              "title": "Updated Game object",
               "type": "object",
               "$ref": "#/definitions/Game"
             }
