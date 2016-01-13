@@ -52,7 +52,7 @@ module.exports.addUser = function addUser (req, res, next) {
                 status: err.status || 500,
                 err: err
             });
-        }else {
+        } else {
             res.json({
                 user: user,
                 success: true,
@@ -78,7 +78,7 @@ module.exports.getUserById = function getUserById (req, res, next) {
             {
                 logger.info(err.message);
                 res.json({
-                    succes: true,
+                    success: true,
                     status: err.status || 500,
                     err: err
                 });
@@ -92,20 +92,19 @@ module.exports.getUserById = function getUserById (req, res, next) {
 
 // Path : /users/getUserByUsername/{username}
 module.exports.getUserByUsername = function getUserByUsername (req, res, next) {
-    logger.info('BaseUrl:'+req.originalUrl);
-    logger.info('Path:'+req.path);
+    logger.info('BaseUrl:' + req.originalUrl);
+    logger.info('Path:' + req.path);
 
-    logger.info('Getting the user with id:'+ Util.getPathParams(req)[3]);
+    logger.info('Getting the user with id:' + Util.getPathParams(req)[3]);
     // Code necessary to consume the Weather API and respond
 
     User.findOne(
-        { username: Util.getPathParams(req)[3] },
+        {username: Util.getPathParams(req)[3]},
         function (err, user) {
-            if(err)
-            {
+            if (err) {
                 logger.info(err.message);
                 res.json({
-                    succes: true,
+                    success: true,
                     status: err.status || 500,
                     err: err
                 });
@@ -114,9 +113,67 @@ module.exports.getUserByUsername = function getUserByUsername (req, res, next) {
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(user || {}, null, 2));
         }
-    )
-// Path : /users/{username}
-module.exports.updateUser = function updateUser (req, res, next) {
+    );
+};
 
-    };
+// Path : /users/updateUser/{userId}
+    module.exports.updateUser = function updateUser(req, res, next) {
+
+    User.update(
+        {_id: Util.getPathParams(req)[3]},
+        {
+            $set: {
+                firstname: sanitizer.escape(req.body.username),
+                lastname: sanitizer.escape(req.body.lastname),
+                username: sanitizer.escape(req.body.username),
+                birthDate: sanitizer.escape(req.body.birthDate),
+                email: sanitizer.escape(req.body.email),
+                address: sanitizer.escape(req.body.address),
+                phoneNumber: sanitizer.escape(req.body.phoneNumber)
+            }
+        },
+        {multi: true}
+    ).exec(function (err) {
+            if (err) {
+                logger.info(err.message);
+                res.json({
+                    success: true,
+                    status: err.status || 500,
+                    err: err
+                });
+            } else {
+                res.json({
+                     user: user,
+                     success: true,
+                     status: 200
+                });
+            }
+
+        });
+};
+
+// Path : /users/deleteUser/{userId}
+module.exports.deleteUser = function deleteUser(req, res, next) {
+
+    User.update(
+        {_id: Util.getPathParams(req)[3]},
+        {
+            $set: { active: false }
+        }
+    ).exec(function (err) {
+            if (err) {
+                logger.info(err.message);
+                res.json({
+                    success: true,
+                    status: err.status || 500,
+                    err: err
+                });
+            } else {
+                res.json({
+                    success: true,
+                    status: 200
+                });
+            }
+
+        });
 };
