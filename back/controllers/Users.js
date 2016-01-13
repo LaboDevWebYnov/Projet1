@@ -57,7 +57,7 @@ module.exports.addUser = function addUser(req, res, next) {
                 status: err.status || 500,
                 err: err
             });
-        } else {
+        }else {
             res.json({
                 user: user,
                 success: true,
@@ -95,7 +95,7 @@ module.exports.getUserById = function getUserById(req, res, next) {
             {
                 logger.info(err.message);
                 res.json({
-                    success: true,
+                    succes: true,
                     status: err.status || 500,
                     err: err
                 });
@@ -120,10 +120,10 @@ module.exports.getUserById = function getUserById(req, res, next) {
 <<<<<<< HEAD
 // Path : /users/getUserByUsername/{username}
 module.exports.getUserByUsername = function getUserByUsername (req, res, next) {
-    logger.info('BaseUrl:' + req.originalUrl);
-    logger.info('Path:' + req.path);
+    logger.info('BaseUrl:'+req.originalUrl);
+    logger.info('Path:'+req.path);
 
-    logger.info('Getting the user with id:' + Util.getPathParams(req)[3]);
+    logger.info('Getting the user with id:'+ Util.getPathParams(req)[3]);
     // Code necessary to consume the Weather API and respond
 =======
 // Path: GET api/users/getUserByUsername/{username}
@@ -136,13 +136,18 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
 >>>>>>> 937d13736a756a62ac3e9e00d93a0bd7d1864908
 
     User.findOne(
-        {username: Util.getPathParams(req)[3]},
+        { username: Util.getPathParams(req)[3] },
         function (err, user) {
 <<<<<<< HEAD
+<<<<<<< HEAD
             if (err) {
+=======
+            if(err)
+            {
+>>>>>>> parent of 640652f... implémentation Users.js
                 logger.info(err.message);
                 res.json({
-                    success: true,
+                    succes: true,
                     status: err.status || 500,
                     err: err
                 });
@@ -162,6 +167,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
 >>>>>>> 937d13736a756a62ac3e9e00d93a0bd7d1864908
             }
         }
+<<<<<<< HEAD
     );
 };
 <<<<<<< HEAD
@@ -235,3 +241,11 @@ module.exports.updateUser = function updateUser(req, res, next) {
     res.status(200).json({message:'updateUser function not implemented yet'});
 >>>>>>> 937d13736a756a62ac3e9e00d93a0bd7d1864908
 };
+=======
+    )
+// Path : /users/{username}
+module.exports.updateUser = function updateUser (req, res, next) {
+
+    };
+};
+>>>>>>> parent of 640652f... implémentation Users.js
