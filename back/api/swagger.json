@@ -151,22 +151,14 @@
         }
       }
     },
-    "/users/{userId}": {
+    "/users/updateUser/{userId}": {
       "put": {
         "x-swagger-router-controller": "Users",
         "operationId": "updateUser",
         "tags": [
           "/users"
         ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-        "description": "Updates `User` object specified by its ID.",
-=======
         "description": "Update `User` object specified by its ID.",
->>>>>>> 937d13736a756a62ac3e9e00d93a0bd7d1864908
-=======
-        "description": "upgrade `User` object specified by its ID.",
->>>>>>> parent of 640652f... implémentation Users.js
         "parameters": [
           {
             "name": "userId",
@@ -189,7 +181,7 @@
           "200": {
             "description": "A 'User' object.",
             "schema": {
-              "title": "Retrieved User object",
+              "title": "Updated User object",
               "type": "object",
               "$ref": "#/definitions/User"
             }
@@ -220,34 +212,6 @@
             "type": "number",
             "format": "double"
           }
-<<<<<<< HEAD
-        }
-<<<<<<< HEAD
-      },
-      "/games/{gameId}": {
-        "get": {
-          "x-swagger-router-controller": "Games",
-          "operationId": "getGameById",
-          "tags": [
-            "/games"
-          ],
-          "description": "Gets `User` object specified by its ID.",
-          "parameters": [
-            {
-              "name": "gameId",
-              "in": "path",
-              "description": "Game ID to search for.",
-              "required": true,
-              "type": "integer"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "A 'Game' object.",
-              "schema": {
-                "title": "Retrieved Game object",
-                "type": "object",
-=======
         ],
         "responses": {
           "200": {
@@ -256,7 +220,6 @@
               "title": "ArrayOfGames",
               "type": "array",
               "items": {
->>>>>>> parent of 640652f... implémentation Users.js
                 "$ref": "#/definitions/Game"
               }
             }
@@ -266,7 +229,8 @@
             "schema": {
               "$ref": "#/definitions/Error"
             }
-=======
+          }
+        }
       }
     },
     "/games/addGame": {
@@ -316,26 +280,6 @@
             "description": "gameId of Game object to search for.",
             "required": true,
             "type": "string"
->>>>>>> 937d13736a756a62ac3e9e00d93a0bd7d1864908
-          }
-        }
-      }
-    },
-    "/games/{gameId}": {
-      "get": {
-        "x-swagger-router-controller": "Games",
-        "operationId": "getGameById",
-        "tags": [
-          "/games"
-        ],
-        "description": "Gets `User` object specified by its ID.",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "description": "Game ID to search for.",
-            "required": true,
-            "type": "integer"
           }
         ],
         "responses": {
@@ -356,15 +300,6 @@
         }
       }
     },
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "definitions": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "firstname": {
-            "type": "string"
-=======
     "/games/getGameByName/{gameName}": {
       "get": {
         "x-swagger-router-controller": "Games",
@@ -478,65 +413,6 @@
               "type": "object",
               "$ref": "#/definitions/Game"
             }
->>>>>>> 937d13736a756a62ac3e9e00d93a0bd7d1864908
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          },
-          "birthDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string",
-            "format": "password"
-          },
-          "avatar": {
-            "type": "string"
-          },
-          "address": {
-            "$ref": "#/definitions/Address"
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "admin": {
-            "type": "boolean"
-          },
-          "friends": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/User"
-=======
-    "/games/addGame": {
-      "post": {
-        "x-swagger-router-controller": "Games",
-        "operationId": "addGame",
-        "tags": [
-          "/games"
-        ],
-        "description": "Adds new `Game` object to the DB.",
-        "parameters": [
-          {
-            "name": "game",
-            "in": "body",
-            "description": "Game object to insert",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Game"
->>>>>>> parent of 640652f... implémentation Users.js
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Game has been successfully added to the DB"
           },
           "default": {
             "description": "Unexpected error",
