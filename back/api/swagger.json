@@ -8,7 +8,7 @@
   "produces": [
     "application/json"
   ],
-  "host": "localhost:3000",
+  "host": "localhost:3100",
   "basePath": "/api",
   "paths": {
     "/users": {
