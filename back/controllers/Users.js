@@ -147,13 +147,20 @@ module.exports.updateUser = function updateUser(req, res, next) {
 
 // Path : PUT /users/{userId}/updatePassword
 module.exports.updatePassword = function updatePassword(req, res, next) {
+    logger.info('Updating password for user with id:\n '+Util.getPathParams(req)[2]);
+    var newPassword = req.body.newPassword;
+
+    var oldPassword = req.body.oldPassword;
+
+    logger.debug('newPassword object:'+newPassword);
+    logger.debug('userPassword object:'+oldPassword);
 
     User.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
             $set: {
                 //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
-                password: req.body.password
+                password: newPassword
             }
         },
         {new: true}, //means we want the DB to return the updated document instead of the old one
@@ -171,7 +178,7 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
 
 // Path : PUT /users/{userId}/deleteUser
 module.exports.deleteUser = function deleteUser(req, res, next) {
-
+    logger.info('Deactivating for user with id:\n '+Util.getPathParams(req)[2]);
     User.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
