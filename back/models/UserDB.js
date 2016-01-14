@@ -17,6 +17,7 @@ var User = new Schema({
     admin: { type: Boolean, required: true },
     active: { type: Boolean, required: true, default: true },
     friends: { type: [{ type: Schema.ObjectId, ref: 'User'}], required: false },
+    interests: {type: [{ type: Schema.ObjectId, ref: 'Game'}], required: false },
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
 });
