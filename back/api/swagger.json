@@ -26,7 +26,7 @@
       "description": "player account, game properties"
     }
   ],
-  "host": "localhost:3000",
+  "host": "localhost:3100",
   "basePath": "/api",
   "paths": {
     "/users": {
@@ -137,7 +137,7 @@
         }
       }
     },
-    "/users/getUserByUsername/{username}": {
+    "/users/{username}/getUserByUsername": {
       "get": {
         "x-swagger-router-controller": "Users",
         "operationId": "getUserByUsername",
@@ -407,7 +407,7 @@
         }
       }
     },
-    "/games/getGameByName/{gameName}": {
+    "/games/{gameName}/getGameByName": {
       "get": {
         "x-swagger-router-controller": "Games",
         "operationId": "getGameByName",
@@ -523,8 +523,198 @@
           }
         }
       }
+    },
+    "/players": {
+      "get": {
+        "x-swagger-router-controller": "Players",
+        "operationId": "getPlayers",
+        "tags": [
+          "/players"
+        ],
+        "description": "Gets `player` objects.\nOptional query param of **size** determines\nsize of returned array\n",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Players",
+            "schema": {
+              "title": "ArrayOfPlayers",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PlayerAccount"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/players/{playerId}/getPlayerById": {
+      "get": {
+        "x-swagger-router-controller": "Players",
+        "operationId": "getPlayerById",
+        "tags": [
+          "/players"
+        ],
+        "description": "Gets `player` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "description": "playerId of player object to search for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'player' object.",
+            "schema": {
+              "title": "Retrieved player object",
+              "type": "object",
+              "$ref": "#/definitions/PlayerAccount"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/players/{userId}/getPlayerByUserId": {
+      "get": {
+        "x-swagger-router-controller": "Players",
+        "operationId": "getPlayerByUserId",
+        "tags": [
+          "/players"
+        ],
+        "description": "Gets `player` object specified by its UserId.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of Player object to find.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Players",
+            "schema": {
+              "title": "ArrayOfPlayers",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PlayerAccount"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/players/{login}/getPlayerByLogin": {
+      "get": {
+        "x-swagger-router-controller": "Players",
+        "operationId": "getPlayerByLogin",
+        "tags": [
+          "/players"
+        ],
+        "description": "Gets `player` object specified by its login.",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "description": "login of Player object to find.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'player' object.",
+            "schema": {
+              "title": "Retrieved player object",
+              "type": "object",
+              "$ref": "#/definitions/PlayerAccount"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/players/{playerId}/deletePlayer": {
+      "put": {
+        "x-swagger-router-controller": "Players",
+        "operationId": "deletePlayer",
+        "tags": [
+          "/players"
+        ],
+        "description": "Deactivates the 'player' object specified by its ID.",
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "description": "playerId of Game object to deactivate.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "playerObject",
+            "in": "body",
+            "description": "player object that will update the old one.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PlayerAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'player' object.",
+            "schema": {
+              "title": "Updated player object",
+              "type": "object",
+              "$ref": "#/definitions/PlayerAccount"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
+
   "definitions": {
     "User": {
       "type": "object",
@@ -566,6 +756,31 @@
           "items": {
             "$ref": "#/definitions/User"
           }
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "PlayerAccount": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "login": {
+          "type": "string"
+        },
+        "game": {
+          "$ref": "#/definitions/Game"
         },
         "active": {
           "type": "boolean"
