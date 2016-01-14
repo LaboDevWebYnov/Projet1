@@ -64,16 +64,16 @@ module.exports.addUser = function addUser(req, res, next) {
     });
 };
 
-// Path: GET api/users/getUserById/{userId}
+// Path: GET api/users/{userId}/getUserById
 module.exports.getUserById = function getUserById(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
 
-    logger.info('Getting the user with id:' + Util.getPathParams(req)[3]);
+    logger.info('Getting the user with id:' + Util.getPathParams(req)[2]);
     // Code necessary to consume the User API and respond
 
     User.findById(
-        Util.getPathParams(req)[3],
+        Util.getPathParams(req)[2],
         function (err, user) {
             if (err)
                 return next(err.message);
@@ -96,7 +96,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
 
-    logger.info('Getting the user with username:' + Util.getPathParams(req)[3]);
+    logger.info('Getting the user with username:' + Util.getPathParams(req)[4]);
     // Code necessary to consume the User API and respond
 
     User.findOne(
@@ -118,24 +118,18 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
         }
     );
 };
-// Path: PUT api/users/updateUser/{userId}
+// Path: PUT api/users/{userId}/updateUser
 module.exports.updateUser = function updateUser(req, res, next) {
 
     User.findOneAndUpdate(
-        {_id: Util.getPathParams(req)[3]},
+        {_id: Util.getPathParams(req)[2]},
         {
             $set: {
                 //TODO Check that it won't set not updated attributes to 'null'
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
-                username: req.body.username,
                 birthDate: req.body.birthDate,
-                email: req.body.email,
-                password: req.body.password,
                 phoneNumber: req.body.phoneNumber,
-                admin:req.body.admin,
-                active:req.body.active,
-                friends:req.body.friends,
                 updated_at: Date.now()
             }
         },
@@ -151,28 +145,48 @@ module.exports.updateUser = function updateUser(req, res, next) {
         });
 };
 
-// Path : /users/deleteUser/{userId}
+// Path : PUT /users/{userId}/updatePassword
+module.exports.updatePassword = function updatePassword(req, res, next) {
+
+    User.findOneAndUpdate(
+        {_id: Util.getPathParams(req)[2]},
+        {
+            $set: {
+                //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
+                password: req.body.password
+            }
+        },
+        {new: true}, //means we want the DB to return the updated document instead of the old one
+        function (err, updatedUser) {
+            if (err)
+                return next(err.message);
+
+            logger.debug("Updated game object: \n" + updatedUser);
+            res.set('Content-Type', 'application/json');
+            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+
+        });
+};
+
+
+// Path : PUT /users/{userId}/deleteUser
 module.exports.deleteUser = function deleteUser(req, res, next) {
 
-    User.update(
-        {_id: Util.getPathParams(req)[3]},
+    User.findOneAndUpdate(
+        {_id: Util.getPathParams(req)[2]},
         {
-            $set: {active: false}
-        }
-    ).exec(function (err) {
-            if (err) {
-                logger.info(err.message);
-                res.json({
-                    success: true,
-                    status: err.status || 500,
-                    err: err
-                });
-            } else {
-                res.json({
-                    success: true,
-                    status: 200
-                });
+            $set: {
+                active: false
             }
+        },
+        {new: true}, //means we want the DB to return the updated document instead of the old one
+        function (err, updatedUser) {
+            if (err)
+                return next(err.message);
+
+            logger.debug("Deactivated game object: \n" + updatedUser);
+            res.set('Content-Type', 'application/json');
+            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
 
         });
 };

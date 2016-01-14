@@ -81,7 +81,7 @@
         }
       }
     },
-    "/users/getUserById/{userId}": {
+    "/users/{userId}/getUserById": {
       "get": {
         "x-swagger-router-controller": "Users",
         "operationId": "getUserById",
@@ -151,7 +151,7 @@
         }
       }
     },
-    "/users/updateUser/{userId}": {
+    "/users/{userId}/updateUser": {
       "put": {
         "x-swagger-router-controller": "Users",
         "operationId": "updateUser",
@@ -182,6 +182,85 @@
             "description": "A 'User' object.",
             "schema": {
               "title": "Updated User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/updatePassword": {
+      "put": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "updatePassword",
+        "tags": [
+          "/users"
+        ],
+        "description": "Update password attr of `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of User object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Object containing old password (to verify before updating) and new one to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChangePassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Updated User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/deleteUser": {
+      "put": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "deleteUser",
+        "tags": [
+          "/users"
+        ],
+        "description": "Deactivate `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of User object to deactivate.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Deactivated User object",
               "type": "object",
               "$ref": "#/definitions/User"
             }
@@ -265,7 +344,7 @@
         }
       }
     },
-    "/games/getGameById/{gameId}": {
+    "/games/{gameId}/getGameById": {
       "get": {
         "x-swagger-router-controller": "Games",
         "operationId": "getGameById",
@@ -335,7 +414,7 @@
         }
       }
     },
-    "/games/updateGame/{gameId}": {
+    "/games/{gameId}/updateGame": {
       "put": {
         "x-swagger-router-controller": "Games",
         "operationId": "updateGame",
@@ -379,7 +458,7 @@
         }
       }
     },
-    "/games/deleteGame/{gameId}": {
+    "/games/{gameId}/deleteGame": {
       "put": {
         "x-swagger-router-controller": "Games",
         "operationId": "deleteGame",
@@ -523,6 +602,17 @@
         "updated_at": {
           "type": "string",
           "format": "date"
+        }
+      }
+    },
+    "ChangePassword": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
         }
       }
     },
