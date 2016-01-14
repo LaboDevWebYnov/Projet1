@@ -501,8 +501,47 @@
           }
         }
       }
+    },
+    "/players": {
+      "get": {
+        "x-swagger-router-controller": "Players",
+        "operationId": "getPlayers",
+        "tags": [
+          "/players"
+        ],
+        "description": "Gets `player` objects.\nOptional query param of **size** determines\nsize of returned array\n",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Players",
+            "schema": {
+              "title": "ArrayOfPlayers",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PlayerAccount"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
+
   "definitions": {
     "User": {
       "type": "object",
@@ -544,6 +583,31 @@
           "items": {
             "$ref": "#/definitions/User"
           }
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "PlayerAccount": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "login": {
+          "type": "string"
+        },
+        "game": {
+          "$ref": "#/definitions/Game"
         },
         "active": {
           "type": "boolean"
