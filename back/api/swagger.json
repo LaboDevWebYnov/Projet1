@@ -8,6 +8,24 @@
   "produces": [
     "application/json"
   ],
+  "tags": [
+    {
+      "name": "Security",
+      "description": "login and permissions"
+    },
+    {
+      "name": "User",
+      "description": "account, friends, interests"
+    },
+    {
+      "name": "Game",
+      "description": "games"
+    },
+    {
+      "name": "Player",
+      "description": "player account, game properties"
+    }
+  ],
   "host": "localhost:3000",
   "basePath": "/api",
   "paths": {
@@ -16,8 +34,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "getUsers",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Get all users",
         "description": "Gets `User` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
           {
@@ -54,8 +73,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "addUser",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Adds a new user",
         "description": "Adds new `User` object to the DB.",
         "parameters": [
           {
@@ -86,8 +106,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "getUserById",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Get the specified user",
         "description": "Gets `User` object specified by its ID.",
         "parameters": [
           {
@@ -121,8 +142,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "getUserByUsername",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Gets the corresponding matching user",
         "description": "Gets `User` object specified by its username.",
         "parameters": [
           {
@@ -156,8 +178,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "updateUser",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Updates the corresponding user basic properties",
         "description": "Update `User` object specified by its ID.",
         "parameters": [
           {
@@ -200,8 +223,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "updatePassword",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Updates the corresponding user password",
         "description": "Update password attr of `User` object specified by its ID.",
         "parameters": [
           {
@@ -244,8 +268,9 @@
         "x-swagger-router-controller": "Users",
         "operationId": "deleteUser",
         "tags": [
-          "/users"
+          "User"
         ],
+        "summary": "Deactivates the corresponding user account",
         "description": "Deactivate `User` object specified by its ID.",
         "parameters": [
           {
@@ -279,8 +304,9 @@
         "x-swagger-router-controller": "Games",
         "operationId": "getGames",
         "tags": [
-          "/games"
+          "Game"
         ],
+        "summary": "Gets all games",
         "description": "Gets `Game` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
           {
@@ -317,8 +343,9 @@
         "x-swagger-router-controller": "Games",
         "operationId": "addGame",
         "tags": [
-          "/games"
+          "Game"
         ],
+        "summary": "Adds a game",
         "description": "Adds new `Game` object to the DB.",
         "parameters": [
           {
@@ -349,8 +376,9 @@
         "x-swagger-router-controller": "Games",
         "operationId": "getGameById",
         "tags": [
-          "/games"
+          "Game"
         ],
+        "summary": "Get the specified game",
         "description": "Gets `Game` object specified by its ID.",
         "parameters": [
           {
@@ -384,8 +412,9 @@
         "x-swagger-router-controller": "Games",
         "operationId": "getGameByName",
         "tags": [
-          "/games"
+          "Game"
         ],
+        "summary": "Get the corresponding game based on the game name",
         "description": "Gets `Game` object specified by its name.",
         "parameters": [
           {
@@ -419,8 +448,9 @@
         "x-swagger-router-controller": "Games",
         "operationId": "updateGame",
         "tags": [
-          "/games"
+          "Game"
         ],
+        "summary": "Update the corresponding game",
         "description": "Update `Game` object specified by its ID.",
         "parameters": [
           {
@@ -463,8 +493,9 @@
         "x-swagger-router-controller": "Games",
         "operationId": "deleteGame",
         "tags": [
-          "/games"
+          "Game"
         ],
+        "summary": "Deactivate the corresponding game",
         "description": "Deactivates the 'Game' object specified by its ID.",
         "parameters": [
           {
@@ -473,15 +504,6 @@
             "description": "gameId of Game object to deactivate.",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "gameObject",
-            "in": "body",
-            "description": "Game object that will update the old one.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Game"
-            }
           }
         ],
         "responses": {

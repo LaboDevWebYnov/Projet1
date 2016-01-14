@@ -128,6 +128,7 @@ module.exports.updateUser = function updateUser(req, res, next) {
                 //TODO Check that it won't set not updated attributes to 'null'
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
+                username:req.body.username,
                 birthDate: req.body.birthDate,
                 phoneNumber: req.body.phoneNumber,
                 updated_at: Date.now()
@@ -149,8 +150,13 @@ module.exports.updateUser = function updateUser(req, res, next) {
 module.exports.updatePassword = function updatePassword(req, res, next) {
     logger.info('Updating password for user with id:\n '+Util.getPathParams(req)[2]);
     var newPassword = req.body.newPassword;
-
     var oldPassword = req.body.oldPassword;
+
+    //get dbOldPassword from UserDB with {userId}
+    //salt oldPassword from user input object req.body.oldPassword
+    //compare dbOldPassword & oldPassword
+    //if good then update
+    //else don't update and return bad status
 
     logger.debug('newPassword object:'+newPassword);
     logger.debug('userPassword object:'+oldPassword);
