@@ -91,7 +91,7 @@ module.exports.getUserById = function getUserById(req, res, next) {
     );
 };
 
-// Path: GET api/users/getUserByUsername/{username}
+// Path: GET api/users/{username}/getUserByUsername
 module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
