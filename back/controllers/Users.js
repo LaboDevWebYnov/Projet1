@@ -11,6 +11,7 @@ var logger = require('log4js').getLogger('Users'),
     UserDB = require('../models/UserDB'),
     User = mongoose.model('User'),
     AddressDB = require('../models/AddressDB'),
+    bcrypt = require('bcrypt'),
     Address = mongoose.model('Address');
 
 //Path: GET api/users
@@ -126,12 +127,12 @@ module.exports.updateUser = function updateUser(req, res, next) {
         {
             $set: {
                 //TODO Check that it won't set not updated attributes to 'null'
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                username:req.body.username,
-                birthDate: req.body.birthDate,
-                phoneNumber: req.body.phoneNumber,
-                updated_at: Date.now()
+                firstname: sanitizer.escape(req.body.firstname),
+                lastname: sanitizer.escape(req.body.lastname),
+                username: sanitizer.escape(req.body.username),
+                birthDate: sanitizer.escape(req.body.birthDate),
+                phoneNumber: sanitizer.escape(req.body.phoneNumber),
+                updated_at: sanitizer.escape(Date.now())
             }
         },
         {new: true}, //means we want the DB to return the updated document instead of the old one
@@ -148,43 +149,102 @@ module.exports.updateUser = function updateUser(req, res, next) {
 
 // Path : PUT /users/{userId}/updatePassword
 module.exports.updatePassword = function updatePassword(req, res, next) {
-    logger.info('Updating password for user with id:\n '+Util.getPathParams(req)[2]);
+    logger.info('Updating password for user with id:\n ' + Util.getPathParams(req)[2]);
+
+    var userOldPassword = req.body.oldPassword;
     var newPassword = req.body.newPassword;
-    var oldPassword = req.body.oldPassword;
+    logger.debug('userPassword object:' + userOldPassword);
+    logger.debug('newPassword object:' + newPassword);
 
-    //get dbOldPassword from UserDB with {userId}
-    //salt oldPassword from user input object req.body.oldPassword
-    //compare dbOldPassword & oldPassword
-    //if good then update
-    //else don't update and return bad status
-
-    logger.debug('newPassword object:'+newPassword);
-    logger.debug('userPassword object:'+oldPassword);
-
-    User.findOneAndUpdate(
-        {_id: Util.getPathParams(req)[2]},
-        {
-            $set: {
-                //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
-                password: newPassword
-            }
-        },
-        {new: true}, //means we want the DB to return the updated document instead of the old one
-        function (err, updatedUser) {
+    User.findById(
+        Util.getPathParams(req)[2],
+        function (err, user) {
             if (err)
-                return next(err.message);
+                next(err.message);
 
-            logger.debug("Updated game object: \n" + updatedUser);
-            res.set('Content-Type', 'application/json');
-            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+            //var password = user.password;
+            //logger.debug('password retrieved:'+password);
+            //if (!! user.password ||_.isNull(user.password) || _.isEmpty(user.password)) {
+            //    logger.error('No password found :o !');
+            //}
+            bcrypt.genSalt(10, function (err, salt) {
+                if (err) {
+                    return next(err);
+                }
+                bcrypt.hash(user.password, salt, function (err, saltedUserOldPassword) {
+                    if (err) {
+                        return next(err);
+                    }
+                    logger.debug('Salted Password:' + saltedUserOldPassword);
+
+                    user.comparePassword(saltedUserOldPassword, function (err, isMatch) {
+                        if (err) return next(err.message);
+                        if (!isMatch) {
+                            logger.error('aborting because old passwords doesn\'t match...');
+                            return next(JSON.stringify({error: 'Bad password'}));
+                        }
+                        User.findOneAndUpdate(
+                            {_id: Util.getPathParams(req)[2]},
+                            {
+                                $set: {
+                                    //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
+                                    password: newPassword
+                                }
+                            },
+                            {new: true}, //means we want the DB to return the updated document instead of the old one
+                            function (err, updatedUser) {
+                                if (err)
+                                    return next(err.message);
+
+                                logger.debug("Updated game object: \n" + updatedUser);
+                                res.set('Content-Type', 'application/json');
+                                res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+                            });
+
+                    });
+                });
+            });
 
         });
+    //get dbOldPassword from UserDB with {userId}
+    //var oldPassword = getPassword(req, res, function(err,password){
+    //    if(err) return next(err.message);
+    //
+    //    logger.debug('got pw object:' + password);
+    //});
+
+
+    //salt oldPassword from user input object req.body.oldPassword
+    //var saltedPassword = saltPassword(newPassword);
+    //
+    //if (!comparePasswords(saltedPassword, oldPassword)) {
+    //    return next(JSON.stringify({err:{type:'BadPassword', message:'Old password isn\'t good.'}}));
+    //}
+    //else {
+    //    User.findOneAndUpdate(
+    //        {_id: Util.getPathParams(req)[2]},
+    //        {
+    //            $set: {
+    //                //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
+    //                password: newPassword
+    //            }
+    //        },
+    //        {new: true}, //means we want the DB to return the updated document instead of the old one
+    //        function (err, updatedUser) {
+    //            if (err)
+    //                return next(err.message);
+    //
+    //            logger.debug("Updated game object: \n" + updatedUser);
+    //            res.set('Content-Type', 'application/json');
+    //            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+    //        });
+    //}
 };
 
 
 // Path : PUT /users/{userId}/deleteUser
 module.exports.deleteUser = function deleteUser(req, res, next) {
-    logger.info('Deactivating for user with id:\n '+Util.getPathParams(req)[2]);
+    logger.info('Deactivating for user with id:\n ' + Util.getPathParams(req)[2]);
     User.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
@@ -203,3 +263,53 @@ module.exports.deleteUser = function deleteUser(req, res, next) {
 
         });
 };
+
+function getPassword(req, res, next) {
+    logger.info('Getting password from db for user with id:' + Util.getPathParams(req)[2]);
+
+    return User.findById(
+        Util.getPathParams(req)[2],
+        function (err, user) {
+            if (err)
+                next(err.message);
+            logger.debug('password retrieved:' + user.password);
+            //if (!! user.password ||_.isNull(user.password) || _.isEmpty(user.password)) {
+            //    logger.error('No password found :o !');
+            //}
+
+            next(user.password);
+
+        }
+    );
+}
+
+function saltPassword(password, next) {
+    logger.debug('Salting password...:' + password);
+    var saltedPassword = bcrypt.genSalt(10, function (err, salt) {
+        if (err) {
+            return next(err);
+        }
+        bcrypt.hash(password, salt, function (err, hash) {
+            if (err) {
+                return next(err);
+            }
+            password = hash;
+            logger.debug('Salted Password:' + password);
+            return password;
+        });
+    });
+    return saltedPassword;
+}
+
+function comparePasswords(saltedPassword, dbOldPassword) {
+    //compare dbOldPassword & oldPassword
+    //if not good, don't update and return bad status
+    if (!saltedPassword === dbOldPassword) {
+        logger.error('aborting because old passwords doesn\'t match...');
+        return false
+    }
+    logger.debug('Password are the same. Continue');
+    return true;
+    //if good then return to update
+}
+
