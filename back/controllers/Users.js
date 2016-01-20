@@ -156,7 +156,7 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
     logger.debug('userPassword object:' + userOldPassword);
     logger.debug('newPassword object:' + newPassword);
 
-    User.findById(
+   /* User.findById(
         Util.getPathParams(req)[2],
         function (err, user) {
             if (err)
@@ -238,7 +238,7 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
     //            res.set('Content-Type', 'application/json');
     //            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
     //        });
-    //}
+    //}*/
 };
 
 
@@ -263,53 +263,4 @@ module.exports.deleteUser = function deleteUser(req, res, next) {
 
         });
 };
-
-function getPassword(req, res, next) {
-    logger.info('Getting password from db for user with id:' + Util.getPathParams(req)[2]);
-
-    return User.findById(
-        Util.getPathParams(req)[2],
-        function (err, user) {
-            if (err)
-                next(err.message);
-            logger.debug('password retrieved:' + user.password);
-            //if (!! user.password ||_.isNull(user.password) || _.isEmpty(user.password)) {
-            //    logger.error('No password found :o !');
-            //}
-
-            next(user.password);
-
-        }
-    );
-}
-
-function saltPassword(password, next) {
-    logger.debug('Salting password...:' + password);
-    var saltedPassword = bcrypt.genSalt(10, function (err, salt) {
-        if (err) {
-            return next(err);
-        }
-        bcrypt.hash(password, salt, function (err, hash) {
-            if (err) {
-                return next(err);
-            }
-            password = hash;
-            logger.debug('Salted Password:' + password);
-            return password;
-        });
-    });
-    return saltedPassword;
-}
-
-function comparePasswords(saltedPassword, dbOldPassword) {
-    //compare dbOldPassword & oldPassword
-    //if not good, don't update and return bad status
-    if (!saltedPassword === dbOldPassword) {
-        logger.error('aborting because old passwords doesn\'t match...');
-        return false
-    }
-    logger.debug('Password are the same. Continue');
-    return true;
-    //if good then return to update
-}
 
