@@ -100,7 +100,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
     // Code necessary to consume the User API and respond
 
     User.findOne(
-        {username: Util.getPathParams(req)[3]},
+        {username: Util.getPathParams(req)[2]},
         function (err, user) {
             if (err)
                 return next(err.message);
