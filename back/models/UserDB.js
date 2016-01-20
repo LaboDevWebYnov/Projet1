@@ -50,5 +50,15 @@ User.pre('save', function (next) {
     }
 });
 
+User.pre('update', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+User.pre('findOneAndUpdate', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
 exports.User = mongoose.model('User', User);
 

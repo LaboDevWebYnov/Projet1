@@ -24,4 +24,15 @@ Game.pre('save', function(next){
     next();
 });
 
+Game.pre('update', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+Game.pre('findOneAndUpdate', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+
 exports.Game = mongoose.model('Game', Game);

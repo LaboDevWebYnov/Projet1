@@ -22,4 +22,14 @@ Address.pre('save', function(next){
     next();
 });
 
+Address.pre('update', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+Address.pre('findOneAndUpdate', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
 exports.Address = mongoose.model('Address', Address);

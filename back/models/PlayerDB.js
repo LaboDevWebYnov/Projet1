@@ -22,4 +22,14 @@ Player.pre('save', function(next){
     next();
 });
 
+Player.pre('update', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+Player.pre('findOneAndUpdate', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
 exports.Player = mongoose.model('Player', Player);

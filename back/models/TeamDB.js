@@ -26,4 +26,15 @@ Team.pre('save', function(next){
     next();
 });
 
+Team.pre('update', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+Team.pre('findOneAndUpdate', function(next){
+    this.update({},{ $set: { updated_at: new Date() } });
+    next();
+});
+
+
 exports.Team = mongoose.model('Team', Team);
