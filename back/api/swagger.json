@@ -263,6 +263,51 @@
         }
       }
     },
+    "/users/{userId}/updateEmail": {
+      "put": {
+        "x-swagger-router-controller": "Users",
+        "operationId": "updateEmail",
+        "tags": [
+          "User"
+        ],
+        "summary": "Updates the corresponding user email",
+        "description": "Update email attr of `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of User object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "Object containing old email (to verify before updating) and new one to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChangeEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Updated User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/users/{userId}/deleteUser": {
       "put": {
         "x-swagger-router-controller": "Users",
@@ -849,6 +894,17 @@
           "type": "string"
         },
         "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "ChangeEmail": {
+      "type": "object",
+      "properties": {
+        "oldEmail": {
+          "type": "string"
+        },
+        "newEmail": {
           "type": "string"
         }
       }

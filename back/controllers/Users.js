@@ -100,7 +100,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
     // Code necessary to consume the User API and respond
 
     User.findOne(
-        {username: Util.getPathParams(req)[3]},
+        {username: Util.getPathParams(req)[2]},
         function (err, user) {
             if (err)
                 return next(err.message);
@@ -148,25 +148,64 @@ module.exports.updateUser = function updateUser(req, res, next) {
 
 // Path : PUT /users/{userId}/updatePassword
 module.exports.updatePassword = function updatePassword(req, res, next) {
-    logger.info('Updating password for user with id:\n '+Util.getPathParams(req)[2]);
+    logger.info('Updating password for user with id:\n ' + Util.getPathParams(req)[2]);
+
+    var userOldPassword = req.body.oldPassword;
     var newPassword = req.body.newPassword;
-    var oldPassword = req.body.oldPassword;
+    logger.debug('userPassword object:' + userOldPassword);
+    logger.debug('newPassword object:' + newPassword);
 
-    //get dbOldPassword from UserDB with {userId}
-    //salt oldPassword from user input object req.body.oldPassword
-    //compare dbOldPassword & oldPassword
-    //if good then update
-    //else don't update and return bad status
+    User.findById(
+        Util.getPathParams(req)[2],
+        function (err, user) {
+            if (err)
+                next(err.message);
 
-    logger.debug('newPassword object:'+newPassword);
-    logger.debug('userPassword object:'+oldPassword);
+            Util.saltPassword(userOldPassword, next, function(err, saltedOldPassword) {
+                logger.debug('Salted OldPassword:' + saltedOldPassword);
+                Util.saltPassword(newPassword, next, function(err, saltedNewPassword) {
+                    logger.debug('Salted NewPassword:' + saltedNewPassword);
+
+                        Util.compareSaltedPasswords(saltedOldPassword, user.password, function (err, isMatch) {
+                                    if (err) return next(err.message);
+                                    if (!isMatch) {
+                                        logger.error('aborting because old passwords doesn\'t match...');
+                                        res.status(404).end(JSON.stringify({error: 'Bad oldPassword'}));
+                                        //return next(JSON.stringify({error: 'Bad password'}));
+                                    }
+                                    /*User.findOneAndUpdate(
+                                        {_id: Util.getPathParams(req)[2]},
+                                        {
+                                            $set: {
+                                                //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
+                                                password: newPassword
+                                            }
+                                        },
+                                        {new: true}, //means we want the DB to return the updated document instead of the old one
+                                        function (err, updatedUser) {
+                                            if (err)
+                                                return next(err.message);
+
+                                            logger.debug("Updated game object: \n" + updatedUser);
+                                            res.set('Content-Type', 'application/json');
+                                            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+                                        });*/
+                        });
+                });
+            });
+        });
+};
+
+// Path: PUT api/users/{userId}/updateEmail
+module.exports.updateEmail = function updateEmail(req, res, next) {
 
     User.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
             $set: {
-                //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
-                password: newPassword
+                //TODO Check that it won't set not updated attributes to 'null'
+                email: req.body.newEmail,
+                updated_at: Date.now()
             }
         },
         {new: true}, //means we want the DB to return the updated document instead of the old one

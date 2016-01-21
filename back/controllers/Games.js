@@ -61,7 +61,7 @@ module.exports.addGame = function addGame(req, res, next) {
     });
 };
 
-// Path: GET api/games/getGameById/{gameId}
+// Path: GET api/games/{gameId}/getGameById
 module.exports.getGameById = function getGameById(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
@@ -70,7 +70,7 @@ module.exports.getGameById = function getGameById(req, res, next) {
     // Code necessary to consume the Game API and respond
 
     Game.findById(
-        Util.getPathParams(req)[3],
+        Util.getPathParams(req)[2],
         function (err, game) {
             if (err)
                 return next(err.message);
@@ -89,7 +89,7 @@ module.exports.getGameById = function getGameById(req, res, next) {
 };
 
 
-// Path: GET api/games/getGameByName/{gameName}
+// Path: GET api/games/{gameName}/getGameByName
 module.exports.getGameByName = function getGameByName(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
@@ -98,7 +98,7 @@ module.exports.getGameByName = function getGameByName(req, res, next) {
     // Code necessary to consume the Game API and respond
 
     Game.findOne(
-        {name: Util.getPathParams(req)[3]},
+        {name: Util.getPathParams(req)[2]},
         function (err, game) {
             if (err)
                 return next(err.message);
@@ -117,11 +117,11 @@ module.exports.getGameByName = function getGameByName(req, res, next) {
     );
 };
 
-// Path: PUT api/games/updateGame/{gameId}
+// Path: PUT api/games/{gameId}/updateGame/
 module.exports.updateGame = function updateGame(req, res, next) {
 
     Game.findOneAndUpdate(
-        {_id: Util.getPathParams(req)[3]},
+        {_id: Util.getPathParams(req)[2]},
         {
             $set: {
                 //TODO Check that it won't set not updated attributes to 'null'
@@ -149,7 +149,7 @@ module.exports.updateGame = function updateGame(req, res, next) {
 module.exports.deleteGame = function deleteGame(req, res, next) {
 
     Game.findOneAndUpdate(
-        {_id: Util.getPathParams(req)[3]},
+        {_id: Util.getPathParams(req)[2]},
         {
             $set: {
                 active: false
