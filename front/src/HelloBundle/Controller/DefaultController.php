@@ -12,14 +12,14 @@ class DefaultController extends Controller
      */
     public function indexAction($name)
     {
-        return $this->render('HelloBundle:Default:index.html.twig',array("name"=>$name));
+        return $this->render('HelloBundle:Default:users.html.twig',array("name"=>$name));
     }
 
     /**
      * @Route("/hello")
      */
-    public function worldAction($name)
+    public function worldAction()
     {
-        return $this->render('HelloBundle:Default:index.html.twig',array("name"=>"world"));
+        return $this->render('HelloBundle:Default:users.html.twig',array("name"=>"world"));
     }
 }

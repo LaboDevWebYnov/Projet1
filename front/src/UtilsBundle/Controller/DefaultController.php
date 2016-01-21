@@ -5,23 +5,36 @@ namespace UtilsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use GuzzleHttp;
-use UtilsBundle\UserBDD;
+use UtilsBundle\BDD\UserBDD;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/guzzle")
+     * @Route("/users")
      */
-    public function indexAction()
+    public function usersAction()
     {
-        $users=$this->guzzle();
-        return $this->render('UtilsBundle:Default:index.html.twig',(array("users"=>$users)));
+        $users = UserBDD::getUsers();
+        return $this->render('UtilsBundle:Default:users.html.twig',(array("users"=>$users)));
     }
 
-    public function guzzle(){
-        $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://localhost:3000/api/users');
-        $user=json_decode($res->getBody());
-        return $user;
+    /**
+     * @Route("/usersById/{id}")
+     */
+    public function userByidAction($id)
+    {
+        $user = UserBDD::getUserById($id);
+        UserBDD::addUser($user);
+        return $this->render('UtilsBundle:Default:userById.html.twig',(array("user"=>$user)));
+    }
+
+    /**
+     * @Route("/usersByUsername/{name}")
+     */
+    public function userByNameAction($name)
+    {
+        $user = UserBDD::getUserByName($name);
+        return $this->render('UtilsBundle:Default:userByUsername.html.twig',(array("user"=>$user)));
     }
 }
