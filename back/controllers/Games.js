@@ -8,7 +8,7 @@ var logger = require('log4js').getLogger('controller.Games'),
     gameDB = require('../models/GameDB'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),
-    Util = require('./util.js'),
+    Util = require('./utils/util.js'),
     Game = mongoose.model('Game');
 
 //Path: GET api/games

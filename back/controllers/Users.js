@@ -7,7 +7,7 @@ var logger = require('log4js').getLogger('Users'),
     mongoose = require('mongoose'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),
-    Util = require('./util.js'),
+    Util = require('./utils/util.js'),
     UserDB = require('../models/UserDB'),
     User = mongoose.model('User'),
     AddressDB = require('../models/AddressDB'),
@@ -36,6 +36,8 @@ module.exports.getUsers = function getUsers(req, res, next) {
 module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
     // Code necessary to consume the User API and respond
+
+    //TODO add checks (email, phone number, username)
     var user = new User({
         firstname: sanitizer.escape(req.body.firstname),
         lastname: sanitizer.escape(req.body.lastname),
@@ -125,10 +127,11 @@ module.exports.updateUser = function updateUser(req, res, next) {
         {_id: Util.getPathParams(req)[2]},
         {
             $set: {
+                //TODO add phone number check + username
                 //TODO Check that it won't set not updated attributes to 'null'
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
-                username:req.body.username,
+                username: req.body.username,
                 birthDate: req.body.birthDate,
                 phoneNumber: req.body.phoneNumber,
                 updated_at: Date.now()
@@ -159,39 +162,32 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
         Util.getPathParams(req)[2],
         function (err, user) {
             if (err)
-                next(err.message);
+                return next(err.message);
 
-            Util.saltPassword(userOldPassword, next, function(err, saltedOldPassword) {
-                logger.debug('Salted OldPassword:' + saltedOldPassword);
-                Util.saltPassword(newPassword, next, function(err, saltedNewPassword) {
-                    logger.debug('Salted NewPassword:' + saltedNewPassword);
+            // test for a matching password
+            user.comparePassword(userOldPassword, function (err, isMatch) {
+                if (err) return next(err);
 
-                        Util.compareSaltedPasswords(saltedOldPassword, user.password, function (err, isMatch) {
-                                    if (err) return next(err.message);
-                                    if (!isMatch) {
-                                        logger.error('aborting because old passwords doesn\'t match...');
-                                        res.status(404).end(JSON.stringify({error: 'Bad oldPassword'}));
-                                        //return next(JSON.stringify({error: 'Bad password'}));
-                                    }
-                                    /*User.findOneAndUpdate(
-                                        {_id: Util.getPathParams(req)[2]},
-                                        {
-                                            $set: {
-                                                //TODO Check that the users knows his old password (add a param: oldPw to check before before updating)
-                                                password: newPassword
-                                            }
-                                        },
-                                        {new: true}, //means we want the DB to return the updated document instead of the old one
-                                        function (err, updatedUser) {
-                                            if (err)
-                                                return next(err.message);
-
-                                            logger.debug("Updated game object: \n" + updatedUser);
-                                            res.set('Content-Type', 'application/json');
-                                            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
-                                        });*/
+                // check if the password was a match
+                if (isMatch) {
+                    //logger.debug('It\'s a match !');
+                    //TODO add another field for confirming new user pw (double check)
+                    //TODO add check to verify new password & new pw confirmation are the same
+                    user.saltPassword(newPassword, function (err, saltedNewPassword) {
+                        logger.debug('saltedNewPassword:' + saltedNewPassword);
+                        user.update({
+                            $set: {password: saltedNewPassword}
+                        }, function (err, raw) {
+                            if (err) return next(err.message);
+                            res.set('Content-Type', 'application/json');
+                            res.status(200).end(JSON.stringify(raw || {}, null, 2));
                         });
-                });
+                    });
+                }
+                else {//no match
+                    res.set('Content-Type', 'application/json');
+                    res.status(401).end(JSON.stringify({error: 'Bad passwords'}, null, 2));
+                }
             });
         });
 };
@@ -204,6 +200,7 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
         {
             $set: {
                 //TODO Check that it won't set not updated attributes to 'null'
+                //TODO check email regex ?
                 email: req.body.newEmail,
                 updated_at: Date.now()
             }
@@ -223,7 +220,7 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
 
 // Path : PUT /users/{userId}/deleteUser
 module.exports.deleteUser = function deleteUser(req, res, next) {
-    logger.info('Deactivating for user with id:\n '+Util.getPathParams(req)[2]);
+    logger.info('Deactivating for user with id:\n ' + Util.getPathParams(req)[2]);
     User.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
