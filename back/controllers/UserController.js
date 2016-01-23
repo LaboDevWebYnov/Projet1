@@ -226,7 +226,7 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
             $set: {
                 //TODO Check that it won't set not updated attributes to 'null'
                 //TODO check email regex ?
-                email: req.body.newEmail,
+                email: req.body.email,
                 updated_at: Date.now()
             }
         },
