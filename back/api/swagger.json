@@ -346,7 +346,7 @@
     },
     "/games": {
       "get": {
-        "x-swagger-router-controller": "Games",
+        "x-swagger-router-controller": "GameController",
         "operationId": "getGames",
         "tags": [
           "Game"
@@ -385,7 +385,7 @@
     },
     "/games/addGame": {
       "post": {
-        "x-swagger-router-controller": "Games",
+        "x-swagger-router-controller": "GameController",
         "operationId": "addGame",
         "tags": [
           "Game"
@@ -418,7 +418,7 @@
     },
     "/games/{gameId}/getGameById": {
       "get": {
-        "x-swagger-router-controller": "Games",
+        "x-swagger-router-controller": "GameController",
         "operationId": "getGameById",
         "tags": [
           "Game"
@@ -454,7 +454,7 @@
     },
     "/games/{gameName}/getGameByName": {
       "get": {
-        "x-swagger-router-controller": "Games",
+        "x-swagger-router-controller": "GameController",
         "operationId": "getGameByName",
         "tags": [
           "Game"
@@ -490,7 +490,7 @@
     },
     "/games/{gameId}/updateGame": {
       "put": {
-        "x-swagger-router-controller": "Games",
+        "x-swagger-router-controller": "GameController",
         "operationId": "updateGame",
         "tags": [
           "Game"
@@ -535,7 +535,7 @@
     },
     "/games/{gameId}/deleteGame": {
       "put": {
-        "x-swagger-router-controller": "Games",
+        "x-swagger-router-controller": "GameController",
         "operationId": "deleteGame",
         "tags": [
           "Game"

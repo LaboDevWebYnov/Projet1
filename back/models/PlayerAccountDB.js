@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Player = new Schema({
+var PlayerAccount = new Schema({
     user: { type: Schema.ObjectId, ref: 'User', required: true },
     login: { type: String, required: true },
     game: { type: Schema.ObjectId, ref: 'Game', required: true },
@@ -13,7 +13,7 @@ var Player = new Schema({
     updated_at: { type: Date, required: true, default: new Date() }
 });
 
-Player.pre('save', function(next){
+PlayerAccount.pre('save', function(next){
     var now = new Date();
     this.updated_at = now;
     if ( !this.created_at ) {
@@ -22,14 +22,14 @@ Player.pre('save', function(next){
     next();
 });
 
-Player.pre('update', function(next){
+PlayerAccount.pre('update', function(next){
     this.update({},{ $set: { updated_at: new Date() } });
     next();
 });
 
-Player.pre('findOneAndUpdate', function(next){
+PlayerAccount.pre('findOneAndUpdate', function(next){
     this.update({},{ $set: { updated_at: new Date() } });
     next();
 });
 
-exports.Player = mongoose.model('Player', Player);
+exports.PlayerAccount = mongoose.model('PlayerAccount', PlayerAccount);
