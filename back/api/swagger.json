@@ -31,7 +31,7 @@
   "paths": {
     "/users": {
       "get": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "getUsers",
         "tags": [
           "User"
@@ -70,7 +70,7 @@
     },
     "/users/addUser": {
       "post": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "addUser",
         "tags": [
           "User"
@@ -103,7 +103,7 @@
     },
     "/users/{userId}/getUserById": {
       "get": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "getUserById",
         "tags": [
           "User"
@@ -139,7 +139,7 @@
     },
     "/users/{username}/getUserByUsername": {
       "get": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "getUserByUsername",
         "tags": [
           "User"
@@ -175,7 +175,7 @@
     },
     "/users/{userId}/updateUser": {
       "put": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "updateUser",
         "tags": [
           "User"
@@ -220,7 +220,7 @@
     },
     "/users/{userId}/updatePassword": {
       "put": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "updatePassword",
         "tags": [
           "User"
@@ -265,7 +265,7 @@
     },
     "/users/{userId}/updateEmail": {
       "put": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "updateEmail",
         "tags": [
           "User"
@@ -308,9 +308,94 @@
         }
       }
     },
+    "/users/{userId}/addAddress": {
+      "post": {
+        "x-swagger-router-controller": "UserController",
+        "operationId": "addAddress",
+        "tags": [
+          "User"
+        ],
+        "summary": "Adds a new Address to the User",
+        "description": "Adds new `Address` object to the `User` object to the DB.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of User object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "body",
+            "description": "Address object to add to the User object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User has been successfully added to the DB"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/updateAddress": {
+      "put": {
+        "x-swagger-router-controller": "UserController",
+        "operationId": "updateAddress",
+        "tags": [
+          "User"
+        ],
+        "summary": "Updates the corresponding user address",
+        "description": "Update `User` object address specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of User object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "body",
+            "description": "Address object of User object to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Updated User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/users/{userId}/deleteUser": {
       "put": {
-        "x-swagger-router-controller": "Users",
+        "x-swagger-router-controller": "UserController",
         "operationId": "deleteUser",
         "tags": [
           "User"

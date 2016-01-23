@@ -242,6 +242,20 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
         });
 };
 
+//Path : POST /users/{userId}/addAddress
+module.exports.addAddress = function addAddress(req, res, next) {
+    logger.info('Adding a new address to the user with id:\n ' + Util.getPathParams(req)[2]);
+    res.set('Content-Type', 'application/json');
+    res.status(200).end(JSON.stringify({message:"addAddress API not implemented yet"} || {}, null, 2));
+};
+
+//Path : PUT /users/{userId}/updateAddress
+module.exports.updateAddress = function updateAddress(req, res, next) {
+    logger.info('Updating address of user with id:\n ' + Util.getPathParams(req)[2]);
+    res.set('Content-Type', 'application/json');
+    res.status(200).end(JSON.stringify({message:"updateAddress API not implemented yet"} || {}, null, 2));
+};
+
 
 // Path : PUT /users/{userId}/deleteUser
 module.exports.deleteUser = function deleteUser(req, res, next) {
