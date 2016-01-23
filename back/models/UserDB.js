@@ -21,6 +21,7 @@ var User = new Schema({
     interests: {type: [{type: Schema.ObjectId, ref: 'Game'}], required: false},
     created_at: {type: Date, required: true, default: new Date()},
     updated_at: {type: Date, required: true, default: new Date()},
+    verified: {type: Boolean, required: true, default: false},
     loginAttempts: {type: Number, required: true, default: 0},
     lockUntil: {type: Number}
 });

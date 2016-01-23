@@ -35,7 +35,26 @@ module.exports.getUsers = function getUsers(req, res, next) {
 //Path: GET api/users/addUser
 module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
-    // Code necessary to consume the User API and respond
+
+    /* --Infos de base:
+    firstname
+    lastname
+    birth date
+    phone number
+    admin
+    active
+    friends
+    interests
+    verified
+
+      --Infos à checker/sécuriser:
+     email
+     password
+     address
+     username
+     */
+
+
 
     //TODO add checks (email, phone number, username)
     var user = new User({
@@ -155,6 +174,7 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
 
     var userOldPassword = req.body.oldPassword;
     var newPassword = req.body.newPassword;
+    var newPasswordConfirmation = req.body.newPasswordConfirmation;
     logger.debug('userPassword object:' + userOldPassword);
     logger.debug('newPassword object:' + newPassword);
 
@@ -172,21 +192,26 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
                 if (isMatch) {
                     //logger.debug('It\'s a match !');
                     //TODO add another field for confirming new user pw (double check)
-                    //TODO add check to verify new password & new pw confirmation are the same
-                    user.saltPassword(newPassword, function (err, saltedNewPassword) {
-                        logger.debug('saltedNewPassword:' + saltedNewPassword);
-                        user.update({
-                            $set: {password: saltedNewPassword}
-                        }, function (err, raw) {
-                            if (err) return next(err.message);
-                            res.set('Content-Type', 'application/json');
-                            res.status(200).end(JSON.stringify(raw || {}, null, 2));
+                    if(newPassword === newPasswordConfirmation) {
+                        user.saltPassword(newPassword, function (err, saltedNewPassword) {
+                            logger.debug('saltedNewPassword:' + saltedNewPassword);
+                            user.update({
+                                $set: {password: saltedNewPassword}
+                            }, function (err, raw) {
+                                if (err) return next(err.message);
+                                res.set('Content-Type', 'application/json');
+                                res.status(200).end(JSON.stringify(raw || {}, null, 2));
+                            });
                         });
-                    });
+                    }
+                    else{
+                        res.set('Content-Type', 'application/json');
+                        res.status(401).end(JSON.stringify({error: 'New passwords aren\'t the same'}, null, 2));
+                    }
                 }
                 else {//no match
                     res.set('Content-Type', 'application/json');
-                    res.status(401).end(JSON.stringify({error: 'Bad passwords'}, null, 2));
+                    res.status(401).end(JSON.stringify({error: 'Bad old password'}, null, 2));
                 }
             });
         });
