@@ -7,8 +7,8 @@ var logger = require('log4js').getLogger('Users'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),
     Util = require('./utils/util.js'),
-    PlayerDB = require('../models/PlayerDB'),
-    Player = mongoose.model('Player'),
+    PlayerAccountDB = require('../models/PlayerAccountDB'),
+    PlayerAccount = mongoose.model('PlayerAccount'),
     AddressDB = require('../models/AddressDB'),
     Address = mongoose.model('Address');
 
@@ -16,17 +16,17 @@ var logger = require('log4js').getLogger('Users'),
 module.exports.getPlayers = function getPlayers(req, res, next) {
     logger.info('Getting all players from db...');
     // Code necessary to consume the User API and respond
-    Player.find({}, function (err, players) {
+    PlayerAccount.find({}, function (err, playerAccountList) {
         if (err) {
             return next(err.message);
         }
-        if (_.isNull(players) || _.isEmpty(players)) {
+        if (_.isNull(playerAccountList) || _.isEmpty(playerAccountList)) {
             res.set('Content-Type', 'application/json');
-            res.status(404).json(JSON.stringify(players || {}, null, 2));
+            res.status(404).json(JSON.stringify(playerAccountList || {}, null, 2));
         }
         else {
             res.set('Content-Type', 'application/json');
-            res.end(JSON.stringify(players || {}, null, 2));
+            res.end(JSON.stringify(playerAccountList || {}, null, 2));
         }
     });
 };
@@ -39,20 +39,20 @@ module.exports.getPlayerById = function getPlayerById(req, res, next) {
     logger.info('Getting the player with id:' + Util.getPathParams(req)[1]);
     // Code necessary to consume the User API and respond
 
-    Player.findById(
+    PlayerAccount.findById(
         Util.getPathParams(req)[1],
-        function (err, player) {
+        function (err, playerAccount) {
             if (err)
                 return next(err.message);
 
-            logger.debug(player);
-            if (_.isNull(player) || _.isEmpty(player)) {
+            logger.debug(playerAccount);
+            if (_.isNull(playerAccount) || _.isEmpty(playerAccount)) {
                 res.set('Content-Type', 'application/json');
-                res.status(404).json(JSON.stringify(player || {}, null, 2));
+                res.status(404).json(JSON.stringify(playerAccount || {}, null, 2));
             }
             else {
                 res.set('Content-Type', 'application/json');
-                res.status(200).end(JSON.stringify(player || {}, null, 2));
+                res.status(200).end(JSON.stringify(playerAccount || {}, null, 2));
             }
         }
     );
@@ -66,20 +66,20 @@ module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
     logger.info('Getting the player with id:' + Util.getPathParams(req)[1]);
     // Code necessary to consume the User API and respond
 
-    Player.find(
+    PlayerAccount.find(
         { _id: Util.getPathParams(req)[1] },
-        function (err, players) {
+        function (err, playerAccountList) {
             if (err)
                 return next(err.message);
 
-            logger.debug(players);
-            if (_.isNull(players) || _.isEmpty(players)) {
+            logger.debug(playerAccountList);
+            if (_.isNull(playerAccountList) || _.isEmpty(playerAccountList)) {
                 res.set('Content-Type', 'application/json');
-                res.status(404).json(JSON.stringify(players || {}, null, 2));
+                res.status(404).json(JSON.stringify(playerAccountList || {}, null, 2));
             }
             else {
                 res.set('Content-Type', 'application/json');
-                res.status(200).end(JSON.stringify(players || {}, null, 2));
+                res.status(200).end(JSON.stringify(playerAccountList || {}, null, 2));
             }
         }
     );
@@ -88,7 +88,7 @@ module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
 // Path : PUT /players/{playerId}/deletePlayer
 module.exports.deletePlayer = function deletePlayer(req, res, next) {
     logger.info('Deactivating for player with id:\n '+Util.getPathParams(req)[2]);
-    Player.findOneAndUpdate(
+    PlayerAccount.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
             $set: {
@@ -96,13 +96,13 @@ module.exports.deletePlayer = function deletePlayer(req, res, next) {
             }
         },
         {new: true}, //means we want the DB to return the updated document instead of the old one
-        function (err, updatedPlayer) {
+        function (err, updatedPlayerAccount) {
             if (err)
                 return next(err.message);
 
-            logger.debug("Deactivated player object: \n" + updatedPlayer);
+            logger.debug("Deactivated player object: \n" + updatedPlayerAccount);
             res.set('Content-Type', 'application/json');
-            res.status(200).end(JSON.stringify(updatedPlayer || {}, null, 2));
+            res.status(200).end(JSON.stringify(updatedPlayerAccount || {}, null, 2));
 
         });
 };
