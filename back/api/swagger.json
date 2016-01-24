@@ -283,10 +283,10 @@
           {
             "name": "email",
             "in": "body",
-            "description": "Object containing old email (to verify before updating) and new one to update",
+            "description": "New email to update",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ChangeEmail"
+              "$ref": "#/definitions/Email"
             }
           }
         ],
@@ -891,7 +891,6 @@
       }
     }
   },
-
   "definitions": {
     "User": {
       "type": "object",
@@ -1033,14 +1032,12 @@
         }
       }
     },
-    "ChangeEmail": {
+    "Email": {
       "type": "object",
       "properties": {
-        "oldEmail": {
-          "type": "string"
-        },
-        "newEmail": {
-          "type": "string"
+        "email": {
+          "type": "string",
+          "format": "email"
         }
       }
     },
