@@ -17,19 +17,21 @@ var logger = require('log4js').getLogger('Users'),
 module.exports.getUsers = function getUsers(req, res, next) {
     logger.info('Getting all users from db...');
     // Code necessary to consume the User API and respond
-    User.find({}, function (err, users) {
-        if (err) {
-            return next(err.message);
-        }
-        if (_.isNull(users) || _.isEmpty(users)) {
-            res.set('Content-Type', 'application/json');
-            res.status(404).json(JSON.stringify(users || {}, null, 2));
-        }
-        else {
-            res.set('Content-Type', 'application/json');
-            res.end(JSON.stringify(users || {}, null, 2));
-        }
-    });
+    User.find({})
+        .populate('address')
+        .exec(function (err, users) {
+            if (err)
+                return next(err.message);
+
+            if (_.isNull(users) || _.isEmpty(users)) {
+                res.set('Content-Type', 'application/json');
+                res.status(404).json(JSON.stringify({error: "Couldn't gets users"}, null, 2));
+            }
+            else {
+                res.set('Content-Type', 'application/json');
+                res.end(JSON.stringify(users || {}, null, 2));
+            }
+        });
 };
 
 //Path: GET api/users/addUser
@@ -37,23 +39,22 @@ module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
 
     /* --Infos de base:
-    firstname
-    lastname
-    birth date
-    phone number
-    admin
-    active
-    friends
-    interests
-    verified
+     firstname
+     lastname
+     birth date
+     phone number
+     admin
+     active
+     friends
+     interests
+     verified
 
-      --Infos à checker/sécuriser:
+     --Infos à checker/sécuriser:
      email
      password
      address
      username
      */
-
 
 
     //TODO add checks (email, phone number, username)
@@ -136,8 +137,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
                 res.set('Content-Type', 'application/json');
                 res.status(200).end(JSON.stringify(user || {}, null, 2));
             }
-        }
-    );
+        });
 };
 // Path: PUT api/users/{userId}/updateUser
 module.exports.updateUser = function updateUser(req, res, next) {
@@ -192,7 +192,7 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
                 if (isMatch) {
                     //logger.debug('It\'s a match !');
                     //TODO add another field for confirming new user pw (double check)
-                    if(newPassword === newPasswordConfirmation) {
+                    if (newPassword === newPasswordConfirmation) {
                         user.saltPassword(newPassword, function (err, saltedNewPassword) {
                             logger.debug('saltedNewPassword:' + saltedNewPassword);
                             user.update({
@@ -204,7 +204,7 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
                             });
                         });
                     }
-                    else{
+                    else {
                         res.set('Content-Type', 'application/json');
                         res.status(401).end(JSON.stringify({error: 'New passwords aren\'t the same'}, null, 2));
                     }
@@ -242,19 +242,7 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
         });
 };
 
-//Path : POST /users/{userId}/addAddress
-module.exports.addAddress = function addAddress(req, res, next) {
-    logger.info('Adding a new address to the user with id:\n ' + Util.getPathParams(req)[2]);
-    res.set('Content-Type', 'application/json');
-    res.status(200).end(JSON.stringify({message:"addAddress API not implemented yet"} || {}, null, 2));
-};
 
-//Path : PUT /users/{userId}/updateAddress
-module.exports.updateAddress = function updateAddress(req, res, next) {
-    logger.info('Updating address of user with id:\n ' + Util.getPathParams(req)[2]);
-    res.set('Content-Type', 'application/json');
-    res.status(200).end(JSON.stringify({message:"updateAddress API not implemented yet"} || {}, null, 2));
-};
 
 
 // Path : PUT /users/{userId}/deleteUser

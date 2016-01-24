@@ -308,9 +308,9 @@
         }
       }
     },
-    "/users/{userId}/addAddress": {
+    "/addresses/{userId}/addAddress": {
       "post": {
-        "x-swagger-router-controller": "UserController",
+        "x-swagger-router-controller": "UserAddressController",
         "operationId": "addAddress",
         "tags": [
           "User"
@@ -348,9 +348,9 @@
         }
       }
     },
-    "/users/{userId}/updateAddress": {
+    "/addresses/{userId}/updateAddress/{addressId}": {
       "put": {
-        "x-swagger-router-controller": "UserController",
+        "x-swagger-router-controller": "UserAddressController",
         "operationId": "updateAddress",
         "tags": [
           "User"
@@ -362,6 +362,13 @@
             "name": "userId",
             "in": "path",
             "description": "userId of User object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "addressId",
+            "in": "path",
+            "description": "addressId of Address to add in User object.",
             "required": true,
             "type": "string"
           },
@@ -975,8 +982,8 @@
       "type": "object",
       "properties": {
         "postCode": {
-          "type": "string",
-          "format": "integer"
+          "type": "integer",
+          "format": "int32"
         },
         "city": {
           "type": "string"
