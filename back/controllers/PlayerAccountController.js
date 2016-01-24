@@ -10,10 +10,12 @@ var logger = require('log4js').getLogger('Users'),
     PlayerAccountDB = require('../models/PlayerAccountDB'),
     PlayerAccount = mongoose.model('PlayerAccount'),
     AddressDB = require('../models/AddressDB'),
-    Address = mongoose.model('Address');
+    Address = mongoose.model('Address'),
+    GameDB = require('../models/GameDB'),
+    Game = mongoose.model('Game');
 
 //Path: GET api/players
-module.exports.getPlayers = function getPlayers(req, res, next) {
+module.exports.getPlayerAccountList = function getPlayerAccountList(req, res, next) {
     logger.info('Getting all players from db...');
     // Code necessary to consume the User API and respond
     PlayerAccount.find({}, function (err, playerAccountList) {
@@ -31,8 +33,52 @@ module.exports.getPlayers = function getPlayers(req, res, next) {
     });
 };
 
-// Path: GET api/players/{playerId}/getPlayerById
-module.exports.getPlayerById = function getPlayerById(req, res, next) {
+//Path: GET api/playerAccount/{userId}/addPlayerAccount/{gameId}
+module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
+    logger.info('Adding new playerAccount...');
+
+    Game.findOne(
+        {_id: Util.getPathParams(req)[2]},
+        function(err, game) {
+           if(err)
+                return next(err.message);
+
+            User.findOne(
+                {_id: Util.getPathParams(req)[2]},
+                function(err, user) {
+                    if(err)
+                        return next(err.message);
+
+                    var PlayerAccount = new PlayerAccount({
+                        user: user,
+                        login: req.body.login,
+                        game: game,
+                        active: true,
+                        created_at: new Date(),
+                        updated_at: new Date()
+                    });
+
+                    PlayerAccount.save(function (err, PlayerAccount) {
+                        if (err)
+                            return next(err.message);
+
+                        if (_.isNull(PlayerAccount) || _.isEmpty(PlayerAccount)) {
+                            res.set('Content-Type', 'application/json');
+                            res.status(404).json(JSON.stringify(PlayerAccount || {}, null, 2));
+                        }
+                        else {
+                            res.set('Content-Type', 'application/json');
+                            res.status(200).end(JSON.stringify(PlayerAccount || {}, null, 2));
+                        }
+                    });
+            });
+    });
+
+
+};
+
+// Path: GET api/players/{playerAcountId}/getPlayerAccountById
+module.exports.getPlayerAccountById = function getPlayerAccountById(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
 
@@ -58,7 +104,7 @@ module.exports.getPlayerById = function getPlayerById(req, res, next) {
     );
 };
 
-// Path: GET api/players/{playerId}/getPlayerByUserId
+// Path: GET api/players/{playerAcountId}/getPlayerByUserId
 module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);

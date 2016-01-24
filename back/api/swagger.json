@@ -654,14 +654,14 @@
         }
       }
     },
-    "/players": {
+    "/playerAccount": {
       "get": {
-        "x-swagger-router-controller": "Players",
-        "operationId": "getPlayers",
+        "x-swagger-router-controller": "PlayerAccountController",
+        "operationId": "getPlayerAccountList",
         "tags": [
-          "/players"
+          "PlayerAccount"
         ],
-        "description": "Gets `player` objects.\nOptional query param of **size** determines\nsize of returned array\n",
+        "description": "Gets `playerAccount` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
           {
             "name": "size",
@@ -674,9 +674,9 @@
         ],
         "responses": {
           "200": {
-            "description": "An array of Players",
+            "description": "An array of PlayerAccount",
             "schema": {
-              "title": "ArrayOfPlayers",
+              "title": "ArrayOfPlayerAccount",
               "type": "array",
               "items": {
                 "$ref": "#/definitions/PlayerAccount"
@@ -692,28 +692,75 @@
         }
       }
     },
-    "/players/{playerId}/getPlayerById": {
-      "get": {
-        "x-swagger-router-controller": "Players",
-        "operationId": "getPlayerById",
+    "/PlayerAccount/{userId}/addPlayerAccount/{gameId}": {
+      "post": {
+        "x-swagger-router-controller": "PlayerAccountController",
+        "operationId": "addPlayerAccount",
         "tags": [
-          "/players"
+          "PlayerAccount"
         ],
-        "description": "Gets `player` object specified by its ID.",
+        "summary": "Adds a new PlayerAccount",
+        "description": "Adds new `PlayerAccount` object to the DB.",
         "parameters": [
           {
-            "name": "playerId",
+            "name": "userId",
             "in": "path",
-            "description": "playerId of player object to search for.",
+            "description": "userId of player object to add.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "gameId of player object to add.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "PlayerAccount",
+            "in": "body",
+            "description": "PlayerAccount object to insert",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PlayerAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PlayerAccount has been successfully added to the DB"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/PlayerAccount/{playerAccountId}/getPlayerAccountById": {
+      "get": {
+        "x-swagger-router-controller": "PlayerAccountController",
+        "operationId": "getPlayerAccountById",
+        "tags": [
+          "PlayerAccount"
+        ],
+        "description": "Gets `playerAcount` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "playerAccountId",
+            "in": "path",
+            "description": "playerAcountId of player object to search for.",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "A 'player' object.",
+            "description": "A 'playerAcount' object.",
             "schema": {
-              "title": "Retrieved player object",
+              "title": "Retrieved playerAcount object",
               "type": "object",
               "$ref": "#/definitions/PlayerAccount"
             }
