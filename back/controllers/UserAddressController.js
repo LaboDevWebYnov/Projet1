@@ -1,6 +1,16 @@
 /**
  * Created by Antoine on 24/01/2016.
  */
+var logger = require('log4js').getLogger('controller.userAddress'),
+    mongoose = require('mongoose'),
+    sanitizer = require('sanitizer'),
+    _ = require('lodash'),
+    Util = require('./utils/util.js'),
+    UserDB = require('../models/UserDB'),
+    User = mongoose.model('User'),
+    AddressDB = require('../models/AddressDB'),
+    Address = mongoose.model('Address');
+
 //Path : POST /addresses/{userId}/addAddress
 module.exports.addAddress = function addAddress(req, res, next) {
     logger.info('Adding a new address to the user with id:\n ' + Util.getPathParams(req)[2]);
@@ -32,6 +42,7 @@ module.exports.addAddress = function addAddress(req, res, next) {
                     }
                     else {
                         logger.debug('Found user to update its address:' + user);
+
                     }
                 })
                 .populate('address')
@@ -44,6 +55,7 @@ module.exports.addAddress = function addAddress(req, res, next) {
                         res.status(404).json(JSON.stringify({error: "Couldn't update user with address"}, null, 2));
                     }
                     else {
+                        logger.debug('User to update its address:' + updatedUser._id);
                         User.findOneAndUpdate({_id: updatedUser._id},
                             {
                                 $set: {
@@ -51,18 +63,18 @@ module.exports.addAddress = function addAddress(req, res, next) {
                                 }
                             },
                             {new: true}, //means we want the DB to return the updated document instead of the old one
-                            function (err, updatedUser) {
+                            function (err, updatedUserFromDB) {
                                 if (err)
                                     return next(err.message);
-                                if (_.isNull(updatedUser) || _.isEmpty(updatedUser)) {
+                                if (_.isNull(updatedUserFromDB) || _.isEmpty(updatedUserFromDB)) {
                                     res.set('Content-Type', 'application/json');
                                     res.status(404).json(JSON.stringify({error: "Couldn't update user with address"}, null, 2));
                                 }
                                 else {
-                                    logger.debug('Updated user with address', updatedUser);
+                                    logger.debug('Updated user with address', updatedUserFromDB);
 
                                     res.set('Content-Type', 'application/json');
-                                    res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+                                    res.status(200).end(JSON.stringify(updatedUserFromDB || {}, null, 2));
                                 }
 
                             });

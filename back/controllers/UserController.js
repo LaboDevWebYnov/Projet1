@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var logger = require('log4js').getLogger('Users'),
+var logger = require('log4js').getLogger('controller.user'),
     mongoose = require('mongoose'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),

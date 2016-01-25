@@ -2,7 +2,7 @@
  * Created by Ezehollar on 14/01/2016.
  */
 
-var logger = require('log4js').getLogger('Users'),
+var logger = require('log4js').getLogger('controller.playerAccount'),
     mongoose = require('mongoose'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),
@@ -49,7 +49,7 @@ module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
                     if(err)
                         return next(err.message);
 
-                    var PlayerAccount = new PlayerAccount({
+                    var playerAccount = new PlayerAccount({
                         user: user,
                         login: req.body.login,
                         game: game,
@@ -58,17 +58,17 @@ module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
                         updated_at: new Date()
                     });
 
-                    PlayerAccount.save(function (err, PlayerAccount) {
+                    playerAccount.save(function (err, savedPlayerAccount) {
                         if (err)
                             return next(err.message);
 
-                        if (_.isNull(PlayerAccount) || _.isEmpty(PlayerAccount)) {
+                        if (_.isNull(savedPlayerAccount) || _.isEmpty(savedPlayerAccount)) {
                             res.set('Content-Type', 'application/json');
-                            res.status(404).json(JSON.stringify(PlayerAccount || {}, null, 2));
+                            res.status(404).json(JSON.stringify(savedPlayerAccount || {}, null, 2));
                         }
                         else {
                             res.set('Content-Type', 'application/json');
-                            res.status(200).end(JSON.stringify(PlayerAccount || {}, null, 2));
+                            res.status(200).end(JSON.stringify(savedPlayerAccount || {}, null, 2));
                         }
                     });
             });
