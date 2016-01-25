@@ -13,7 +13,7 @@ var User = new Schema({
     birthDate: {type: Date, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    address: {type: Schema.ObjectId, ref: 'Address', required: false},
+    address: {type:[{ type: Schema.ObjectId, ref: 'Address'}], required: false},
     phoneNumber: {type: String, required: true},
     admin: {type: Boolean, required: true},
     active: {type: Boolean, required: true, default: true},

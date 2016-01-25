@@ -24,6 +24,10 @@
     {
       "name": "Player",
       "description": "player account, game properties"
+    },
+    {
+      "name": "Addresse",
+      "description": "addresses, user addresses"
     }
   ],
   "host": "localhost:3100",
@@ -308,12 +312,48 @@
         }
       }
     },
+    "/users/{userId}/deleteUser": {
+      "put": {
+        "x-swagger-router-controller": "UserController",
+        "operationId": "deleteUser",
+        "tags": [
+          "User"
+        ],
+        "summary": "Deactivates the corresponding user account",
+        "description": "Deactivate `User` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "userId of User object to deactivate.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A 'User' object.",
+            "schema": {
+              "title": "Deactivated User object",
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/addresses/{userId}/addAddress": {
       "post": {
         "x-swagger-router-controller": "UserAddressController",
         "operationId": "addAddress",
         "tags": [
-          "User"
+          "Addresse"
         ],
         "summary": "Adds a new Address to the User",
         "description": "Adds new `Address` object to the `User` object to the DB.",
@@ -353,7 +393,7 @@
         "x-swagger-router-controller": "UserAddressController",
         "operationId": "updateAddress",
         "tags": [
-          "User"
+          "Addresse"
         ],
         "summary": "Updates the corresponding user address",
         "description": "Update `User` object address specified by its ID.",
@@ -400,31 +440,80 @@
         }
       }
     },
-    "/users/{userId}/deleteUser": {
-      "put": {
-        "x-swagger-router-controller": "UserController",
-        "operationId": "deleteUser",
+    "/addresses/getAddresses": {
+      "get": {
+        "x-swagger-router-controller": "AddressController",
+        "operationId": "getAddresses",
         "tags": [
-          "User"
+          "Addresse"
         ],
-        "summary": "Deactivates the corresponding user account",
-        "description": "Deactivate `User` object specified by its ID.",
+        "summary": "Get all addresses from DB",
+        "description": "Gets all `Address` objects from DB.",
         "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of 'Address' objects.",
+            "schema": {
+              "title": "ArrayOfAddresses",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Address"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/addresses/{userId}/getUserAddresses": {
+      "get": {
+        "x-swagger-router-controller": "UserAddressController",
+        "operationId": "getUserAddresses",
+        "tags": [
+          "Addresse"
+        ],
+        "summary": "Get all addresses of the specified user from DB",
+        "description": "Gets all `Address` objects of the specified User from DB.",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
           {
             "name": "userId",
             "in": "path",
-            "description": "userId of User object to deactivate.",
+            "description": "userId of User object to search addresses for.",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "A 'User' object.",
+            "description": "A list of 'Address' objects.",
             "schema": {
-              "title": "Deactivated User object",
-              "type": "object",
-              "$ref": "#/definitions/User"
+              "title": "ArrayOfAddresses",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Address"
+              }
             }
           },
           "default": {
@@ -926,7 +1015,10 @@
           "type": "string"
         },
         "address": {
-          "$ref": "#/definitions/Address"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
         },
         "phoneNumber": {
           "type": "string"
