@@ -32,53 +32,27 @@ module.exports.addAddress = function addAddress(req, res, next) {
         }
         else {
             logger.debug('Created address:' + savedAddress);
-            User.findOne({_id: Util.getPathParams(req)[2]},
-                function (err, user) {
+            User.findOneAndUpdate({_id: Util.getPathParams(req)[2]},
+                {
+                    $set: {
+                        address: savedAddress
+                    }
+                },
+                {new: true}, //means we want the DB to return the updated document instead of the old one
+                function (err, updatedUserFromDB) {
                     if (err)
                         return next(err.message);
-                    if (_.isNull(user) || _.isEmpty(user)) {
-                        res.set('Content-Type', 'application/json');
-                        res.status(404).json(JSON.stringify({error: "Couldn't find user with user id:" + Util.getPathParams(req)[2]}, null, 2));
-                    }
-                    else {
-                        logger.debug('Found user to update its address:' + user);
-
-                    }
-                })
-                .populate('address')
-                .exec(function (err, updatedUser) {
-                    if (err)
-                        return next(err.message);
-
-                    if (_.isNull(updatedUser) || _.isEmpty(updatedUser)) {
+                    if (_.isNull(updatedUserFromDB) || _.isEmpty(updatedUserFromDB)) {
                         res.set('Content-Type', 'application/json');
                         res.status(404).json(JSON.stringify({error: "Couldn't update user with address"}, null, 2));
                     }
                     else {
-                        logger.debug('User to update its address:' + updatedUser._id);
-                        User.findOneAndUpdate({_id: updatedUser._id},
-                            {
-                                $set: {
-                                    address: updatedUser.address
-                                }
-                            },
-                            {new: true}, //means we want the DB to return the updated document instead of the old one
-                            function (err, updatedUserFromDB) {
-                                if (err)
-                                    return next(err.message);
-                                if (_.isNull(updatedUserFromDB) || _.isEmpty(updatedUserFromDB)) {
-                                    res.set('Content-Type', 'application/json');
-                                    res.status(404).json(JSON.stringify({error: "Couldn't update user with address"}, null, 2));
-                                }
-                                else {
-                                    logger.debug('Updated user with address', updatedUserFromDB);
+                        logger.debug('Updated user with address', updatedUserFromDB);
 
-                                    res.set('Content-Type', 'application/json');
-                                    res.status(200).end(JSON.stringify(updatedUserFromDB || {}, null, 2));
-                                }
-
-                            });
+                        res.set('Content-Type', 'application/json');
+                        res.status(200).end(JSON.stringify(updatedUserFromDB || {}, null, 2));
                     }
+
                 });
         }
     });
@@ -86,7 +60,41 @@ module.exports.addAddress = function addAddress(req, res, next) {
 
 //Path : PUT /addresses/{userId}/updateAddress/{addressId}
 module.exports.updateAddress = function updateAddress(req, res, next) {
-    logger.info('Updating address with addressId: '+Util.getPathParams(req)[2] +' of user with id: ' + Util.getPathParams(req)[4]);
-    res.set('Content-Type', 'application/json');
-    res.status(200).end(JSON.stringify({message: "updateAddress API not implemented yet"} || {}, null, 2));
+    logger.info('Updating address with addressId: ' + Util.getPathParams(req)[2] + ' of user with id: ' + Util.getPathParams(req)[4]);
+    Address.findOneAndUpdate({_id: Util.getPathParams(req)[4]},
+        {
+            $set: {
+                postCode: sanitizer.escape(req.body.postCode),
+                city: sanitizer.escape(req.body.city),
+                country: sanitizer.escape(req.body.country),
+                line: sanitizer.escape(req.body.line)
+            }
+        },
+        {new: true}, //means we want the DB to return the updated document instead of the old one
+        function (err, updatedAddressFromDB) {
+            if (err)
+                return next(err.message);
+            if (_.isNull(updatedAddressFromDB) || _.isEmpty(updatedAddressFromDB)) {
+                res.set('Content-Type', 'application/json');
+                res.status(404).json(JSON.stringify({error: "Couldn't update address"}, null, 2));
+            }
+            else {
+                logger.debug('Updated address', updatedAddressFromDB);
+                User.findOne({_id: Util.getPathParams(req)[2]},
+                    function (err, updatedUser) {
+                        if (err)
+                            return next(err.message);
+
+                        if (_.isNull(updatedUser) || _.isEmpty(updatedUser)) {
+                            res.set('Content-Type', 'application/json');
+                            res.status(404).json(JSON.stringify(updatedUser || {}, null, 2));
+                        }
+                        else {
+
+                            res.set('Content-Type', 'application/json');
+                            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+                        }
+                    });
+            }
+        });
 };

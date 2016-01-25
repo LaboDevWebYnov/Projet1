@@ -94,9 +94,9 @@ module.exports.getUserById = function getUserById(req, res, next) {
     logger.info('Getting the user with id:' + Util.getPathParams(req)[2]);
     // Code necessary to consume the User API and respond
 
-    User.findById(
-        Util.getPathParams(req)[2],
-        function (err, user) {
+    User.findById(Util.getPathParams(req)[2])
+        .populate('address')
+        .exec(function (err, user) {
             if (err)
                 return next(err.message);
 
@@ -109,8 +109,7 @@ module.exports.getUserById = function getUserById(req, res, next) {
                 res.set('Content-Type', 'application/json');
                 res.status(200).end(JSON.stringify(user || {}, null, 2));
             }
-        }
-    );
+        });
 };
 
 // Path: GET api/users/{username}/getUserByUsername
@@ -126,8 +125,6 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
         function (err, user) {
             if (err)
                 return next(err.message);
-
-            logger.debug(user);
 
             if (_.isNull(user) || _.isEmpty(user)) {
                 res.set('Content-Type', 'application/json');
