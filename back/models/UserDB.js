@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var Schema = mongoose.Schema;
 var logger = require('log4js').getLogger('Users');
+var _ = require('lodash');
 
 var User = new Schema({
     firstname: {type: String, required: true},
@@ -15,7 +16,7 @@ var User = new Schema({
     password: {type: String, required: true},
     address: {type:[{ type: Schema.ObjectId, ref: 'Address'}], required: false},
     phoneNumber: {type: String, required: true},
-    admin: {type: Boolean, required: true},
+    admin: {type: Boolean, required: true, default: false},
     active: {type: Boolean, required: true, default: true},
     friends: {type: [{type: Schema.ObjectId, ref: 'User'}], required: false},
     interests: {type: [{type: Schema.ObjectId, ref: 'Game'}], required: false},
@@ -50,7 +51,8 @@ User.pre('save', function (next) {
             logger.debug('user:'+ user);
 
             //extract ObjectIds from array of ObjectId
-            user.address = user.address.map(function(address) { return address._id; });
+            if(!_.isNull(user.address)&& !_.isEmpty(user.address))
+                user.address = user.address.map(function(address) { return address._id; });
 
            return next();
         });
@@ -64,7 +66,8 @@ User.pre('save', function (next) {
         }
 
         //extract ObjectIds from array of ObjectId
-        user.address = user.address.map(function(address) { return address._id; });
+        if(!_.isNull(user.address)&& !_.isEmpty(user.address))
+            user.address = user.address.map(function(address) { return address._id; });
         return next();
     }
 });

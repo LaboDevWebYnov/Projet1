@@ -11,7 +11,8 @@ var logger = require('log4js').getLogger('controller.user'),
     UserDB = require('../models/UserDB'),
     User = mongoose.model('User'),
     AddressDB = require('../models/AddressDB'),
-    Address = mongoose.model('Address');
+    Address = mongoose.model('Address'),
+    UserDaoUtil = require('../DAO/util');
 
 //Path: GET api/users
 module.exports.getUsers = function getUsers(req, res, next) {
@@ -38,50 +39,50 @@ module.exports.getUsers = function getUsers(req, res, next) {
 module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
 
-    /* --Infos de base:
-     firstname
-     lastname
-     birth date
-     phone number
-     admin
-     active
-     friends
-     interests
-     verified
+    //check if username is available
+    UserDaoUtil.alreadyTakenUsername(req, function (err, isAlreadyTakenUsername) {
+        if (err) return next(err.message);
+        if (!isAlreadyTakenUsername) {
+            //check if email isn't already taken
+            UserDaoUtil.alreadyTakenEmail(req, function (err, isAlreadyTakenEmail) {
+                if (!isAlreadyTakenEmail) {
+                    //TODO check password difficulty(later)
+                    //TODO check phone number(later)
+                    var user = new User({
+                        firstname: sanitizer.escape(req.body.firstname),
+                        lastname: sanitizer.escape(req.body.lastname),
+                        username: sanitizer.escape(req.body.username),
+                        birthDate: sanitizer.escape(req.body.birthDate),
+                        email: sanitizer.escape(req.body.email),
+                        password: sanitizer.escape(req.body.password),
+                        address: [],
+                        phoneNumber: sanitizer.escape(req.body.phoneNumber),
+                        friends: []
+                    });
 
-     --Infos à checker/sécuriser:
-     email
-     password
-     address
-     username
-     */
+                    user.save(function (err, user) {
+                        if (err)
+                            return next(err.message);
 
-
-    //TODO add checks (email, phone number, username)
-    var user = new User({
-        firstname: sanitizer.escape(req.body.firstname),
-        lastname: sanitizer.escape(req.body.lastname),
-        username: sanitizer.escape(req.body.username),
-        birthDate: sanitizer.escape(req.body.birthDate),
-        email: sanitizer.escape(req.body.email),
-        password: sanitizer.escape(req.body.password),
-        address: null,
-        phoneNumber: sanitizer.escape(req.body.phoneNumber),
-        admin: false,
-        friends: []
-    });
-
-    user.save(function (err, user) {
-        if (err)
-            return next(err.message);
-
-        if (_.isNull(user) || _.isEmpty(user)) {
-            res.set('Content-Type', 'application/json');
-            res.status(404).json(JSON.stringify(user || {}, null, 2));
+                        if (_.isNull(user) || _.isEmpty(user)) {
+                            res.set('Content-Type', 'application/json');
+                            res.status(404).json(JSON.stringify(user || {}, null, 2));
+                        }
+                        else {
+                            res.set('Content-Type', 'application/json');
+                            res.status(200).end(JSON.stringify(user || {}, null, 2));
+                        }
+                    });
+                }
+                else {
+                    res.set('Content-Type', 'application/json');
+                    res.status(401).end(JSON.stringify({error: 'Email already used'} || {}, null, 2));
+                }
+            });
         }
         else {
             res.set('Content-Type', 'application/json');
-            res.status(200).end(JSON.stringify(user || {}, null, 2));
+            res.status(401).end(JSON.stringify({error: 'username already used'} || {}, null, 2));
         }
     });
 };
@@ -99,8 +100,6 @@ module.exports.getUserById = function getUserById(req, res, next) {
         .exec(function (err, user) {
             if (err)
                 return next(err.message);
-
-            logger.debug(user);
             if (_.isNull(user) || _.isEmpty(user)) {
                 res.set('Content-Type', 'application/json');
                 res.status(404).json(JSON.stringify(user || {}, null, 2));
@@ -138,16 +137,13 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
 };
 // Path: PUT api/users/{userId}/updateUser
 module.exports.updateUser = function updateUser(req, res, next) {
-
     User.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
             $set: {
-                //TODO add phone number check + username
-                //TODO Check that it won't set not updated attributes to 'null'
+                //TODO add phone number check
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
-                username: req.body.username,
                 birthDate: req.body.birthDate,
                 phoneNumber: req.body.phoneNumber,
                 updated_at: Date.now()
@@ -188,7 +184,6 @@ module.exports.updatePassword = function updatePassword(req, res, next) {
                 // check if the password was a match
                 if (isMatch) {
                     //logger.debug('It\'s a match !');
-                    //TODO add another field for confirming new user pw (double check)
                     if (newPassword === newPasswordConfirmation) {
                         user.saltPassword(newPassword, function (err, saltedNewPassword) {
                             logger.debug('saltedNewPassword:' + saltedNewPassword);
@@ -238,8 +233,6 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
 
         });
 };
-
-
 
 
 // Path : PUT /users/{userId}/deleteUser

@@ -29,10 +29,6 @@ module.exports.addAddress = function addAddress(req, res, next) {
             UserAddressDAO.getUserAddress(req, function (err, userAddress) {
                 if (err)
                     return next(err.message);
-                if (_.isNull(userAddress) || _.isEmpty(userAddress)) {
-                    res.set('Content-Type', 'application/json');
-                    res.status(404).json(JSON.stringify({error: "Couldn't get user address"}, null, 2));
-                }
                 else {
                     //logger.debug('User addressList:' + userAddress);
                     //insert new address _id in ObjectId list
