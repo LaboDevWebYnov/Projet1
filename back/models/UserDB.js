@@ -48,6 +48,10 @@ User.pre('save', function (next) {
                 user.created_at = Date.now;
             }
             logger.debug('user:'+ user);
+
+            //extract ObjectIds from array of ObjectId
+            user.address = user.address.map(function(address) { return address._id; });
+
            return next();
         });
     }
@@ -58,6 +62,9 @@ User.pre('save', function (next) {
         if (!user.created_at) {
             user.created_at = Date.now;
         }
+
+        //extract ObjectIds from array of ObjectId
+        user.address = user.address.map(function(address) { return address._id; });
         return next();
     }
 });
