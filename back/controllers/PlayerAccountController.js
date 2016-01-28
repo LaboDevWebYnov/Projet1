@@ -11,6 +11,8 @@ var logger = require('log4js').getLogger('Users'),
     PlayerAccount = mongoose.model('PlayerAccount'),
     AddressDB = require('../models/AddressDB'),
     Address = mongoose.model('Address'),
+    UserDB = require('../models/UserDB'),
+    User = mongoose.model('User'),
     GameDB = require('../models/GameDB'),
     Game = mongoose.model('Game');
 
@@ -37,43 +39,54 @@ module.exports.getPlayerAccountList = function getPlayerAccountList(req, res, ne
 module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
     logger.info('Adding new playerAccount...');
 
-    Game.findOne(
+    User.findOne(
         {_id: Util.getPathParams(req)[2]},
-        function(err, game) {
-           if(err)
-                return next(err.message);
+        function(err, userFinded) {
 
-            User.findOne(
-                {_id: Util.getPathParams(req)[2]},
-                function(err, user) {
-                    if(err)
-                        return next(err.message);
+            Game.findOne(
+                {_id: Util.getPathParams(req)[4]},
+                function (err, gameFinded) {
 
-                    var PlayerAccount = new PlayerAccount({
-                        user: user,
+
+                    var playerAccountToCreate = new PlayerAccount({
+                        user: userFinded,
                         login: req.body.login,
-                        game: game,
+                        game: gameFinded,
                         active: true,
                         created_at: new Date(),
                         updated_at: new Date()
                     });
 
-                    PlayerAccount.save(function (err, PlayerAccount) {
+                    logger.debug(playerAccountToCreate);
+
+                    playerAccountToCreate.save(function (err,playerAccountFinded) {
                         if (err)
                             return next(err.message);
 
-                        if (_.isNull(PlayerAccount) || _.isEmpty(PlayerAccount)) {
-                            res.set('Content-Type', 'application/json');
-                            res.status(404).json(JSON.stringify(PlayerAccount || {}, null, 2));
-                        }
-                        else {
-                            res.set('Content-Type', 'application/json');
-                            res.status(200).end(JSON.stringify(PlayerAccount || {}, null, 2));
-                        }
-                    });
-            });
-    });
+                        PlayerAccount.findOne(
+                            {_id: playerAccountFinded._id})
+                            .populate('user game')
+                            .exec(
+                                function(err, playedAccountUpdated) {
+                                    if (err)
+                                        logger.info(err.message);
 
+                                    logger.debug(playedAccountUpdated);
+
+                                    if (_.isNull(playedAccountUpdated) || _.isEmpty(playedAccountUpdated)) {
+                                        res.set('Content-Type', 'application/json');
+                                        res.status(404).json(JSON.stringify(playedAccountUpdated || {}, null, 2));
+                                    }
+                                    else {
+                                        res.set('Content-Type', 'application/json');
+                                        res.status(200).end(JSON.stringify(playedAccountUpdated || {}, null, 2));
+                                    }
+                                });
+
+                    });
+
+                });
+        });
 
 };
 
@@ -86,7 +99,7 @@ module.exports.getPlayerAccountById = function getPlayerAccountById(req, res, ne
     // Code necessary to consume the User API and respond
 
     PlayerAccount.findById(
-        Util.getPathParams(req)[1],
+        Util.getPathParams(req)[2],
         function (err, playerAccount) {
             if (err)
                 return next(err.message);

@@ -5,9 +5,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PlayerAccount = new Schema({
-    user: { type: Schema.ObjectId, ref: 'User', required: true },
+    user: { type: Schema.ObjectId, ref: 'User', required: false },
     login: { type: String, required: true },
-    game: { type: Schema.ObjectId, ref: 'Game', required: true },
+    game: { type: Schema.ObjectId, ref: 'Game', required: false },
     active: { type: Boolean, required: true, default: true },
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
