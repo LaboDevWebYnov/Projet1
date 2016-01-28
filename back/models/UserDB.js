@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var Schema = mongoose.Schema;
 var logger = require('log4js').getLogger('Users');
+var _ = require('lodash');
 
 var User = new Schema({
     firstname: {type: String, required: true},
@@ -13,9 +14,9 @@ var User = new Schema({
     birthDate: {type: Date, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    address: {type: Schema.ObjectId, ref: 'Address', required: false},
+    address: {type:[{ type: Schema.ObjectId, ref: 'Address'}], required: false},
     phoneNumber: {type: String, required: true},
-    admin: {type: Boolean, required: true},
+    admin: {type: Boolean, required: true, default: false},
     active: {type: Boolean, required: true, default: true},
     friends: {type: [{type: Schema.ObjectId, ref: 'User'}], required: false},
     interests: {type: [{type: Schema.ObjectId, ref: 'Game'}], required: false},
@@ -48,6 +49,11 @@ User.pre('save', function (next) {
                 user.created_at = Date.now;
             }
             logger.debug('user:'+ user);
+
+            //extract ObjectIds from array of ObjectId
+            if(!_.isNull(user.address)&& !_.isEmpty(user.address))
+                user.address = user.address.map(function(address) { return address._id; });
+
            return next();
         });
     }
@@ -58,6 +64,10 @@ User.pre('save', function (next) {
         if (!user.created_at) {
             user.created_at = Date.now;
         }
+
+        //extract ObjectIds from array of ObjectId
+        if(!_.isNull(user.address)&& !_.isEmpty(user.address))
+            user.address = user.address.map(function(address) { return address._id; });
         return next();
     }
 });

@@ -9,6 +9,7 @@ var Address = new Schema({
     city: { type: String, required: true},
     country: { type: String, required: true},
     line: { type: String, required: true},
+    active: {type: Boolean, required: true, default: true},
     created_at: { type: Date, required: true, default: new Date() },
     updated_at: { type: Date, required: true, default: new Date() }
 });

@@ -2,12 +2,14 @@
  * Created by Ezehollar on 14/01/2016.
  */
 
-var logger = require('log4js').getLogger('Users'),
+var logger = require('log4js').getLogger('controller.playerAccount'),
     mongoose = require('mongoose'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),
     Util = require('./utils/util.js'),
     PlayerAccountDB = require('../models/PlayerAccountDB'),
+    UserDB = require('../models/UserDB'),
+    User = mongoose.model('User'),
     PlayerAccount = mongoose.model('PlayerAccount'),
     AddressDB = require('../models/AddressDB'),
     Address = mongoose.model('Address'),
@@ -41,7 +43,7 @@ module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
 
     User.findOne(
         {_id: Util.getPathParams(req)[2]},
-        function(err, userFinded) {
+        function (err, userFinded) {
 
             Game.findOne(
                 {_id: Util.getPathParams(req)[4]},
@@ -59,7 +61,7 @@ module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
 
                     logger.debug(playerAccountToCreate);
 
-                    playerAccountToCreate.save(function (err,playerAccountFinded) {
+                    playerAccountToCreate.save(function (err, playerAccountFinded) {
                         if (err)
                             return next(err.message);
 
@@ -67,7 +69,7 @@ module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
                             {_id: playerAccountFinded._id})
                             .populate('user game')
                             .exec(
-                                function(err, playedAccountUpdated) {
+                                function (err, playedAccountUpdated) {
                                     if (err)
                                         logger.info(err.message);
 
@@ -87,8 +89,8 @@ module.exports.addPlayerAccount = function addPlayerAccount(req, res, next) {
 
                 });
         });
-
 };
+
 
 // Path: GET api/players/{playerAcountId}/getPlayerAccountById
 module.exports.getPlayerAccountById = function getPlayerAccountById(req, res, next) {
@@ -126,7 +128,7 @@ module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
     // Code necessary to consume the User API and respond
 
     PlayerAccount.find(
-        { _id: Util.getPathParams(req)[1] },
+        {_id: Util.getPathParams(req)[2]},
         function (err, playerAccountList) {
             if (err)
                 return next(err.message);
@@ -146,7 +148,7 @@ module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
 
 // Path : PUT /players/{playerId}/deletePlayer
 module.exports.deletePlayer = function deletePlayer(req, res, next) {
-    logger.info('Deactivating for player with id:\n '+Util.getPathParams(req)[2]);
+    logger.info('Deactivating for player with id:\n ' + Util.getPathParams(req)[2]);
     PlayerAccount.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
         {
