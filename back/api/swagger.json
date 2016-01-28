@@ -22,7 +22,7 @@
       "description": "games"
     },
     {
-      "name": "Player",
+      "name": "PlayerAccount",
       "description": "player account, game properties"
     },
     {
@@ -837,6 +837,7 @@
         "tags": [
           "PlayerAccount"
         ],
+        "summary": "Get all playerAccount",
         "description": "Gets `playerAccount` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
           {
@@ -868,7 +869,7 @@
         }
       }
     },
-    "/PlayerAccount/{userId}/addPlayerAccount/{gameId}": {
+    "/playerAccount/{userId}/addPlayerAccount/{gameId}": {
       "post": {
         "x-swagger-router-controller": "PlayerAccountController",
         "operationId": "addPlayerAccount",
@@ -915,13 +916,14 @@
         }
       }
     },
-    "/PlayerAccount/{playerAccountId}/getPlayerAccountById": {
+    "/playerAccount/{playerAccountId}/getPlayerAccountById": {
       "get": {
         "x-swagger-router-controller": "PlayerAccountController",
         "operationId": "getPlayerAccountById",
         "tags": [
           "PlayerAccount"
         ],
+        "summary": "Get the specified playerAccount",
         "description": "Gets `playerAcount` object specified by its ID.",
         "parameters": [
           {
@@ -950,13 +952,14 @@
         }
       }
     },
-    "/players/{userId}/getPlayerByUserId": {
+    "/playerAccount/{userId}/getPlayerAccountByUserId": {
       "get": {
-        "x-swagger-router-controller": "Players",
-        "operationId": "getPlayerByUserId",
+        "x-swagger-router-controller": "PlayerAccountController",
+        "operationId": "getPlayerAccountByUserId",
         "tags": [
-          "/players"
+          "PlayerAccount"
         ],
+        "summary": "Get the corresponding playerAccount based on the PlayerAccount UserId",
         "description": "Gets `player` object specified by its UserId.",
         "parameters": [
           {
@@ -987,14 +990,15 @@
         }
       }
     },
-    "/players/{login}/getPlayerByLogin": {
+    "/playerAccount/{login}/getPlayerAccountByLogin": {
       "get": {
-        "x-swagger-router-controller": "Players",
-        "operationId": "getPlayerByLogin",
+        "x-swagger-router-controller": "PlayerAccountController",
+        "operationId": "getPlayerAccountByLogin",
         "tags": [
-          "/players"
+          "PlayerAccount"
         ],
         "description": "Gets `player` object specified by its login.",
+        "summary": "Get the corresponding playerAccount based on the PlayerAccount login",
         "parameters": [
           {
             "name": "login",
@@ -1022,37 +1026,29 @@
         }
       }
     },
-    "/players/{playerId}/deletePlayer": {
+    "/playerAccount/{playerAccountId}/deletePlayerAccount": {
       "put": {
-        "x-swagger-router-controller": "Players",
-        "operationId": "deletePlayer",
+        "x-swagger-router-controller": "PlayerAccountController",
+        "operationId": "deletePlayerAccount",
         "tags": [
-          "/players"
+          "PlayerAccount"
         ],
-        "description": "Deactivates the 'player' object specified by its ID.",
+        "description": "Deactivates the 'playerAccount' object specified by its ID.",
+        "summary": "Desactivate the corresponding playerAccount",
         "parameters": [
           {
-            "name": "playerId",
+            "name": "playerAccountId",
             "in": "path",
-            "description": "playerId of Game object to deactivate.",
+            "description": "playerAccountId of Game object to deactivate.",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "playerObject",
-            "in": "body",
-            "description": "player object that will update the old one.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/PlayerAccount"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "A 'player' object.",
+            "description": "A 'playerAccount' object.",
             "schema": {
-              "title": "Updated player object",
+              "title": "Updated playerAccount object",
               "type": "object",
               "$ref": "#/definitions/PlayerAccount"
             }
@@ -1067,173 +1063,173 @@
       }
     }
   },
-  "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "firstname": {
-          "type": "string"
-        },
-        "lastname": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "birthDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string",
-          "format": "password"
-        },
-        "avatar": {
-          "type": "string"
-        },
-        "address": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Address"
+    "definitions": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "friends": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date"
           }
-        },
-        "phoneNumber": {
-          "type": "string"
-        },
-        "admin": {
-          "type": "boolean"
-        },
-        "friends": {
-          "type": "array",
-          "items": {
+        }
+      },
+      "PlayerAccount": {
+        "type": "object",
+        "properties": {
+          "user": {
             "$ref": "#/definitions/User"
+          },
+          "login": {
+            "type": "string"
+          },
+          "game": {
+            "$ref": "#/definitions/Game"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date"
           }
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date"
         }
-      }
-    },
-    "PlayerAccount": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/User"
-        },
-        "login": {
-          "type": "string"
-        },
-        "game": {
-          "$ref": "#/definitions/Game"
-        },
-        "active": {
-          "type": "boolean"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date"
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "postCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "line": {
+            "type": "string"
+          }
         }
-      }
-    },
-    "Address": {
-      "type": "object",
-      "properties": {
-        "postCode": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "city": {
-          "type": "string"
-        },
-        "country": {
-          "type": "string"
-        },
-        "line": {
-          "type": "string"
+      },
+      "Game": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "multiPlayer": {
+            "type": "boolean"
+          },
+          "editor": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date"
+          }
         }
-      }
-    },
-    "Game": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "releaseDate": {
-          "type": "string",
-          "format": "date"
-        },
-        "multiPlayer": {
-          "type": "boolean"
-        },
-        "editor": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date"
+      },
+      "ChangePassword": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          },
+          "newPasswordConfirmation": {
+            "type": "string"
+          }
         }
-      }
-    },
-    "ChangePassword": {
-      "type": "object",
-      "properties": {
-        "oldPassword": {
-          "type": "string"
-        },
-        "newPassword": {
-          "type": "string"
-        },
-        "newPasswordConfirmation": {
-          "type": "string"
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
         }
-      }
-    },
-    "Email": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "format": "email"
-        }
-      }
-    },
-    "Error": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "fields": {
-          "type": "string"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "string"
+          }
         }
       }
     }
   }
-}
