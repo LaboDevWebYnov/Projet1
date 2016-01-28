@@ -39,52 +39,43 @@ module.exports.getUsers = function getUsers(req, res, next) {
 module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
 
-    //check if username is available
-    UserDaoUtil.alreadyTakenUsername(req, function (err, isAlreadyTakenUsername) {
-        if (err) return next(err.message);
-        if (!isAlreadyTakenUsername) {
-            //check if email isn't already taken
-            UserDaoUtil.alreadyTakenEmail(req, function (err, isAlreadyTakenEmail) {
-                if (!isAlreadyTakenEmail) {
-                    //TODO check password difficulty(later)
-                    //TODO check phone number(later)
-                    var user = new User({
-                        firstname: sanitizer.escape(req.body.firstname),
-                        lastname: sanitizer.escape(req.body.lastname),
-                        username: sanitizer.escape(req.body.username),
-                        birthDate: sanitizer.escape(req.body.birthDate),
-                        email: sanitizer.escape(req.body.email),
-                        password: sanitizer.escape(req.body.password),
-                        address: [],
-                        phoneNumber: sanitizer.escape(req.body.phoneNumber),
-                        friends: []
-                    });
+    //check if email isn't already taken
+    UserDaoUtil.alreadyTakenEmail(req, function (err, isAlreadyTakenEmail) {
+        if (!isAlreadyTakenEmail) {
+            //TODO check password difficulty(later)
+            //TODO check phone number(later)
+            var user = new User({
+                firstname: sanitizer.escape(req.body.firstname),
+                lastname: sanitizer.escape(req.body.lastname),
+                username: sanitizer.escape(req.body.username),
+                birthDate: sanitizer.escape(req.body.birthDate),
+                email: sanitizer.escape(req.body.email),
+                password: sanitizer.escape(req.body.password),
+                address: [],
+                phoneNumber: sanitizer.escape(req.body.phoneNumber),
+                friends: []
+            });
 
-                    user.save(function (err, user) {
-                        if (err)
-                            return next(err.message);
+            user.save(function (err, user) {
+                if (err)
+                    return next(err.message);
 
-                        if (_.isNull(user) || _.isEmpty(user)) {
-                            res.set('Content-Type', 'application/json');
-                            res.status(404).json(JSON.stringify(user || {}, null, 2));
-                        }
-                        else {
-                            res.set('Content-Type', 'application/json');
-                            res.status(200).end(JSON.stringify(user || {}, null, 2));
-                        }
-                    });
+                if (_.isNull(user) || _.isEmpty(user)) {
+                    res.set('Content-Type', 'application/json');
+                    res.status(404).json(JSON.stringify(user || {}, null, 2));
                 }
                 else {
                     res.set('Content-Type', 'application/json');
-                    res.status(401).end(JSON.stringify({error: 'Email already used'} || {}, null, 2));
+                    res.status(200).end(JSON.stringify(user || {}, null, 2));
                 }
             });
         }
         else {
             res.set('Content-Type', 'application/json');
-            res.status(401).end(JSON.stringify({error: 'username already used'} || {}, null, 2));
+            res.status(401).end(JSON.stringify({error: 'Email already used'} || {}, null, 2));
         }
     });
+
 };
 
 // Path: GET api/users/{userId}/getUserById
@@ -119,9 +110,9 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
     logger.info('Getting the user with username:' + Util.getPathParams(req)[4]);
     // Code necessary to consume the User API and respond
 
-    User.findOne(
-        {username: Util.getPathParams(req)[2]},
-        function (err, user) {
+    User.findOne({username: Util.getPathParams(req)[2]})
+        .populate('address')
+        .exec(function (err, user) {
             if (err)
                 return next(err.message);
 
@@ -135,6 +126,7 @@ module.exports.getUserByUsername = function getUserByUsername(req, res, next) {
             }
         });
 };
+
 // Path: PUT api/users/{userId}/updateUser
 module.exports.updateUser = function updateUser(req, res, next) {
     User.findOneAndUpdate(
