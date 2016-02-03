@@ -1,7 +1,7 @@
 {
   "server": {
     "mongo": {
-      "connectionString": "mongodb://root:root@ds059694.mongolab.com:59694/projet1labo",
+      "connectionString": "mongodb://root:root@195.154.7.74:27017/projet1labo",
       "options": {
         "server": {
           "poolSize": 10
@@ -15,7 +15,7 @@
     },
     "instance": {
       "name": "mobile-server-instance1",
-      "host": "localhost",
+      "host": "195.154.7.74",
       "port": 3100,
       "log4js": {
         "appenders": [
