@@ -30,7 +30,6 @@
       "description": "addresses, user addresses"
     }
   ],
-  "host": "localhost:3100",
   "basePath": "/api",
   "paths": {
     "/users": {
