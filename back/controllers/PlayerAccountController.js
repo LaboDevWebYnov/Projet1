@@ -22,19 +22,21 @@ var logger = require('log4js').getLogger('controller.playerAccount'),
 module.exports.getPlayerAccountList = function getPlayerAccountList(req, res, next) {
     logger.info('Getting all players from db...');
     // Code necessary to consume the User API and respond
-    PlayerAccount.find({}, function (err, playerAccountList) {
-        if (err) {
-            return next(err.message);
-        }
-        if (_.isNull(playerAccountList) || _.isEmpty(playerAccountList)) {
-            res.set('Content-Type', 'application/json');
-            res.status(404).json(JSON.stringify(playerAccountList || {}, null, 2));
-        }
-        else {
-            res.set('Content-Type', 'application/json');
-            res.end(JSON.stringify(playerAccountList || {}, null, 2));
-        }
-    });
+    PlayerAccount.find({})
+        .populate("game user")
+        .exec(function (err, playerAccountList) {
+                    if (err) {
+                        return next(err.message);
+                    }
+                    if (_.isNull(playerAccountList) || _.isEmpty(playerAccountList)) {
+                        res.set('Content-Type', 'application/json');
+                        res.status(404).json(JSON.stringify(playerAccountList || {}, null, 2));
+                    }
+                    else {
+                        res.set('Content-Type', 'application/json');
+                        res.end(JSON.stringify(playerAccountList || {}, null, 2));
+                    }
+        });
 };
 
 //Path: GET api/playerAccount/{userId}/addPlayerAccount/{gameId}
@@ -101,8 +103,9 @@ module.exports.getPlayerAccountById = function getPlayerAccountById(req, res, ne
     // Code necessary to consume the User API and respond
 
     PlayerAccount.findById(
-        Util.getPathParams(req)[2],
-        function (err, playerAccount) {
+        Util.getPathParams(req)[2])
+        .populate("game user")
+        .exec(function (err, playerAccount) {
             if (err)
                 return next(err.message);
 
@@ -119,8 +122,8 @@ module.exports.getPlayerAccountById = function getPlayerAccountById(req, res, ne
     );
 };
 
-// Path: GET api/players/{playerAcountId}/getPlayerByUserId
-module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
+// Path: GET api/players/{userId}/getPlayerByUserId
+module.exports.getPlayerAccountByUserId = function getPlayerAccountByUserId(req, res, next) {
     logger.debug('BaseUrl:' + req.originalUrl);
     logger.debug('Path:' + req.path);
 
@@ -128,8 +131,9 @@ module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
     // Code necessary to consume the User API and respond
 
     PlayerAccount.find(
-        {_id: Util.getPathParams(req)[2]},
-        function (err, playerAccountList) {
+        {user: {_id : Util.getPathParams(req)[2]} })
+        .populate("game user")
+        .exec(function (err, playerAccountList) {
             if (err)
                 return next(err.message);
 
@@ -146,8 +150,36 @@ module.exports.getPlayerByUserId = function getPlayerByUserId(req, res, next) {
     );
 };
 
+// Path: GET api/players/{login}/getPlayerByLogin
+module.exports.getPlayerAccountByLogin = function getPlayerAccountByLogin(req, res, next) {
+    logger.debug('BaseUrl:' + req.originalUrl);
+    logger.debug('Path:' + req.path);
+
+    logger.info('Getting the player with id:' + Util.getPathParams(req)[1]);
+    // Code necessary to consume the User API and respond
+
+    PlayerAccount.find(
+        {login : Util.getPathParams(req)[2]})
+        .populate("game user")
+        .exec(function (err, playerAccountList) {
+                if (err)
+                    return next(err.message);
+
+                logger.debug(playerAccountList);
+                if (_.isNull(playerAccountList) || _.isEmpty(playerAccountList)) {
+                    res.set('Content-Type', 'application/json');
+                    res.status(404).json(JSON.stringify(playerAccountList || {}, null, 2));
+                }
+                else {
+                    res.set('Content-Type', 'application/json');
+                    res.status(200).end(JSON.stringify(playerAccountList || {}, null, 2));
+                }
+            }
+        );
+};
+
 // Path : PUT /players/{playerId}/deletePlayer
-module.exports.deletePlayer = function deletePlayer(req, res, next) {
+module.exports.deletePlayerAccount = function deletePlayerAccount(req, res, next) {
     logger.info('Deactivating for player with id:\n ' + Util.getPathParams(req)[2]);
     PlayerAccount.findOneAndUpdate(
         {_id: Util.getPathParams(req)[2]},
@@ -156,10 +188,12 @@ module.exports.deletePlayer = function deletePlayer(req, res, next) {
                 active: false
             }
         },
-        {new: true}, //means we want the DB to return the updated document instead of the old one
-        function (err, updatedPlayerAccount) {
-            if (err)
-                return next(err.message);
+        {new: true})
+        //means we want the DB to return the updated document instead of the old one
+        .populate("game user")
+        .exec(function (err, updatedPlayerAccount) {
+                if (err)
+                    return next(err.message);
 
             logger.debug("Deactivated player object: \n" + updatedPlayerAccount);
             res.set('Content-Type', 'application/json');
