@@ -9,7 +9,7 @@
 namespace UtilsBundle\BDD;
 
 use GuzzleHttp;
-use Symfony\Bundle\FrameworkBundle\Tests\Functional\ConfigDebugCommandTest;
+use Symfony\Component\Validator\Constraints\DateTime;
 use UtilsBundle\Utils\Address;
 use UtilsBundle\Utils\User;
 
@@ -27,16 +27,16 @@ class UserBDD extends BDD
 
     }
 
-    public function getUserByid($id){
+    public function getUserById($id){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $this->webservice.$id.'/getUserById');
+        $res = $client->request('GET', $this->webservice."/users/".$id.'/getUserById');
         $user=json_decode($res->getBody(),true);
         return $this->createUser($user);
     }
 
     public function getUserByName($name){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $this->webservice.$name.'/getUserByUsername');
+        $res = $client->request('GET', $this->webservice."/users/".$name.'/getUserByUsername');
         $user=json_decode($res->getBody(),true);
         return $this->createUser($user);
     }
@@ -46,6 +46,8 @@ class UserBDD extends BDD
         $userArray    = (array) $user;
         //Remove the id key from the user object to respect the API add format
         unset($userArray["id"]);
+        $userArray["email"]=rand(0,45854658)."@ynov.com";
+        print_r(json_encode($userArray));
         $client->request('POST', $this->webservice.'/users/addUser',array("user"=>json_encode($userArray)));
     }
 

@@ -27,7 +27,7 @@ class DefaultController extends Controller
     {
         $userBDD = new UserBDD($this->container->getParameter("webservice"));
         $user = $userBDD->getUserById($id);
-        //$userBDD->addUser($user);
+        $userBDD->addUser($user);
         return $this->render('UtilsBundle:Default:userById.html.twig',(array("user"=>$user)));
     }
 
