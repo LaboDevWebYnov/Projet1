@@ -48,5 +48,18 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+        // Load server config, if it exists
+        $parameters = parse_ini_file( __DIR__.'/config/parameterServer.ini', true );
+        if ( $parameters && isset( $parameters["parameters"]['server.env'] ) )
+        {
+            $serverConfig = __DIR__.'\config\config_'.$parameters["parameters"]['server.env'].'.yml';
+            if ( file_exists( $serverConfig ) )
+            {
+                $loader->load( $serverConfig );
+            } else {
+                print_r($serverConfig);
+                error_log( 'Server config defined, but no config file found. Looked for ' . $serverConfig );
+            }
+        }
     }
 }

@@ -48,3 +48,4 @@ front/build/
 # Composer PHAR
 front/composer.phar
 front/var/cache/*
+front/var/logs/dev.log

@@ -11,14 +11,16 @@ class User
     public $birthDate;
     public $email;
     public $password;
-    public $address;
     public $phoneNumber;
-    public $admin;
-    public $friends;
+    public $loginAttempts;
+    public $verified;
     public $created_at;
     public $updated_at;
     public $interests;
+    public $friends;
     public $active;
+    public $admin;
+    public $address;
 
     public function __construct($id,
                          $firstname,
@@ -27,33 +29,38 @@ class User
                          $birthDate,
                          $email,
                          $password,
-                         $address,
                          $phoneNumber,
-                         $admin,
-                         $friends,
+                         $loginAttempts,
+                         $verified,
                          $created_at,
                          $updated_at,
                          $interests,
-                         $active){
-        $this->id=$id;
-        $this->firstname=$firstname;
-        $this->lastname=$lastname;
-        $this->username=$username;
-        $this->birthDate=$birthDate;
-        $this->email=$email;
-        $this->password=$password;
-        $this->address=$address;
-        $this->phoneNumber=$phoneNumber;
-        $this->admin=$admin;
-        $this->friends=$friends;
-        $this->created_at=$created_at;
-        $this->updated_at=$updated_at;
-        $this->interests=$interests;
-        $this->active=$active;
+                         $friends,
+                         $active,
+                         $admin,
+                         $address)
+    {
+        $this->id            = $id;
+        $this->firstname     = $firstname;
+        $this->lastname      = $lastname;
+        $this->username      = $username;
+        $this->birthDate     = $birthDate;
+        $this->email         = $email;
+        $this->password      = $password;
+        $this->phoneNumber   = $phoneNumber;
+        $this->loginAttempts = $loginAttempts;
+        $this->verified      = $verified;
+        $this->created_at    = $created_at;
+        $this->updated_at    = $updated_at;
+        $this->interests     = $interests;
+        $this->friends       = $friends;
+        $this->active        = $active;
+        $this->admin         = $admin;
+        $this->address       = $address;
     }
 
     public function __toString(){
-        return $this->firstname." ".$this->lastname;
+        return $this->id." : ".$this->firstname." ".$this->lastname;
     }
 
 }

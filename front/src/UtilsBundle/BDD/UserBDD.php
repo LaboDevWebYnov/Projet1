@@ -9,44 +9,54 @@
 namespace UtilsBundle\BDD;
 
 use GuzzleHttp;
+use Symfony\Bundle\FrameworkBundle\Tests\Functional\ConfigDebugCommandTest;
+use UtilsBundle\Utils\Address;
 use UtilsBundle\Utils\User;
 
-class UserBDD
+class UserBDD extends BDD
 {
-    public static function getUsers(){
+    public function getUsers(){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://localhost:3100/api/users');
+        $res = $client->request('GET', $this->webservice.'/users');
         $users=json_decode($res->getBody(),true);
         $usersArray=array();
         foreach($users as $user) {
-            $usersArray[] = self::createUser($user);
+            $usersArray[] = $this->createUser($user);
         }
         return $usersArray;
 
     }
 
-    public static function getUserByid($id){
+    public function getUserByid($id){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://localhost:3100/api/users/'.$id.'/getUserById');
+        $res = $client->request('GET', $this->webservice.$id.'/getUserById');
         $user=json_decode($res->getBody(),true);
-        return self::createUser($user);
+        return $this->createUser($user);
     }
 
-    public static function getUserByName($name){
+    public function getUserByName($name){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://localhost:3100/api/users/'.$name.'/getUserByUsername');
+        $res = $client->request('GET', $this->webservice.$name.'/getUserByUsername');
         $user=json_decode($res->getBody(),true);
-        return self::createUser($user);
+        return $this->createUser($user);
     }
 
-    public static function addUser($user){
-        $client = new GuzzleHttp\Client();
-        $res = $client->request('POST', 'http://localhost:3100/api/users/addUser',array("user"=>json_encode($user)));
-        $user=json_decode($res->getBody(),true);
-        return self::createUser($user);
+    public function addUser($user){
+        $client       = new GuzzleHttp\Client();
+        $userArray    = (array) $user;
+        //Remove the id key from the user object to respect the API add format
+        unset($userArray["id"]);
+        $client->request('POST', $this->webservice.'/users/addUser',array("user"=>json_encode($userArray)));
     }
 
-    public static function createUser($userMongo){
+    public function createUser($userMongo){
+        $addressArray = array();
+        if($userMongo["address"]) {
+            foreach ($userMongo["address"] as $address) {
+                $addressArray[] = new Address($address["postCode"], $address["city"], $address["country"], $address["line"]);
+            }
+        }
+
         return new User($userMongo["_id"],
             $userMongo["firstname"],
             $userMongo["lastname"],
@@ -54,13 +64,15 @@ class UserBDD
             $userMongo["birthDate"],
             $userMongo["email"],
             $userMongo["password"],
-            $userMongo["address"],
             $userMongo["phoneNumber"],
-            $userMongo["admin"],
-            $userMongo["friends"],
+            $userMongo["loginAttempts"],
+            $userMongo["verified"],
             $userMongo["created_at"],
             $userMongo["updated_at"],
             $userMongo["interests"],
-            $userMongo["active"]);
+            $userMongo["friends"],
+            $userMongo["active"],
+            $userMongo["admin"],
+            $addressArray);
     }
 }

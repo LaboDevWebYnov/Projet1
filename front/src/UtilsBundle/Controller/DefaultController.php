@@ -11,21 +11,23 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/users")
+     * @Route("/users", name="all")
      */
     public function usersAction()
     {
-        $users = UserBDD::getUsers();
+        $userBDD = $this->container->get("UserBDD");
+        $users = $userBDD->getUsers();
         return $this->render('UtilsBundle:Default:users.html.twig',(array("users"=>$users)));
     }
 
     /**
-     * @Route("/usersById/{id}")
+     * @Route("/userById/{id}")
      */
-    public function userByidAction($id)
+    public function userByIdAction($id)
     {
-        $user = UserBDD::getUserById($id);
-        UserBDD::addUser($user);
+        $userBDD = new UserBDD($this->container->getParameter("webservice"));
+        $user = $userBDD->getUserById($id);
+        //$userBDD->addUser($user);
         return $this->render('UtilsBundle:Default:userById.html.twig',(array("user"=>$user)));
     }
 
@@ -34,7 +36,8 @@ class DefaultController extends Controller
      */
     public function userByNameAction($name)
     {
-        $user = UserBDD::getUserByName($name);
+        $userBDD = new UserBDD($this->container->getParameter("webservice"));
+        $user = $userBDD->getUserByName($name);
         return $this->render('UtilsBundle:Default:userByUsername.html.twig',(array("user"=>$user)));
     }
 }
