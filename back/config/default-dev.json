@@ -1,7 +1,7 @@
 {
   "server": {
     "mongo": {
-      "connectionString": "mongodb://root:root@195.154.7.74:27017/projet1labo",
+      "connectionString": "mongodb://localhost/projet1labo",
       "options": {
         "server": {
           "poolSize": 10
