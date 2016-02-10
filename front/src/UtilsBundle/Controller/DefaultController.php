@@ -33,6 +33,7 @@ class DefaultController extends Controller
         $userBDD->updateUser($user);
         $email = "EMAIL_TEST@YNOV.COM";
         $userBDD->updateEmail($user->id,$email);
+        $userBDD->deleteUser("569107d7453b42541cbe3b48");
         return $this->render('UtilsBundle:Default:userById.html.twig',(array("user"=>$user)));
     }
 

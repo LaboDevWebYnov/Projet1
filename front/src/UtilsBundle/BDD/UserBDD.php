@@ -93,7 +93,14 @@ class UserBDD extends BDD
         );
         //Do not need to json_encode the data
         $client->request('PUT',$url,array('json' => $bodyArray));
+    }
 
+    public function deleteUser($userId){
+        $client       = new GuzzleHttp\Client();
+        $url = $this->webservice.'/users/'.$userId.'/deleteUser';
+        $bodyArray = array();
+        //Do not need to json_encode the data
+        $client->request('PUT',$url,array('json' => $bodyArray));
     }
 
     public function createUser($userMongo){
