@@ -38,7 +38,6 @@ module.exports.getUsers = function getUsers(req, res, next) {
 //Path: GET api/users/addUser
 module.exports.addUser = function addUser(req, res, next) {
     logger.info('Adding new user...');
-
     //check if email isn't already taken
     UserDaoUtil.alreadyTakenEmail(req, function (err, isAlreadyTakenEmail) {
         if (!isAlreadyTakenEmail) {

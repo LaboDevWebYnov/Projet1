@@ -17,7 +17,8 @@ class UserBDD extends BDD
 {
     public function getUsers(){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $this->webservice.'/users');
+        $url = $this->webservice.'/users';
+        $res = $client->request('GET', $url);
         $users=json_decode($res->getBody(),true);
         $usersArray=array();
         foreach($users as $user) {
@@ -29,14 +30,16 @@ class UserBDD extends BDD
 
     public function getUserById($id){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $this->webservice."/users/".$id.'/getUserById');
+        $url = $this->webservice."/users/".$id.'/getUserById';
+        $res = $client->request('GET', $url);
         $user=json_decode($res->getBody(),true);
         return $this->createUser($user);
     }
 
     public function getUserByName($name){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', $this->webservice."/users/".$name.'/getUserByUsername');
+        $url = $this->webservice."/users/".$name.'/getUserByUsername';
+        $res = $client->request('GET', $url);
         $user=json_decode($res->getBody(),true);
         return $this->createUser($user);
     }
@@ -44,11 +47,53 @@ class UserBDD extends BDD
     public function addUser($user){
         $client       = new GuzzleHttp\Client();
         $userArray    = (array) $user;
+
         //Remove the id key from the user object to respect the API add format
         unset($userArray["id"]);
         $userArray["email"]=rand(0,45854658)."@ynov.com";
-        print_r(json_encode($userArray));
-        $client->request('POST', $this->webservice.'/users/addUser',array("user"=>json_encode($userArray)));
+
+        $url = $this->webservice.'/users/addUser';
+        //Do not need to json_encode the data, pass it as array
+        $client->request('POST', $url,array('json' => $userArray));
+    }
+
+    public function updateUser($user){
+        $client       = new GuzzleHttp\Client();
+        $userId       = $user->id;
+        $userArray    = (array) $user;
+
+        //Remove the id key from the user object to respect the API add format
+        unset($userArray["id"]);
+        $url = $this->webservice.'/users/'.$userId.'/updateUser';
+
+        //Do not need to json_encode the data
+        $client->request('PUT',$url,array('json' => $userArray));
+
+    }
+
+    //TODO check in database a good oldPassword in order to test this function
+    public function updatePassword($userId, $oldPassword, $newPassword, $newPasswordConfirmation){
+        $client       = new GuzzleHttp\Client();
+        $url = $this->webservice.'/users/'.$userId.'/updatePassword';
+        $bodyArray = array(
+            "oldPasssword" => $oldPassword,
+            "newPassword" => $newPassword,
+            "newPasswordConfirmation" => $newPasswordConfirmation
+        );
+        //Do not need to json_encode the data
+        $client->request('PUT',$url,array('json' => $bodyArray));
+
+    }
+
+    public function updateEmail($userId, $email){
+        $client       = new GuzzleHttp\Client();
+        $url = $this->webservice.'/users/'.$userId.'/updateEmail';
+        $bodyArray = array(
+            "email" => $email,
+        );
+        //Do not need to json_encode the data
+        $client->request('PUT',$url,array('json' => $bodyArray));
+
     }
 
     public function createUser($userMongo){

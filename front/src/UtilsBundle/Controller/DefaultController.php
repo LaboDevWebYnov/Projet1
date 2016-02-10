@@ -28,6 +28,11 @@ class DefaultController extends Controller
         $userBDD = new UserBDD($this->container->getParameter("webservice"));
         $user = $userBDD->getUserById($id);
         $userBDD->addUser($user);
+        $user->lastname = "TEST UPDATE";
+        $user->id="568fdfab448eb7cc11de3646";
+        $userBDD->updateUser($user);
+        $email = "EMAIL_TEST@YNOV.COM";
+        $userBDD->updateEmail($user->id,$email);
         return $this->render('UtilsBundle:Default:userById.html.twig',(array("user"=>$user)));
     }
 

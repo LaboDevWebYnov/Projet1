@@ -2,7 +2,7 @@
     <h1>Members</h1>
     <ul>
         {% for user in users %}
-            <li>{{ user }}, addresse :
+            <li>{{ user }},{{ user.email }} addresse :
                 {% for addressUser in user.address %}
                     <br>
                     {{ addressUser }}
