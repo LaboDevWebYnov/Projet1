@@ -77,7 +77,7 @@ class UserBDD extends BDD
         $url = $this->webservice.'/users/'.$userId.'/updatePassword';
         $bodyArray = array(
             "oldPasssword" => $oldPassword,
-            "newPassword" => $newPassword,
+            "newPassword"  => $newPassword,
             "newPasswordConfirmation" => $newPasswordConfirmation
         );
         //Do not need to json_encode the data

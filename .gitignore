@@ -20,8 +20,6 @@ front/var/logs/*
 
 
 # Parameters
-front/app/config/parameters.yml
-front/app/config/parameters.ini
 
 # Managed by Composer
 front/app/bootstrap.php.cache
