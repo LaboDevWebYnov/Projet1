@@ -1,0 +1,16 @@
+<head>
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap.css') }}" type="text/css" />
+</head>
+<body>
+    <h1>Members</h1>
+    <ul class="list-group">
+        {% for user in users %}
+            <li class="list-group-item">{{ user }},{{ user.email }} {{ user.active }} addresse :
+                {% for addressUser in user.address %}
+                    <br>
+                    {{ addressUser }}
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>

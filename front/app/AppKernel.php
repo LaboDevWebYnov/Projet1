@@ -16,8 +16,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
-            new HelloBundle\HelloBundle(),
-            new UtilsBundle\UtilsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
@@ -52,7 +50,7 @@ class AppKernel extends Kernel
         $parameters = parse_ini_file( __DIR__.'/config/parameterServer.ini', true );
         if ( $parameters && isset( $parameters["parameters"]['server.env'] ) )
         {
-            $serverConfig = __DIR__.'\config\config_'.$parameters["parameters"]['server.env'].'.yml';
+            $serverConfig = __DIR__.'/config/confEnv_'.$parameters["parameters"]['server.env'].'.yml';
             if ( file_exists( $serverConfig ) )
             {
                 $loader->load( $serverConfig );

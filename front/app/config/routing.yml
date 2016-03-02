@@ -1,13 +1,3 @@
-utils:
-    resource: "@UtilsBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-hello:
-    resource: "@HelloBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

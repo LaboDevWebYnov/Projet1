@@ -1,0 +1,7 @@
+services:
+    UserBDD:
+        class: AppBundle\WebService\BDD\UserBDD
+        arguments: ["%webservice%"]
+    AddressBDD:
+        class: AppBundle\WebService\BDD\AddressBDD
+        arguments: ["%webservice%"]

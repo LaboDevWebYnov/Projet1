@@ -1,4 +1,0 @@
-services:
-    UserBDD:
-        class: UtilsBundle\BDD\UserBDD
-        arguments: ["%webservice%"]
