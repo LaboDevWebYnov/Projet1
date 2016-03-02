@@ -6,12 +6,12 @@
  * Time: 22:47
  */
 
-namespace UtilsBundle\BDD;
+namespace AppBundle\WebService\BDD;
 
 use GuzzleHttp;
 use Symfony\Component\Validator\Constraints\DateTime;
-use UtilsBundle\Utils\Address;
-use UtilsBundle\Utils\User;
+use AppBundle\WebService\Utils\Address;
+use AppBundle\WebService\Utils\User;
 
 class UserBDD extends BDD
 {

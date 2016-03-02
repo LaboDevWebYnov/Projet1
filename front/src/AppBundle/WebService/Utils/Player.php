@@ -1,6 +1,6 @@
 <?php
 
-namespace UtilsBundle\Utils;
+namespace AppBundle\WebService\Utils;
 
 
 class Player

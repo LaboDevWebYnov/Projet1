@@ -6,7 +6,7 @@
  * Time: 12:11
  */
 
-namespace UtilsBundle\BDD;
+namespace AppBundle\WebService\BDD;
 
 
 abstract class BDD
