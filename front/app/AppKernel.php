@@ -50,7 +50,7 @@ class AppKernel extends Kernel
         $parameters = parse_ini_file( __DIR__.'/config/parameterServer.ini', true );
         if ( $parameters && isset( $parameters["parameters"]['server.env'] ) )
         {
-            $serverConfig = __DIR__.'\config\config_'.$parameters["parameters"]['server.env'].'.yml';
+            $serverConfig = __DIR__.'/config/config_'.$parameters["parameters"]['server.env'].'.yml';
             if ( file_exists( $serverConfig ) )
             {
                 $loader->load( $serverConfig );
