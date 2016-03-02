@@ -19,6 +19,16 @@ class BDDController extends Controller
     }
 
     /**
+     * @Route("/addresses", name="all")
+     */
+    public function addressesAction()
+    {
+        $userBDD = $this->container->get("AddressBDD");
+        $users = $userBDD->getAddresses();
+        return $this->render('AppBundle:Default:users.html.twig',(array("users"=>$users)));
+    }
+
+    /**
      * @Route("/userById/{id}")
      */
     public function userByIdAction($id)

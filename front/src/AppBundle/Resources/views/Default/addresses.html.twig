@@ -1,0 +1,11 @@
+<head>
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap.css') }}" type="text/css" />
+</head>
+<body>
+    <h1>Members</h1>
+    <ul class="list-group">
+        {% for address in addresses %}
+            <li class="list-group-item">{{ address.postcode }} {{ address.line }} {{ address.country }} {{ address.city }}</li>
+        {% endfor %}
+    </ul>
+</body>
