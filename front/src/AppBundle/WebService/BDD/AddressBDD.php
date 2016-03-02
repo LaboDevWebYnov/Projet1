@@ -104,7 +104,8 @@ class AddressBDD extends BDD
     }
 
     public function createAddress($addressMongo){
-        return new User($addressMongo["postcode"],
+        //print_r($addressMongo);
+        return new Address($addressMongo["postCode"],
             $addressMongo["city"],
             $addressMongo["country"],
             $addressMongo["line"]);

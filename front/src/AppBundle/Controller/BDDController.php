@@ -23,9 +23,9 @@ class BDDController extends Controller
      */
     public function addressesAction()
     {
-        $userBDD = $this->container->get("AddressBDD");
-        $users = $userBDD->getAddresses();
-        return $this->render('AppBundle:Default:users.html.twig',(array("users"=>$users)));
+        $addresseBDD = $this->container->get("AddressBDD");
+        $addresses = $addresseBDD->getAddresses();
+        return $this->render('AppBundle:Default:addresses.html.twig',(array("addresses"=>$addresses)));
     }
 
     /**
