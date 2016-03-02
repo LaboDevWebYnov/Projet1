@@ -48,3 +48,4 @@ front/composer.phar
 front/var/cache/*
 front/var/logs/dev.log
 front/var/logs/dev.log
+front/app/config/parameterServer.ini
