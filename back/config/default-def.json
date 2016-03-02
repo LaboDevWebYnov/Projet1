@@ -13,6 +13,12 @@
       "ui": true,
       "apiDoc": true
     },
+    "auth":{
+      "tokenDuration": {
+        "unit": "hours",
+        "value": 5
+      }
+    },
     "instance": {
       "name": "mobile-server-instance1",
       "host": "localhost",

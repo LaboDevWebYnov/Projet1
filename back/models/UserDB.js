@@ -121,7 +121,7 @@ var reasons = User.statics.failedLogin = {
 };
 
 User.statics.getAuthenticated = function (username, password, cb) {
-    this.findOne({username: username}, function (err, user) {
+    this.findOne({email: username}, function (err, user) {
         if (err) return cb(err);
 
         // make sure the user exists

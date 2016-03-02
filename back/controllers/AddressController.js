@@ -16,17 +16,17 @@ var logger = require('log4js').getLogger('controller.userAddress'),
 module.exports.getAddresses = function getAddresses(req, res, next) {
     logger.info('Getting all addresses from db...');
     Address.find({})
-        .exec(function (err, users) {
+        .exec(function (err, addresses) {
             if (err)
                 return next(err.message);
 
-            if (_.isNull(users) || _.isEmpty(users)) {
+            if (_.isNull(addresses) || _.isEmpty(addresses)) {
                 res.set('Content-Type', 'application/json');
-                res.status(404).json(JSON.stringify({error: "Couldn't gets users"}, null, 2));
+                res.status(404).json(JSON.stringify({error: "Couldn't get addresses"}, null, 2));
             }
             else {
                 res.set('Content-Type', 'application/json');
-                res.end(JSON.stringify(users || {}, null, 2));
+                res.end(JSON.stringify(addresses || {}, null, 2));
             }
         });
 };
