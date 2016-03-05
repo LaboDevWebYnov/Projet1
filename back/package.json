@@ -20,6 +20,7 @@
     "express": "^4.13.3",
     "lodash": "^3.10.1",
     "log4js": "^0.6.29",
+    "mailgun-js": "^0.7.7",
     "mkdirp": "^0.5.1",
     "mongoose": "^4.3.4",
     "node-inspector": "^0.12.5",

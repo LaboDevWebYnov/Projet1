@@ -3,16 +3,18 @@
  */
 'use strict';
 
-var logger = require('log4js').getLogger('controller.user'),
+var config = require('config'),
+    logger = require('log4js').getLogger('controller.user'),
     mongoose = require('mongoose'),
     sanitizer = require('sanitizer'),
     _ = require('lodash'),
     Util = require('./utils/util.js'),
+    emailUtils = require('./utils/emailUtils.js'),
     UserDB = require('../models/UserDB'),
     User = mongoose.model('User'),
     AddressDB = require('../models/AddressDB'),
     Address = mongoose.model('Address'),
-    UserDaoUtil = require('../DAO/util');
+    UserDaoUtil = require('../DAO/UserDAO');
 
 //Path: GET api/users
 module.exports.getUsers = function getUsers(req, res, next) {
@@ -56,16 +58,37 @@ module.exports.addUser = function addUser(req, res, next) {
             });
 
             user.save(function (err, user) {
-                if (err)
+                if (err){
+                    logger.error("got an error while creating user: ", err);
                     return next(err.message);
+                }
 
                 if (_.isNull(user) || _.isEmpty(user)) {
                     res.set('Content-Type', 'application/json');
-                    res.status(404).json(JSON.stringify(user || {}, null, 2));
+                    res.status(404).json(JSON.stringify('Error while creating user' || {}, null, 2));
                 }
+                //user saved, now sending email
                 else {
-                    res.set('Content-Type', 'application/json');
-                    res.status(200).end(JSON.stringify(user || {}, null, 2));
+                    //if email sendOnUserAdd activated in config, sending account validation email
+                    if(config.server.features.email.sendOnUserAdd){
+                        logger.debug("sendOnUserAdd config: "+config.server.features.email.sendOnUserAdd);
+                        logger.debug("sending email....");
+                        //send email
+                        emailUtils.dispatchAccountValidationLink(user, function (err, user) {
+                            if (err){
+                                return next(err.message);
+                            }
+
+                            else {
+                                res.set('Content-Type', 'application/json');
+                                res.status(200).end(JSON.stringify(user || {}, null, 2));
+                            }
+                        });
+                    }
+                    else {//else returning user directly
+                        res.set('Content-Type', 'application/json');
+                        res.status(200).end(JSON.stringify(user || {}, null, 2));
+                    }
                 }
             });
         }
@@ -74,7 +97,6 @@ module.exports.addUser = function addUser(req, res, next) {
             res.status(401).end(JSON.stringify({error: 'Email already used'} || {}, null, 2));
         }
     });
-
 };
 
 // Path: GET api/users/{userId}/getUserById

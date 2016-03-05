@@ -133,7 +133,6 @@ module.exports.getAddressById = function getAddressById(req, res, next) {
 
             res.set('Content-Type', 'application/json');
             res.status(200).end(JSON.stringify(address || {}, null, 2));
-
         }
     });
 };

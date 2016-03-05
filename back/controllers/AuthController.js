@@ -6,7 +6,6 @@
 var logger = require('log4js').getLogger('controller.auth'),
     mongoose = require('mongoose'),
     _ = require('lodash'),
-    Util = require('./utils/util.js'),
     UserDB = require('../models/UserDB'),
     User = mongoose.model('User'),
     AddressDB = require('../models/AddressDB'),
