@@ -30,6 +30,13 @@
       "description": "addresses, user addresses"
     }
   ],
+  "securityDefinitions": {
+    "token": {
+      "type": "apiKey",
+      "name": "token",
+      "in": "header"
+    }
+  },
   "basePath": "/api",
   "paths": {
     "/users/auth": {
@@ -75,6 +82,13 @@
         "summary": "Get all users",
         "description": "Gets `User` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "size",
             "in": "query",
