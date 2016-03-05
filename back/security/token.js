@@ -11,7 +11,14 @@ var log4js = require('log4js'),
 
 var TOKEN_HEADER_NAME = 'token';
 
-var tokenDuration = new moment.Duration();
+function Token (options) {
+    this.expirationDate = options.expirationDate;
+    this.username = options.username;
+    this.firstname = options.firstname;
+    this.lastname = options.lastname;
+}
+
+var tokenDuration;
 
 module.exports.initialize = function initialize() {
     var configTokenDuration = config.server.auth.tokenDuration;
@@ -38,29 +45,34 @@ module.exports.initialize = function initialize() {
 
 module.exports.createBasicToken = function createBasicToken(username, firstname, lastname){
     logger.info('Creating new token with basic information');
-
-    var token = {
+    var tkn = {
         expirationDate: '',
         username: username,
         firstname: firstname,
         lastname: lastname
     };
+
+    var token = new Token(tkn);
+    logger.info('Created token: '+JSON.stringify(token));
     renewToken(token);
 
     return token;
 };
 
 module.exports.tokenHandler = function tokenHandler(req, res, next){
+    logger.debug('Handling token: ' + req.query.token+' or '+req.header(TOKEN_HEADER_NAME));
     var tokenString = req.header(TOKEN_HEADER_NAME) || req.query.token;
 
-    logger.debug('Handling token: ' + tokenString);
+    logger.debug('String token: ' + tokenString);
     logger.debug('Original url: ' + req.originalUrl);
 
     if (!tokenString) {
+        logger.debug('Missing token in request');
         // let those URLs pass without token
         // /api-docs : swagger spec file (JSON)
         // /docs : swagger UI
-        if (req.originalUrl === '/api/auth' || req.originalUrl === '/api/heartbeat' || req.originalUrl.lastIndexOf('/api-docs', 0) || req.originalUrl.lastIndexOf('/docs', 0)) {
+        if (req.originalUrl === '/api/users/auth' || req.originalUrl === '/api/heartbeat' || req.originalUrl.lastIndexOf('/api-docs', 0) || req.originalUrl.lastIndexOf('/docs', 0)) {
+            logger.debug('Authorized url w/o token');
             next();
         } else {
             logger.debug('Missing token in request');
@@ -98,19 +110,27 @@ module.exports.tokenHandler = function tokenHandler(req, res, next){
 
     renewToken(token);
     req.token = token;
-    setResponseToken(token, res);
+    exports.setResponseToken(token, res);
 
     next();
 };
 
 function isTokenValid(token) {
-    var tokenObject = <CrosswayToken>token;
-    return token && !!tokenObject.context;
+    logger.debug('Checking token:'+JSON.stringify(token));
+    logger.debug('type of token:'+typeof(token));
+
+    //verify token
+    if(token.hasOwnProperty('expirationDate','username', 'lastname','firstname')){
+        return true;
+    }
+    else {
+        return false;
+    }
+    //return token instanceof Token;
 }
 
-function validateTokenAndReject(tokenObject, res)
-{
-    logger.debug('Validating token');
+function validateTokenAndReject(tokenObject, res){
+    logger.debug('Validating token...');
     if (isTokenValid(tokenObject)) {
         return true;
     } else {
@@ -134,9 +154,8 @@ function isTokenExpired(token){
     return false;
 }
 
-module.exports.createBasicToken = function setResponseToken(token, res){
+module.exports.setResponseToken = function setResponseToken(token, res){
     var tokenString = JSON.stringify(token);
-    logger.info('Response token: ' + tokenString);
 
     res.set(TOKEN_HEADER_NAME, crypt.encrypt(tokenString));
 };
@@ -149,4 +168,4 @@ function renewToken(token){
 
 module.exports.getToken = function getToken(req){
     return req.token;
-}
+};
