@@ -68,7 +68,6 @@ class UserBDD extends BDD
 
         //Do not need to json_encode the data
         $client->request('PUT',$url,array('json' => $userArray));
-
     }
 
     //TODO check in database a good oldPassword in order to test this function

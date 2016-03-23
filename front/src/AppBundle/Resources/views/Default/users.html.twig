@@ -6,10 +6,13 @@
     <ul class="list-group">
         {% for user in users %}
             <li class="list-group-item">{{ user }},{{ user.email }} {{ user.active }} addresse :
+                <ul class="list-group">
                 {% for addressUser in user.address %}
-                    <br>
+                    <li class="list-group-item">
                     {{ addressUser }}
+                    </li>
                 {% endfor %}
+                </ul>
             </li>
         {% endfor %}
     </ul>

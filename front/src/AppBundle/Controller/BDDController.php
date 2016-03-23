@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\WebService\Utils\Address;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,13 +20,24 @@ class BDDController extends Controller
     }
 
     /**
-     * @Route("/addresses", name="all")
+     * @Route("/addresses")
      */
     public function addressesAction()
     {
-        $addresseBDD = $this->container->get("AddressBDD");
-        $addresses = $addresseBDD->getAddresses();
+        $addressBDD = $this->container->get("AddressBDD");
+        $addresses = $addressBDD->getAddressesByUserId("568fdfab448eb7cc11de3646");
         return $this->render('AppBundle:Default:addresses.html.twig',(array("addresses"=>$addresses)));
+    }
+
+    /**
+     * @Route("/addAddress")
+     */
+    public function addAddressAction()
+    {
+        $addressBDD = $this->container->get("AddressBDD");
+        $address = new Address(15, "lyon", "france","45");
+        $addresses = $addressBDD->addAddress("568fdfab448eb7cc11de3646", $address);
+        return $this->addressesAction();
     }
 
     /**

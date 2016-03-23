@@ -25,82 +25,55 @@ class AddressBDD extends BDD
             $addressesArray[] = $this->createAddress($address);
         }
         return $addressesArray;
-
     }
 
-    public function getUserById($id){
+    public function getAddressesByUserId($userId){
         $client = new GuzzleHttp\Client();
-        $url = $this->webservice."/users/".$id.'/getUserById';
+        $url = $this->webservice.'/addresses/'.$userId.'/getUserAddresses';
         $res = $client->request('GET', $url);
-        $user=json_decode($res->getBody(),true);
-        return $this->createUser($user);
+        $addresses=json_decode($res->getBody(),true);
+        $addressesArray=array();
+        foreach($addresses as $address) {
+            $addressesArray[] = $this->createAddress($address);
+        }
+        return $addressesArray;
     }
 
-    public function getUserByName($name){
-        $client = new GuzzleHttp\Client();
-        $url = $this->webservice."/users/".$name.'/getUserByUsername';
-        $res = $client->request('GET', $url);
-        $user=json_decode($res->getBody(),true);
-        return $this->createUser($user);
+    public function getAddressesById($addressId){
+        $client  = new GuzzleHttp\Client();
+        $url     = $this->webservice.'/addresses/'.$addressId.'/getAddressById';
+        $res     = $client->request('GET', $url);
+        $address = json_decode($res->getBody(),true);
+        return $this->createAddress($address);
     }
 
-    public function addUser($user){
+    public function addAddress($userId, $address){
         $client       = new GuzzleHttp\Client();
-        $userArray    = (array) $user;
+        $addressArray = (array) $address;
 
-        //Remove the id key from the user object to respect the API add format
-        unset($userArray["id"]);
-        $userArray["email"]=rand(0,45854658)."@ynov.com";
-
-        $url = $this->webservice.'/users/addUser';
+        $url = $this->webservice.'/addresses/'.$userId.'/addAddress';
         //Do not need to json_encode the data, pass it as array
-        $client->request('POST', $url,array('json' => $userArray));
+        $client->request('POST', $url,array('json' => $addressArray));
     }
 
-    public function updateUser($user){
+    public function deactivateAddress($addressId, $address){
         $client       = new GuzzleHttp\Client();
-        $userId       = $user->id;
-        $userArray    = (array) $user;
+        $addressArray = (array) $address;
 
-        //Remove the id key from the user object to respect the API add format
-        unset($userArray["id"]);
-        $url = $this->webservice.'/users/'.$userId.'/updateUser';
+        $url = $this->webservice.'/addresses/'.$addressId.'/deactivateAddress';
 
         //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $userArray));
-
+        $client->request('PUT',$url,array('json' => $addressArray));
     }
 
-    //TODO check in database a good oldPassword in order to test this function
-    public function updatePassword($userId, $oldPassword, $newPassword, $newPasswordConfirmation){
+    public function updateAddress($userId, $addressId, $address){
         $client       = new GuzzleHttp\Client();
-        $url = $this->webservice.'/users/'.$userId.'/updatePassword';
-        $bodyArray = array(
-            "oldPasssword" => $oldPassword,
-            "newPassword"  => $newPassword,
-            "newPasswordConfirmation" => $newPasswordConfirmation
-        );
-        //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $bodyArray));
+        $addressArray = (array) $address;
 
-    }
-
-    public function updateEmail($userId, $email){
-        $client       = new GuzzleHttp\Client();
-        $url = $this->webservice.'/users/'.$userId.'/updateEmail';
-        $bodyArray = array(
-            "email" => $email,
-        );
+        $url = $this->webservice.'/addresses/'.$userId.'/updateAddress/'.$addressId;
         //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $bodyArray));
-    }
+        $client->request('PUT',$url,array('json' => $addressArray));
 
-    public function deleteUser($userId){
-        $client       = new GuzzleHttp\Client();
-        $url = $this->webservice.'/users/'.$userId.'/deleteUser';
-        $bodyArray = array();
-        //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $bodyArray));
     }
 
     public function createAddress($addressMongo){
