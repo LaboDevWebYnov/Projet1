@@ -99,12 +99,4 @@ class AddressBDD extends BDD
             )));
 
     }
-
-    public function createAddress($addressMongo){
-        return new Address($addressMongo["_id"],
-            $addressMongo["postCode"],
-            $addressMongo["city"],
-            $addressMongo["country"],
-            $addressMongo["line"]);
-    }
 }

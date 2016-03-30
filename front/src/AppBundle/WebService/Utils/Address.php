@@ -10,11 +10,7 @@ class Address
     public $country;
     public $line;
 
-    public function __construct($id,
-                                $postCode,
-                                $city,
-                                $country,
-                                $line)
+    public function __construct($id, $postCode, $city, $country, $line)
     {
         $this->id       = $id;
         $this->postCode = $postCode;

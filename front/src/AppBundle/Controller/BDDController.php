@@ -20,6 +20,26 @@ class BDDController extends Controller
     }
 
     /**
+     * @Route("/games")
+     */
+    public function gamesAction()
+    {
+        $gameBDD = $this->container->get("GameBDD");
+        $games = $gameBDD->getGames();
+        return $this->render('AppBundle:Default:games.html.twig',(array("games"=>$games)));
+    }
+
+    /**
+     * @Route("/playerAccounts")
+     */
+    public function playerAccountsAction()
+    {
+        $playerAccountBDD = $this->container->get("PlayerAccountBDD");
+        $playerAccounts = $playerAccountBDD->getPlayerAccounts();
+        return $this->render('AppBundle:Default:playerAccounts.html.twig',(array("playerAccounts"=>$playerAccounts)));
+    }
+
+    /**
      * @Route("/addresses")
      */
     public function addressesAction()

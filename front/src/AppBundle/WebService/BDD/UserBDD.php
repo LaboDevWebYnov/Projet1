@@ -63,7 +63,6 @@ class UserBDD extends BDD
 
         //Remove the id key from the user object to respect the API add format
         unset($userArray["id"]);
-        //$userArray["email"]=rand(0,45854658)."@ynov.com";
 
         $url = $this->webservice.'/users/addUser';
         //Do not need to json_encode the data, pass it as array
@@ -133,32 +132,5 @@ class UserBDD extends BDD
             "headers" => array(
                 "token" => $_COOKIE["token"]
             )));
-    }
-
-    public function createUser($userMongo){
-        $addressArray = array();
-        if($userMongo["address"]) {
-            foreach ($userMongo["address"] as $address) {
-                $addressArray[] = new Address($address["_id"], $address["postCode"], $address["city"], $address["country"], $address["line"]);
-            }
-        }
-
-        return new User($userMongo["_id"],
-            $userMongo["firstname"],
-            $userMongo["lastname"],
-            $userMongo["username"],
-            $userMongo["birthDate"],
-            $userMongo["email"],
-            $userMongo["password"],
-            $userMongo["phoneNumber"],
-            $userMongo["loginAttempts"],
-            $userMongo["verified"],
-            $userMongo["created_at"],
-            $userMongo["updated_at"],
-            $userMongo["interests"],
-            $userMongo["friends"],
-            $userMongo["active"],
-            $userMongo["admin"],
-            $addressArray);
     }
 }

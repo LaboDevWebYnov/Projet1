@@ -1,0 +1,23 @@
+<head>
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap.css') }}" type="text/css" />
+</head>
+<body>
+<h1>Members</h1>
+<ul class="list-group">
+    {% for playerAccount in playerAccounts %}
+        <li class="list-group-item">
+            <li class="list-group-item">{{ playerAccount.user }},{{ playerAccount.user.email }} {{ playerAccount.user.active }} addresse :
+                <ul class="list-group">
+                    {% for addressUser in playerAccount.user.address %}
+                        <li class="list-group-item">
+                            {{ addressUser }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </li>
+        <li class="list-group-item">{{ playerAccount.login }}</li>
+        <li class="list-group-item">{{ playerAccount.game }}</li>
+    {% endfor %}
+</ul>
+</body>
