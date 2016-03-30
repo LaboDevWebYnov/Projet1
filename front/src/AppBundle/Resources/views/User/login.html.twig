@@ -5,5 +5,10 @@
 <h1>Connexion</h1>
     {{ form_start(form) }}
     {{ form_widget(form) }}
+    {% for flash_message in app.session.flashbag.get('invalid credentials') %}
+        <div class="alert alert-danger">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
     {{ form_end(form) }}
 </body>

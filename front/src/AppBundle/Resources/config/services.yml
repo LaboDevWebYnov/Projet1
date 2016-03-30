@@ -5,3 +5,6 @@ services:
     AddressBDD:
         class: AppBundle\WebService\BDD\AddressBDD
         arguments: ["%webservice%"]
+    SecurityBDD:
+        class: AppBundle\WebService\BDD\SecurityBDD
+        arguments: ["%webservice%"]

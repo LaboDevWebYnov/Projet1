@@ -60,7 +60,7 @@ class User
     }
 
     public function __toString(){
-        return $this->id." : ".$this->firstname." ".$this->lastname;
+        return $this->id." : ".$this->username." : ".$this->firstname." ".$this->lastname;
     }
 
 }

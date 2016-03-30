@@ -47,13 +47,10 @@ class BDDController extends Controller
     {
         $userBDD = $this->container->get("UserBDD");
         $user = $userBDD->getUserById($id);
+        $user->username = "test";
+        $user->password = "test";
+        $user->email = "lacoste.antoine@orange.fr";
         $userBDD->addUser($user);
-        $user->lastname = "TEST UPDATE";
-        $user->id="568fdfab448eb7cc11de3646";
-        $userBDD->updateUser($user);
-        $email = "EMAIL_TEST@YNOV.COM";
-        $userBDD->updateEmail($user->id,$email);
-        $userBDD->deleteUser("569107d7453b42541cbe3b48");
         return $this->render('AppBundle:Default:userById.html.twig',(array("user"=>$user)));
     }
 

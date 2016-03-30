@@ -18,7 +18,12 @@ class UserBDD extends BDD
     public function getUsers(){
         $client = new GuzzleHttp\Client();
         $url = $this->webservice.'/users';
-        $res = $client->request('GET', $url);
+
+        $res = $client->request('GET', $url, array(
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )
+        ));
         $users=json_decode($res->getBody(),true);
         $usersArray=array();
         foreach($users as $user) {
@@ -31,7 +36,11 @@ class UserBDD extends BDD
     public function getUserById($id){
         $client = new GuzzleHttp\Client();
         $url = $this->webservice."/users/".$id.'/getUserById';
-        $res = $client->request('GET', $url);
+        $res = $client->request('GET', $url, array(
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )
+        ));
         $user=json_decode($res->getBody(),true);
         return $this->createUser($user);
     }
@@ -39,7 +48,11 @@ class UserBDD extends BDD
     public function getUserByName($name){
         $client = new GuzzleHttp\Client();
         $url = $this->webservice."/users/".$name.'/getUserByUsername';
-        $res = $client->request('GET', $url);
+        $res = $client->request('GET', $url, array(
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )
+        ));
         $user=json_decode($res->getBody(),true);
         return $this->createUser($user);
     }
@@ -50,11 +63,15 @@ class UserBDD extends BDD
 
         //Remove the id key from the user object to respect the API add format
         unset($userArray["id"]);
-        $userArray["email"]=rand(0,45854658)."@ynov.com";
+        //$userArray["email"]=rand(0,45854658)."@ynov.com";
 
         $url = $this->webservice.'/users/addUser';
         //Do not need to json_encode the data, pass it as array
-        $client->request('POST', $url,array('json' => $userArray));
+        $client->request('POST', $url,array(
+            'json' => $userArray,
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )));
     }
 
     public function updateUser($user){
@@ -67,7 +84,11 @@ class UserBDD extends BDD
         $url = $this->webservice.'/users/'.$userId.'/updateUser';
 
         //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $userArray));
+        $client->request('PUT',$url,array(
+            'json' => $userArray,
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )));
     }
 
     //TODO check in database a good oldPassword in order to test this function
@@ -80,7 +101,11 @@ class UserBDD extends BDD
             "newPasswordConfirmation" => $newPasswordConfirmation
         );
         //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $bodyArray));
+        $client->request('PUT',$url,array(
+            'json' => $bodyArray,
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )));
 
     }
 
@@ -91,7 +116,11 @@ class UserBDD extends BDD
             "email" => $email,
         );
         //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $bodyArray));
+        $client->request('PUT',$url,array(
+            'json' => $bodyArray,
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )));
     }
 
     public function deleteUser($userId){
@@ -99,14 +128,18 @@ class UserBDD extends BDD
         $url = $this->webservice.'/users/'.$userId.'/deleteUser';
         $bodyArray = array();
         //Do not need to json_encode the data
-        $client->request('PUT',$url,array('json' => $bodyArray));
+        $client->request('PUT',$url,array(
+            'json' => $bodyArray,
+            "headers" => array(
+                "token" => $_COOKIE["token"]
+            )));
     }
 
     public function createUser($userMongo){
         $addressArray = array();
         if($userMongo["address"]) {
             foreach ($userMongo["address"] as $address) {
-                $addressArray[] = new Address($address["postCode"], $address["city"], $address["country"], $address["line"]);
+                $addressArray[] = new Address($address["_id"], $address["postCode"], $address["city"], $address["country"], $address["line"]);
             }
         }
 
