@@ -19,11 +19,11 @@ class UserBDD extends BDD
         $client = new GuzzleHttp\Client();
         $url = $this->webservice.'/users';
 
-        $res = $client->request('GET', $url, array(
+        $res = $client->request('GET', $url/*, array(
             "headers" => array(
                 "token" => $_COOKIE["token"]
             )
-        ));
+        )*/);
         $users=json_decode($res->getBody(),true);
         $usersArray=array();
         foreach($users as $user) {
