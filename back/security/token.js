@@ -71,7 +71,7 @@ module.exports.tokenHandler = function tokenHandler(req, res, next) {
         // let those URLs pass without token
         // /api-docs : swagger spec file (JSON)
         // /docs : swagger UI
-        if (req.originalUrl === '/api/users/auth' || req.originalUrl === '/api/heartbeat' || req.originalUrl.lastIndexOf('/api-docs', 0) || req.originalUrl.lastIndexOf('/docs', 0)) {
+        if (req.originalUrl === '/api/auth' || req.originalUrl === '/api/heartbeat' || req.originalUrl.lastIndexOf('/api-docs', 0) || req.originalUrl.lastIndexOf('/docs', 0)) {
             logger.debug('Authorized url w/o token');
             next();
         } else {
