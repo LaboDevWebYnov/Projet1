@@ -64,13 +64,32 @@ class UserBDD extends BDD
         //Remove the id key from the user object to respect the API add format
         unset($userArray["id"]);
 
+        if($userArray["address"] == null){
+            unset($userArray["address"]);
+        }
+
+        if($userArray["admin"] == null){
+            unset($userArray["admin"]);
+        }
+
+        if($userArray["friends"] == null){
+            unset($userArray["friends"]);
+        }
+
+        if($userArray["interests"] == null){
+            unset($userArray["interests"]);
+        }
+
+        if($userArray["verified"] == null){
+            unset($userArray["verified"]);
+        }
+
+        print_r($userArray);
         $url = $this->webservice.'/users/addUser';
         //Do not need to json_encode the data, pass it as array
         $client->request('POST', $url,array(
-            'json' => $userArray,
-            "headers" => array(
-                "token" => $_COOKIE["token"]
-            )));
+            'json' => $userArray
+            ));
     }
 
     public function updateUser($user){
