@@ -67,10 +67,13 @@ class BDDController extends Controller
     {
         $userBDD = $this->container->get("UserBDD");
         $user = $userBDD->getUserById($id);
+        echo "<pre>";
+        print_r($user);
+        echo "</pre>";
         $user->username = "test";
         $user->password = "test";
         $user->email = "lacoste.antoine@orange.fr";
-        $userBDD->addUser($user);
+        //$userBDD->addUser($user);
         return $this->render('AppBundle:Default:userById.html.twig',(array("user"=>$user)));
     }
 
