@@ -8,7 +8,7 @@ var Team = new Schema({
     name: { type: String, required: true },
     tag: { type: String, required: true },
     captain: { type: Schema.ObjectId, ref: 'PlayerAccount', required: true },
-    players: { type: [{ type: Schema.ObjectId, ref: 'PlayerAccount'}], required: true },
+    players: { type: [{ type: Schema.ObjectId, ref: 'PlayerAccount'}], required: false },
     invitedPlayers: { type: [{ type: Schema.ObjectId, ref: 'PlayerAccount'}], required: false },
     postulatedPlayers: { type: [{ type: Schema.ObjectId, ref: 'PlayerAccount'}], required: false },
     active: { type: Boolean, required: true },

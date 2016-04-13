@@ -28,6 +28,10 @@
     {
       "name": "Address",
       "description": "addresses, user addresses"
+    },
+    {
+      "name": "Team",
+      "description": "team, captain, manage team"
     }
   ],
   "basePath": "/api",
@@ -904,7 +908,7 @@
             "description": "PlayerAccount object to insert",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/PlayerAccount"
+              "$ref": "#/definitions/CreatePlayedAccountObject"
             }
           }
         ],
@@ -1060,6 +1064,237 @@
           }
         }
       }
+    },
+    "/teams": {
+      "get": {
+        "x-swagger-router-controller": "TeamController",
+        "operationId": "getTeams",
+        "tags": [
+          "Team"
+        ],
+        "summary": "Gets all teams",
+        "description": "Gets `Team` objects.\nOptional query param of **size** determines\nsize of returned array\n",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Size of array",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Teams",
+            "schema": {
+              "title": "ArrayOfTeams",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Team"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/team/{playerAccountId}/addTeam/{gameId}": {
+      "post": {
+        "x-swagger-router-controller": "TeamController",
+        "operationId": "addTeam",
+        "tags": [
+          "Team"
+        ],
+        "summary": "Adds a team",
+        "description": "Adds new `Team` object to the DB.",
+        "parameters": [
+          {
+            "name": "playerAccountId",
+            "in": "path",
+            "description": "playerAccountId of player object to add.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "gameId of game object to add.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "team",
+            "in": "body",
+            "description": "Team object to insert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTeamObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team has been successfully added to the DB"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/team/{teamId}/getTeamById": {
+      "get": {
+        "x-swagger-router-controller": "TeamController",
+        "operationId": "getTeamById",
+        "tags": [
+          "Team"
+        ],
+        "summary": "Get the specified team",
+        "description": "Gets `Team` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "teamId of Team object to search for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Team object",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/team/{teamName}/getTeamByName": {
+      "get": {
+        "x-swagger-router-controller": "TeamController",
+        "operationId": "getTeamByName",
+        "tags": [
+          "Team"
+        ],
+        "summary": "Get the corresponding game based on the team name",
+        "description": "Gets `Team` object specified by its name.",
+        "parameters": [
+          {
+            "name": "teamName",
+            "in": "path",
+            "description": "Team's name to search for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Team object",
+            "schema": {
+              "$ref": "#/definitions/Game"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/team/{teamId}/updateTeam": {
+      "put": {
+        "x-swagger-router-controller": "TeamController",
+        "operationId": "updateTeam",
+        "tags": [
+          "Team"
+        ],
+        "summary": "Update the corresponding team",
+        "description": "Update `Team` object specified by its ID.",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "teamId of Team object to update.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "teamObject",
+            "in": "body",
+            "description": "Team object that will update the old one.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTeamObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated Game object",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/team/{teamId}/deleteTeam": {
+      "put": {
+        "x-swagger-router-controller": "TeamController",
+        "operationId": "deleteTeam",
+        "tags": [
+          "Team"
+        ],
+        "summary": "Deactivate the corresponding team",
+        "description": "Deactivates the 'Team' object specified by its ID.",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "description": "teamId of Game object to deactivate.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deactivated Team object",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1204,6 +1439,52 @@
         }
       }
     },
+    "Team": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "captain": {
+          "$ref": "#/definitions/PlayerAccount"
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlayerAccount"
+          }
+        },
+        "invitedPlayers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlayerAccount"
+          }
+        },
+        "postulatedPlayers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlayerAccount"
+          }
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "game": {
+          "$ref": "#/definitions/Game"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
     "ChangePassword": {
       "type": "object",
       "properties": {
@@ -1214,6 +1495,25 @@
           "type": "string"
         },
         "newPasswordConfirmation": {
+          "type": "string"
+        }
+      }
+    },
+    "CreatePlayedAccountObject": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateTeamObject": {
+      "type": "object",
+      "properties": {
+        "teamName": {
+          "type": "string"
+        },
+        "teamTag": {
           "type": "string"
         }
       }
