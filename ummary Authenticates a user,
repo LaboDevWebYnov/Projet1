@@ -1,0 +1,363 @@
+[1mdiff --git a/back/api/swagger.json b/back/api/swagger.json[m
+[1mindex 1d14231..142df84 100644[m
+[1m--- a/back/api/swagger.json[m
+[1m+++ b/back/api/swagger.json[m
+[36m@@ -30,24 +30,17 @@[m
+       "description": "addresses, user addresses"[m
+     }[m
+   ],[m
+[31m-  "securityDefinitions": {[m
+[31m-    "token": {[m
+[31m-      "type": "apiKey",[m
+[31m-      "name": "token",[m
+[31m-      "in": "header"[m
+[31m-    }[m
+[31m-  },[m
+   "basePath": "/api",[m
+   "paths": {[m
+[31m-    "/users/auth": {[m
+[32m+[m[32m    "/auth": {[m
+       "post": {[m
+         "x-swagger-router-controller": "AuthController",[m
+         "operationId": "authenticate",[m
+         "tags": [[m
+           "Security"[m
+         ],[m
+[31m-        "summary": "Authenticate a user",[m
+[31m-        "description": "Authenticate the user against the DB.",[m
+[32m+[m[32m        "summary": "Authenticates a user",[m
+[32m+[m[32m        "description": "Authenticates the user against the DB.",[m
+         "parameters": [[m
+           {[m
+             "name": "authRequest",[m
+[36m@@ -158,7 +151,7 @@[m
+         "tags": [[m
+           "User"[m
+         ],[m
+[31m-        "summary": "Get the specified user",[m
+[32m+[m[32m        "summary": "Gets the specified user",[m
+         "description": "Gets `User` object specified by its ID.",[m
+         "parameters": [[m
+           {[m
+[36m@@ -173,8 +166,6 @@[m
+           "200": {[m
+             "description": "A 'User' object.",[m
+             "schema": {[m
+[31m-              "title": "Retrieved User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -209,8 +200,6 @@[m
+           "200": {[m
+             "description": "A 'User' object.",[m
+             "schema": {[m
+[31m-              "title": "Retrieved User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -254,8 +243,6 @@[m
+           "200": {[m
+             "description": "A 'User' object.",[m
+             "schema": {[m
+[31m-              "title": "Updated User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -299,8 +286,6 @@[m
+           "200": {[m
+             "description": "A 'User' object.",[m
+             "schema": {[m
+[31m-              "title": "Updated User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -342,10 +327,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'User' object.",[m
+[32m+[m[32m            "description": "Updated User object.",[m
+             "schema": {[m
+[31m-              "title": "Updated User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -378,10 +361,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'User' object.",[m
+[32m+[m[32m            "description": "Deactivated User object",[m
+             "schema": {[m
+[31m-              "title": "Deactivated User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -499,10 +480,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "An 'Address' object.",[m
+[32m+[m[32m            "description": "Retrieved Address object",[m
+             "schema": {[m
+[31m-              "title": "Retrieved Address object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/Address"[m
+             }[m
+           },[m
+[36m@@ -591,10 +570,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'User' object.",[m
+[32m+[m[32m            "description": "Updated User object",[m
+             "schema": {[m
+[31m-              "title": "Updated User object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/User"[m
+             }[m
+           },[m
+[36m@@ -627,10 +604,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A `Address` object.",[m
+[32m+[m[32m            "description": "Deactivated `Address` object.",[m
+             "schema": {[m
+[31m-              "title": "Deactivated `Address` object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/Address"[m
+             }[m
+           },[m
+[36m@@ -735,10 +710,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'Game' object.",[m
+[32m+[m[32m            "description": "Retrieved Game object",[m
+             "schema": {[m
+[31m-              "title": "Retrieved Game object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/Game"[m
+             }[m
+           },[m
+[36m@@ -771,10 +744,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'Game' object.",[m
+[32m+[m[32m            "description": "Retrieved Game object",[m
+             "schema": {[m
+[31m-              "title": "Retrieved Game object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/Game"[m
+             }[m
+           },[m
+[36m@@ -816,10 +787,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'Game' object.",[m
+[32m+[m[32m            "description": "Updated Game object",[m
+             "schema": {[m
+[31m-              "title": "Updated Game object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/Game"[m
+             }[m
+           },[m
+[36m@@ -852,10 +821,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'Game' object.",[m
+[32m+[m[32m            "description": "Deactivated Game object",[m
+             "schema": {[m
+[31m-              "title": "Updated Game object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/Game"[m
+             }[m
+           },[m
+[36m@@ -974,10 +941,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'playerAcount' object.",[m
+[32m+[m[32m            "description": "Retrieved playerAcount object",[m
+             "schema": {[m
+[31m-              "title": "Retrieved playerAcount object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/PlayerAccount"[m
+             }[m
+           },[m
+[36m@@ -1048,10 +1013,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'player' object.",[m
+[32m+[m[32m            "description": "Retrieved PlayerAccount object",[m
+             "schema": {[m
+[31m-              "title": "Retrieved player object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/PlayerAccount"[m
+             }[m
+           },[m
+[36m@@ -1084,10 +1047,8 @@[m
+         ],[m
+         "responses": {[m
+           "200": {[m
+[31m-            "description": "A 'playerAccount' object.",[m
+[32m+[m[32m            "description": "Updated playerAccount object",[m
+             "schema": {[m
+[31m-              "title": "Updated playerAccount object",[m
+[31m-              "type": "object",[m
+               "$ref": "#/definitions/PlayerAccount"[m
+             }[m
+           },[m
+[1mdiff --git a/back/controllers/UserController.js b/back/controllers/UserController.js[m
+[1mindex 6da9609..89bee71 100644[m
+[1m--- a/back/controllers/UserController.js[m
+[1m+++ b/back/controllers/UserController.js[m
+[36m@@ -24,7 +24,6 @@[m [mmodule.exports.getUsers = function getUsers(req, res, next) {[m
+     // Code necessary to consume the User API and respond[m
+     User.find({})[m
+         .populate('address')[m
+[31m-        //.limit(size)[m
+         .exec(function (err, users) {[m
+             if (err)[m
+                 return next(err.message);[m
+[36m@@ -81,7 +80,6 @@[m [mmodule.exports.addUser = function addUser(req, res, next) {[m
+                             if (err){[m
+                                 return next(err.message);[m
+                             }[m
+[31m-[m
+                             else {[m
+                                 res.set('Content-Type', 'application/json');[m
+                                 res.status(200).end(JSON.stringify(user || {}, null, 2));[m
+[1mdiff --git a/back/controllers/utils/util.js b/back/controllers/utils/util.js[m
+[1mindex d2fb73f..ae0a293 100644[m
+[1m--- a/back/controllers/utils/util.js[m
+[1m+++ b/back/controllers/utils/util.js[m
+[36m@@ -12,7 +12,7 @@[m [mmodule.exports.getPathParams = function getPathParams(req){[m
+ };[m
+ [m
+ //module.exports.getPassword = function getPassword(req, res, next) {[m
+[31m-//    logger.info('Getting password from db for user with id:' + Util.getPathParams(req)[2]);[m
+[32m+[m[32m//    logger.info('Getting password from db for user with id:' +    Util.getPathParams(req)[2]);[m
+ //[m
+ //    return User.findById([m
+ //        getPathParams(req)[2],[m
+[1mdiff --git a/back/security/crypt.js b/back/security/crypt.js[m
+[1mindex 4e4af96..773d279 100644[m
+[1m--- a/back/security/crypt.js[m
+[1m+++ b/back/security/crypt.js[m
+[36m@@ -16,7 +16,6 @@[m [mmodule.exports.encrypt = function encrypt(text) {[m
+     return crypted;[m
+ };[m
+ [m
+[31m-[m
+ module.exports.decrypt = function decrypt(text) {[m
+     var decipher = crypto.createDecipher(algorithm, password);[m
+     var dec = decipher.update(text, hex, format);[m
+[1mdiff --git a/back/security/token.js b/back/security/token.js[m
+[1mindex aa7b3b2..77def2a 100644[m
+[1m--- a/back/security/token.js[m
+[1m+++ b/back/security/token.js[m
+[36m@@ -11,7 +11,7 @@[m [mvar log4js = require('log4js'),[m
+ [m
+ var TOKEN_HEADER_NAME = 'token';[m
+ [m
+[31m-function Token (options) {[m
+[32m+[m[32mfunction Token(options) {[m
+     this.expirationDate = options.expirationDate;[m
+     this.username = options.username;[m
+     this.firstname = options.firstname;[m
+[36m@@ -43,7 +43,7 @@[m [mmodule.exports.initialize = function initialize() {[m
+     //emrConnector = require('../emr/EmrConnectorInstance');[m
+ };[m
+ [m
+[31m-module.exports.createBasicToken = function createBasicToken(username, firstname, lastname){[m
+[32m+[m[32mmodule.exports.createBasicToken = function createBasicToken(username, firstname, lastname) {[m
+     logger.info('Creating new token with basic information');[m
+     var tkn = {[m
+         expirationDate: '',[m
+[36m@@ -53,14 +53,14 @@[m [mmodule.exports.createBasicToken = function createBasicToken(username, firstname,[m
+     };[m
+ [m
+     var token = new Token(tkn);[m
+[31m-    logger.info('Created token: '+JSON.stringify(token));[m
+[32m+[m[32m    logger.info('Created token: ' + JSON.stringify(token));[m
+     renewToken(token);[m
+ [m
+     return token;[m
+ };[m
+ [m
+[31m-module.exports.tokenHandler = function tokenHandler(req, res, next){[m
+[31m-    logger.debug('Handling token: ' + req.query.token+' or '+req.header(TOKEN_HEADER_NAME));[m
+[32m+[m[32mmodule.exports.tokenHandler = function tokenHandler(req, res, next) {[m
+[32m+[m[32m    logger.debug('Handling token: ' + req.query.token + ' or ' + req.header(TOKEN_HEADER_NAME));[m
+     var tokenString = req.header(TOKEN_HEADER_NAME) || req.query.token;[m
+ [m
+     logger.debug('String token: ' + tokenString);[m
+[36m@@ -116,20 +116,15 @@[m [mmodule.exports.tokenHandler = function tokenHandler(req, res, next){[m
+ };[m
+ [m
+ function isTokenValid(token) {[m
+[31m-    logger.debug('Checking token:'+JSON.stringify(token));[m
+[31m-    logger.debug('type of token:'+typeof(token));[m
+[32m+[m[32m    logger.debug('Checking token:' + JSON.stringify(token));[m
+[32m+[m[32m    logger.debug('type of token:' + typeof(token));[m
+ [m
+     //verify token[m
+[31m-    if(token.hasOwnProperty('expirationDate','username', 'lastname','firstname')){[m
+[31m-        return true;[m
+[31m-    }[m
+[31m-    else {[m
+[31m-        return false;[m
+[31m-    }[m
+[32m+[m[32m    return token.hasOwnProperty('expirationDate', 'username', 'lastname', 'firstname');[m
+     //return token instanceof Token;[m
+ }[m
+ [m
+[31m-function validateTokenAndReject(tokenObject, res){[m
+[32m+[m[32mfunction validateTokenAndReject(tokenObject, res) {[m
+     logger.debug('Validating token...');[m
+     if (isTokenValid(tokenObject)) {[m
+         return true;[m
+[36m@@ -139,7 +134,7 @@[m [mfunction validateTokenAndReject(tokenObject, res){[m
+     }[m
+ }[m
+ [m
+[31m-function isTokenExpired(token){[m
+[32m+[m[32mfunction isTokenExpired(token) {[m
+     var expirationDate = moment(token.expirationDate);[m
+     if (!expirationDate.isValid()) {[m
+         logger.debug('Expiration date is invalid: ' + token.expirationDate);[m
+[36m@@ -154,18 +149,18 @@[m [mfunction isTokenExpired(token){[m
+     return false;[m
+ }[m
+ [m
+[31m-module.exports.setResponseToken = function setResponseToken(token, res){[m
+[32m+[m[32mmodule.exports.setResponseToken = function setResponseToken(token, res) {[m
+     var tokenString = JSON.stringify(token);[m
+ [m
+     res.set(TOKEN_HEADER_NAME, crypt.encrypt(tokenString));[m
+ };[m
+ [m
+[31m-function renewToken(token){[m
+[32m+[m[32mfunction renewToken(token) {[m
+     var newExpirationDate = moment().add(tokenDuration).toISOString();[m
+     logger.debug('Setting new expiration date to: ' + newExpirationDate);[m
+     token.expirationDate = newExpirationDate;[m
+ }[m
+ [m
+[31m-module.exports.getToken = function getToken(req){[m
+[32m+[m[32mmodule.exports.getToken = function getToken(req) {[m
+     return req.token;[m
+ };[m
+\ No newline at end of file[m

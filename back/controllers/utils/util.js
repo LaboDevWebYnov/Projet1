@@ -12,7 +12,7 @@ module.exports.getPathParams = function getPathParams(req){
 };
 
 //module.exports.getPassword = function getPassword(req, res, next) {
-//    logger.info('Getting password from db for user with id:' + Util.getPathParams(req)[2]);
+//    logger.info('Getting password from db for user with id:' +    Util.getPathParams(req)[2]);
 //
 //    return User.findById(
 //        getPathParams(req)[2],

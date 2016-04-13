@@ -24,7 +24,6 @@ module.exports.getUsers = function getUsers(req, res, next) {
     // Code necessary to consume the User API and respond
     User.find({})
         .populate('address')
-        //.limit(size)
         .exec(function (err, users) {
             if (err)
                 return next(err.message);
@@ -81,7 +80,6 @@ module.exports.addUser = function addUser(req, res, next) {
                             if (err){
                                 return next(err.message);
                             }
-
                             else {
                                 res.set('Content-Type', 'application/json');
                                 res.status(200).end(JSON.stringify(user || {}, null, 2));

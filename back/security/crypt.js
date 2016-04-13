@@ -16,7 +16,6 @@ module.exports.encrypt = function encrypt(text) {
     return crypted;
 };
 
-
 module.exports.decrypt = function decrypt(text) {
     var decipher = crypto.createDecipher(algorithm, password);
     var dec = decipher.update(text, hex, format);

@@ -30,24 +30,17 @@
       "description": "addresses, user addresses"
     }
   ],
-  "securityDefinitions": {
-    "token": {
-      "type": "apiKey",
-      "name": "token",
-      "in": "header"
-    }
-  },
   "basePath": "/api",
   "paths": {
-    "/users/auth": {
+    "/auth": {
       "post": {
         "x-swagger-router-controller": "AuthController",
         "operationId": "authenticate",
         "tags": [
           "Security"
         ],
-        "summary": "Authenticate a user",
-        "description": "Authenticate the user against the DB.",
+        "summary": "Authenticates a user",
+        "description": "Authenticates the user against the DB.",
         "parameters": [
           {
             "name": "authRequest",
@@ -158,7 +151,7 @@
         "tags": [
           "User"
         ],
-        "summary": "Get the specified user",
+        "summary": "Gets the specified user",
         "description": "Gets `User` object specified by its ID.",
         "parameters": [
           {
@@ -173,8 +166,6 @@
           "200": {
             "description": "A 'User' object.",
             "schema": {
-              "title": "Retrieved User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -209,8 +200,6 @@
           "200": {
             "description": "A 'User' object.",
             "schema": {
-              "title": "Retrieved User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -254,8 +243,6 @@
           "200": {
             "description": "A 'User' object.",
             "schema": {
-              "title": "Updated User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -299,8 +286,6 @@
           "200": {
             "description": "A 'User' object.",
             "schema": {
-              "title": "Updated User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -342,10 +327,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'User' object.",
+            "description": "Updated User object.",
             "schema": {
-              "title": "Updated User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -378,10 +361,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'User' object.",
+            "description": "Deactivated User object",
             "schema": {
-              "title": "Deactivated User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -499,10 +480,8 @@
         ],
         "responses": {
           "200": {
-            "description": "An 'Address' object.",
+            "description": "Retrieved Address object",
             "schema": {
-              "title": "Retrieved Address object",
-              "type": "object",
               "$ref": "#/definitions/Address"
             }
           },
@@ -591,10 +570,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'User' object.",
+            "description": "Updated User object",
             "schema": {
-              "title": "Updated User object",
-              "type": "object",
               "$ref": "#/definitions/User"
             }
           },
@@ -627,10 +604,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A `Address` object.",
+            "description": "Deactivated `Address` object.",
             "schema": {
-              "title": "Deactivated `Address` object",
-              "type": "object",
               "$ref": "#/definitions/Address"
             }
           },
@@ -735,10 +710,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'Game' object.",
+            "description": "Retrieved Game object",
             "schema": {
-              "title": "Retrieved Game object",
-              "type": "object",
               "$ref": "#/definitions/Game"
             }
           },
@@ -771,10 +744,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'Game' object.",
+            "description": "Retrieved Game object",
             "schema": {
-              "title": "Retrieved Game object",
-              "type": "object",
               "$ref": "#/definitions/Game"
             }
           },
@@ -816,10 +787,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'Game' object.",
+            "description": "Updated Game object",
             "schema": {
-              "title": "Updated Game object",
-              "type": "object",
               "$ref": "#/definitions/Game"
             }
           },
@@ -852,10 +821,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'Game' object.",
+            "description": "Deactivated Game object",
             "schema": {
-              "title": "Updated Game object",
-              "type": "object",
               "$ref": "#/definitions/Game"
             }
           },
@@ -974,10 +941,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'playerAcount' object.",
+            "description": "Retrieved playerAcount object",
             "schema": {
-              "title": "Retrieved playerAcount object",
-              "type": "object",
               "$ref": "#/definitions/PlayerAccount"
             }
           },
@@ -1048,10 +1013,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'player' object.",
+            "description": "Retrieved PlayerAccount object",
             "schema": {
-              "title": "Retrieved player object",
-              "type": "object",
               "$ref": "#/definitions/PlayerAccount"
             }
           },
@@ -1084,10 +1047,8 @@
         ],
         "responses": {
           "200": {
-            "description": "A 'playerAccount' object.",
+            "description": "Updated playerAccount object",
             "schema": {
-              "title": "Updated playerAccount object",
-              "type": "object",
               "$ref": "#/definitions/PlayerAccount"
             }
           },

@@ -11,7 +11,7 @@ var log4js = require('log4js'),
 
 var TOKEN_HEADER_NAME = 'token';
 
-function Token (options) {
+function Token(options) {
     this.expirationDate = options.expirationDate;
     this.username = options.username;
     this.firstname = options.firstname;
@@ -43,7 +43,7 @@ module.exports.initialize = function initialize() {
     //emrConnector = require('../emr/EmrConnectorInstance');
 };
 
-module.exports.createBasicToken = function createBasicToken(username, firstname, lastname){
+module.exports.createBasicToken = function createBasicToken(username, firstname, lastname) {
     logger.info('Creating new token with basic information');
     var tkn = {
         expirationDate: '',
@@ -53,14 +53,14 @@ module.exports.createBasicToken = function createBasicToken(username, firstname,
     };
 
     var token = new Token(tkn);
-    logger.info('Created token: '+JSON.stringify(token));
+    logger.info('Created token: ' + JSON.stringify(token));
     renewToken(token);
 
     return token;
 };
 
-module.exports.tokenHandler = function tokenHandler(req, res, next){
-    logger.debug('Handling token: ' + req.query.token+' or '+req.header(TOKEN_HEADER_NAME));
+module.exports.tokenHandler = function tokenHandler(req, res, next) {
+    logger.debug('Handling token: ' + req.query.token + ' or ' + req.header(TOKEN_HEADER_NAME));
     var tokenString = req.header(TOKEN_HEADER_NAME) || req.query.token;
 
     logger.debug('String token: ' + tokenString);
@@ -116,20 +116,15 @@ module.exports.tokenHandler = function tokenHandler(req, res, next){
 };
 
 function isTokenValid(token) {
-    logger.debug('Checking token:'+JSON.stringify(token));
-    logger.debug('type of token:'+typeof(token));
+    logger.debug('Checking token:' + JSON.stringify(token));
+    logger.debug('type of token:' + typeof(token));
 
     //verify token
-    if(token.hasOwnProperty('expirationDate','username', 'lastname','firstname')){
-        return true;
-    }
-    else {
-        return false;
-    }
+    return token.hasOwnProperty('expirationDate', 'username', 'lastname', 'firstname');
     //return token instanceof Token;
 }
 
-function validateTokenAndReject(tokenObject, res){
+function validateTokenAndReject(tokenObject, res) {
     logger.debug('Validating token...');
     if (isTokenValid(tokenObject)) {
         return true;
@@ -139,7 +134,7 @@ function validateTokenAndReject(tokenObject, res){
     }
 }
 
-function isTokenExpired(token){
+function isTokenExpired(token) {
     var expirationDate = moment(token.expirationDate);
     if (!expirationDate.isValid()) {
         logger.debug('Expiration date is invalid: ' + token.expirationDate);
@@ -154,18 +149,18 @@ function isTokenExpired(token){
     return false;
 }
 
-module.exports.setResponseToken = function setResponseToken(token, res){
+module.exports.setResponseToken = function setResponseToken(token, res) {
     var tokenString = JSON.stringify(token);
 
     res.set(TOKEN_HEADER_NAME, crypt.encrypt(tokenString));
 };
 
-function renewToken(token){
+function renewToken(token) {
     var newExpirationDate = moment().add(tokenDuration).toISOString();
     logger.debug('Setting new expiration date to: ' + newExpirationDate);
     token.expirationDate = newExpirationDate;
 }
 
-module.exports.getToken = function getToken(req){
+module.exports.getToken = function getToken(req) {
     return req.token;
 };
