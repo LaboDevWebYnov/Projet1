@@ -14,7 +14,7 @@ class SecurityBDD extends BDD
 {
     public function authenticate($login, $password){
         $client = new GuzzleHttp\Client();
-        $url = $this->webservice.'/users/auth';
+        $url = $this->webservice.'/auth';
         $bodyArray = array(
             "login" => $login,
             "password"  => $password
