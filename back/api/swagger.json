@@ -159,6 +159,13 @@
         "description": "Gets `User` object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "userId",
             "in": "path",
             "description": "User ID to search for.",
@@ -193,6 +200,13 @@
         "description": "Gets `User` object specified by its username.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "username",
             "in": "path",
             "description": "Username of User to search for.",
@@ -226,6 +240,13 @@
         "summary": "Updates the corresponding user basic properties",
         "description": "Update `User` object specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -270,6 +291,13 @@
         "description": "Update password attr of `User` object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "userId",
             "in": "path",
             "description": "userId of User object to update.",
@@ -312,6 +340,13 @@
         "summary": "Updates the corresponding user email",
         "description": "Update email attr of `User` object specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -356,6 +391,13 @@
         "description": "Deactivate `User` object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "userId",
             "in": "path",
             "description": "userId of User object to deactivate.",
@@ -389,6 +431,13 @@
         "summary": "Get all addresses from DB",
         "description": "Gets all `Address` objects from DB.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "size",
             "in": "query",
@@ -428,6 +477,13 @@
         "summary": "Get all addresses of the specified user from DB",
         "description": "Gets all `Address` objects of the specified User from DB.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "size",
             "in": "query",
@@ -475,6 +531,13 @@
         "description": "Gets the `Address` object specified byt its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "addressId",
             "in": "path",
             "description": "addressId of Address object to search for.",
@@ -508,6 +571,13 @@
         "summary": "Adds a new Address to the User",
         "description": "Adds new `Address` object to the `User` object to the DB.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -548,6 +618,13 @@
         "summary": "Updates the corresponding user address",
         "description": "Update `User` object address specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -599,6 +676,13 @@
         "description": "Deactivates `Address` object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "addressId",
             "in": "path",
             "description": "addressId of `Address` object to update.",
@@ -632,6 +716,13 @@
         "summary": "Gets all games",
         "description": "Gets `Game` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "size",
             "in": "query",
@@ -672,6 +763,13 @@
         "description": "Adds new `Game` object to the DB.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "game",
             "in": "body",
             "description": "Game object to insert",
@@ -704,6 +802,13 @@
         "summary": "Get the specified game",
         "description": "Gets `Game` object specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "gameId",
             "in": "path",
@@ -739,6 +844,13 @@
         "description": "Gets `Game` object specified by its name.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "gameName",
             "in": "path",
             "description": "Game's name to search for.",
@@ -772,6 +884,13 @@
         "summary": "Update the corresponding game",
         "description": "Update `Game` object specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "gameId",
             "in": "path",
@@ -816,6 +935,13 @@
         "description": "Deactivates the 'Game' object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "gameId",
             "in": "path",
             "description": "gameId of Game object to deactivate.",
@@ -849,6 +975,13 @@
         "summary": "Get all playerAccount",
         "description": "Gets `playerAccount` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "size",
             "in": "query",
@@ -888,6 +1021,13 @@
         "summary": "Adds a new PlayerAccount",
         "description": "Adds new `PlayerAccount` object to the DB.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -936,6 +1076,13 @@
         "description": "Gets `playerAcount` object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "playerAccountId",
             "in": "path",
             "description": "playerAcountId of player object to search for.",
@@ -969,6 +1116,13 @@
         "summary": "Get the corresponding playerAccount based on the PlayerAccount UserId",
         "description": "Gets `player` object specified by its UserId.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "userId",
             "in": "path",
@@ -1008,6 +1162,13 @@
         "summary": "Get the corresponding playerAccount based on the PlayerAccount login",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "login",
             "in": "path",
             "description": "login of Player object to find.",
@@ -1039,8 +1200,15 @@
           "PlayerAccount"
         ],
         "description": "Deactivates the 'playerAccount' object specified by its ID.",
-        "summary": "Desactivate the corresponding playerAccount",
+        "summary": "Deactivate the corresponding playerAccount",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "playerAccountId",
             "in": "path",
@@ -1075,6 +1243,13 @@
         "summary": "Gets all teams",
         "description": "Gets `Team` objects.\nOptional query param of **size** determines\nsize of returned array\n",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "size",
             "in": "query",
@@ -1114,6 +1289,13 @@
         "summary": "Adds a team",
         "description": "Adds new `Team` object to the DB.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "playerAccountId",
             "in": "path",
@@ -1162,6 +1344,13 @@
         "description": "Gets `Team` object specified by its ID.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "teamId",
             "in": "path",
             "description": "teamId of Team object to search for.",
@@ -1196,6 +1385,13 @@
         "description": "Gets `Team` object specified by its name.",
         "parameters": [
           {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "teamName",
             "in": "path",
             "description": "Team's name to search for.",
@@ -1229,6 +1425,13 @@
         "summary": "Update the corresponding team",
         "description": "Update `Team` object specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "teamId",
             "in": "path",
@@ -1272,6 +1475,13 @@
         "summary": "Deactivate the corresponding team",
         "description": "Deactivates the 'Team' object specified by its ID.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "teamId",
             "in": "path",
