@@ -71,7 +71,7 @@ module.exports.tokenHandler = function tokenHandler(req, res, next) {
         // let those URLs pass without token
         // /api-docs : swagger spec file (JSON)
         // /docs : swagger UI
-        if (req.originalUrl === '/api/users/auth' || req.originalUrl === '/api/heartbeat' || req.originalUrl.lastIndexOf('/api-docs', 0) || req.originalUrl.lastIndexOf('/docs', 0)) {
+        if (req.originalUrl === '/api/auth' || req.originalUrl.lastIndexOf('/api-docs', 0) || req.originalUrl.lastIndexOf('/docs', 0)) {
             logger.debug('Authorized url w/o token');
             next();
         } else {
@@ -104,8 +104,8 @@ module.exports.tokenHandler = function tokenHandler(req, res, next) {
 
     logger.debug('Request token: ', token);
 
-    if (!validateTokenAndReject(token, res)) {
-        return;
+    if (!isTokenValid(token, res)) {
+        res.status(401).end();
     }
 
     renewToken(token);
@@ -121,17 +121,6 @@ function isTokenValid(token) {
 
     //verify token
     return token.hasOwnProperty('expirationDate', 'username', 'lastname', 'firstname');
-    //return token instanceof Token;
-}
-
-function validateTokenAndReject(tokenObject, res) {
-    logger.debug('Validating token...');
-    if (isTokenValid(tokenObject)) {
-        return true;
-    } else {
-        res.status(401).end();
-        return false;
-    }
 }
 
 function isTokenExpired(token) {
