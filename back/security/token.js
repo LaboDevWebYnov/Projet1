@@ -39,8 +39,6 @@ module.exports.initialize = function initialize() {
     }
 
     logger.info('Token duration set to: ' + tokenDuration.humanize());
-
-    //emrConnector = require('../emr/EmrConnectorInstance');
 };
 
 module.exports.createBasicToken = function createBasicToken(username, firstname, lastname) {
@@ -71,7 +69,7 @@ module.exports.tokenHandler = function tokenHandler(req, res, next) {
         // let those URLs pass without token
         // /api-docs : swagger spec file (JSON)
         // /docs : swagger UI
-        if (req.originalUrl === '/api/auth' || (req.originalUrl.lastIndexOf('/api-docs', 0) >=0) || (req.originalUrl.lastIndexOf('/docs', 0) >=0)) {
+        if (req.originalUrl === '/api/auth' || req.originalUrl === '/api/user/verify/' || (req.originalUrl.lastIndexOf('/api-docs', 0) >=0) || (req.originalUrl.lastIndexOf('/docs', 0) >=0)) {
             logger.debug('Authorized url w/o token');
             next();
         } else {

@@ -43,7 +43,7 @@ module.exports.getUserAddress = function getUserAddress(req, next){
                 return next({error:'Bad object from DB for address'},null);
             }
             else {
-                //logger.debug('User address:'+user.address);
+                logger.debug('User address:'+user.address);
                 return next(null,user.address);
             }
         });

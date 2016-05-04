@@ -249,7 +249,7 @@ module.exports.updateEmail = function updateEmail(req, res, next) {
 };
 
 
-// Path : PUT /users/{userId}/deleteUser
+// Path : PUT api/users/{userId}/deleteUser
 module.exports.deleteUser = function deleteUser(req, res, next) {
     logger.info('Deactivating for user with id:\n ' + Util.getPathParams(req)[2]);
     User.findOneAndUpdate(
@@ -261,12 +261,80 @@ module.exports.deleteUser = function deleteUser(req, res, next) {
         },
         {new: true}, //means we want the DB to return the updated document instead of the old one
         function (err, updatedUser) {
-            if (err)
+            if (err) {
                 return next(err.message);
-
-            logger.debug("Deactivated game object: \n" + updatedUser);
-            res.set('Content-Type', 'application/json');
-            res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
-
+            }
+            else {
+                logger.debug("Deactivated game object: \n" + updatedUser);
+                res.set('Content-Type', 'application/json');
+                res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+            }
         });
+};
+
+// Path : GET api/user/verify/{email}
+module.exports.verifyUserEmail = function verifyUserEmail(req, res, next) {
+    logger.debug('Original url: ' + req.originalUrl);
+    logger.info('Verifying email '+req.params.email);
+    // logger.debug('email:' + req.params.mail);
+    var registerErr = null;
+    //logger.debug('token:'+securityUtils.getPathParams(req)[3]);
+
+    User.findOne({email: Util.getPathParams(req)[4]}, function (err, user) {
+        if (err) throw err;
+        else {
+            //check if a user with the provided email is in DB
+            if (user) {
+                var mailgun = new Mailgun({
+                    apiKey: 'key-7d3e1a0c62fc2084098e00ff32f0c06d',
+                    domain: 'sandboxfc7fd911df6643e88fd945a63667ccb9.mailgun.org'
+                });
+
+                var members = [
+                    {
+                        address: req.body.email
+                    }
+                ];
+                //create a mailing list on Mailgun.com/cp/lists and put its address below
+                //add email to validated emails list
+                mailgun.lists('accountvalidation@sandboxfc7fd911df6643e88fd945a63667ccb9.mailgun.org').members().add({
+                    members: members,
+                    subscribed: true
+                }, function (err, body) {
+                    logger.debug('Response from Mailgun:' + JSON.stringify(body));
+                    if (err) {
+                        logger.error('Error while sending confirmation email : '+err);
+                        return next(err);
+                    }
+                    else {
+                        User.findOneAndUpdate(
+                            {
+                                email: req.body.email
+                            },
+                            {
+                                $set: {
+                                    verified: true
+                                }
+                            },
+                            {new: true}, //means we want the DB to return the updated document instead of the old one
+                            function (err, updatedUser) {
+                                if (err){
+                                    logger.error('Error while updating user verified attr: '+err);
+                                    return next(err);
+                                }
+                                else {
+                                    res.set('Content-Type', 'application/json');
+                                    res.status(200).end(JSON.stringify(updatedUser || {}, null, 2));
+                                }
+                            });
+                    }
+                });
+            }
+            //no user found in the DB with this email, aborting
+            else {
+                res.set('Content-Type', 'application/json');
+                res.status(401).end(JSON.stringify({error: 'Il n\'y a pas d\'utilisateur avec cet email !'}, null, 2));
+            }
+        }
+    });
 };

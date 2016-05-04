@@ -17,7 +17,6 @@ var PlayerAccountBD = require('../models/PlayerAccountDB'),
     Game = mongoose.model('Game'),
     Team = mongoose.model('Team');
 
-
 //Path: GET api/teams
 module.exports.getTeams = function getTeams(req, res, next) {
     logger.info('Getting all teams from db...');
@@ -110,7 +109,6 @@ module.exports.getTeamById = function getTeamById(req, res, next) {
         }
     );
 };
-
 
 // Path: GET api/games/{teamName}/getTeamByName
 module.exports.getTeamByName = function getTeamByName(req, res, next) {
