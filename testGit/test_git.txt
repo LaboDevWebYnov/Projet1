@@ -1,1 +1,1 @@
-This is a new test file to play with git
+This is a new test file to play without git
