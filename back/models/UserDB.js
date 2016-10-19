@@ -42,7 +42,7 @@ User.pre('save', function (next) {
             logger.debug('Salting password: '+user.password+' => salted: '+saltedPw);
             user.password = saltedPw;
 
-            //mis à jour élément de controle (Created_at, Updated_at)
+            //mise à jour élément de controle (Created_at, Updated_at)
             user.updated_at = Date.now;
 
             if (!user.created_at) {
