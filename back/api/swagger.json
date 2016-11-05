@@ -839,7 +839,7 @@
         "summary": "Deactivate the corresponding game",
         "description": "Deactivates the 'Game' object specified by its ID.",
         "parameters": [
-          {²
+          {
             "name": "gameId",
             "in": "path",
             "description": "gameId of Game object to deactivate.",
