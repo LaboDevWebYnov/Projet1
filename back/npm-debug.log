@@ -12,24 +12,36 @@
 9 verbose lifecycle back2@1.0.0~start: PATH: C:\Users\Thomas\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;C:\Users\Thomas\Documents\NodeJsProject\Projet1\back\node_modules\.bin;C:\Users\Thomas\AppData\Roaming\npm;C:\Program Files\nodejs\;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\GitExtensions\;C:\Config_Toad_Ophone\instantclient_10_2;C:\Program Files\OpenVPN\bin;C:\Program Files (x86)\Skype\Phone\;C:\Program Files\nodejs\;C:\Users\Thomas\AppData\Roaming\npm
 10 verbose lifecycle back2@1.0.0~start: CWD: C:\Users\Thomas\Documents\NodeJsProject\Projet1\back
 11 silly lifecycle back2@1.0.0~start: Args: [ '/d /s /c', 'nodemon server.js' ]
-12 verbose stack Error: kill ENOSYS
-12 verbose stack     at exports._errnoException (util.js:907:11)
-12 verbose stack     at process.kill (node.js:777:15)
-12 verbose stack     at process.listener (C:\Users\Thomas\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
-12 verbose stack     at emitNone (events.js:72:20)
-12 verbose stack     at process.emit (events.js:166:7)
-12 verbose stack     at processEmit (C:\Users\Thomas\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
-12 verbose stack     at processEmit (C:\Users\Thomas\AppData\Roaming\npm\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
-12 verbose stack     at Signal.wrap.onsignal (node.js:804:46)
-13 verbose cwd C:\Users\Thomas\Documents\NodeJsProject\Projet1\back
-14 error Windows_NT 6.3.9600
-15 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\Thomas\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "start"
-16 error node v4.6.1
-17 error npm  v3.10.9
-18 error code ENOSYS
-19 error errno ENOSYS
-20 error syscall kill
-21 error kill ENOSYS
-22 error If you need help, you may report this error at:
-22 error     <https://github.com/npm/npm/issues>
-23 verbose exit [ 1, true ]
+12 silly lifecycle back2@1.0.0~start: Returned: code: 3221225786  signal: null
+13 info lifecycle back2@1.0.0~start: Failed to exec start script
+14 verbose stack Error: back2@1.0.0 start: `nodemon server.js`
+14 verbose stack Exit status 3221225786
+14 verbose stack     at EventEmitter.<anonymous> (C:\Users\Thomas\AppData\Roaming\npm\node_modules\npm\lib\utils\lifecycle.js:255:16)
+14 verbose stack     at emitTwo (events.js:87:13)
+14 verbose stack     at EventEmitter.emit (events.js:172:7)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Users\Thomas\AppData\Roaming\npm\node_modules\npm\lib\utils\spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:87:13)
+14 verbose stack     at ChildProcess.emit (events.js:172:7)
+14 verbose stack     at maybeClose (internal/child_process.js:829:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+15 verbose pkgid back2@1.0.0
+16 verbose cwd C:\Users\Thomas\Documents\NodeJsProject\Projet1\back
+17 error Windows_NT 6.3.9600
+18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\Thomas\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "start"
+19 error node v4.6.1
+20 error npm  v3.10.9
+21 error code ELIFECYCLE
+22 error back2@1.0.0 start: `nodemon server.js`
+22 error Exit status 3221225786
+23 error Failed at the back2@1.0.0 start script 'nodemon server.js'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the back2 package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     nodemon server.js
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs back2
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls back2
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]
