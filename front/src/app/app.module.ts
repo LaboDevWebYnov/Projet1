@@ -8,12 +8,14 @@ import { RouterModule }   from '@angular/router';
 import { AppComponent } from './app.component';
 import { TestUserServiceComponent } from './component/test_service_component/test-user-service/test-user-service.component';
 import { TestTeamServiceComponent } from './component/test_service_component/test-team-service/test-team-service.component';
+import { TestSecurityServiceComponent } from './component/test_service_component/test-security-service/test-security-service.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TestUserServiceComponent,
-    TestTeamServiceComponent
+    TestTeamServiceComponent,
+    TestSecurityServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +29,10 @@ import { TestTeamServiceComponent } from './component/test_service_component/tes
         {
           path: 'teams',
           component: TestTeamServiceComponent
+        },
+        {
+          path: 'auth',
+          component: TestSecurityServiceComponent
         }
     ])
   ],
