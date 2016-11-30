@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { UserService } from '../../../../shared/services/user.service';
-import { Http, HttpModule } from "@angular/Http";
-import { Configuration } from '../../../../shared/app.constants';
-import { ChangePasswordObject } from '../../../../shared/models/utils/change-password-object';
-import { ChangeEmailObject } from '../../../../shared/models/utils/change-email-object';
-import { User } from '../../../../shared/models/user';
-import { Address } from '../../../../shared/models/address';
+import {UserService} from '../../../../shared/services/user.service';
+import {Http, HttpModule} from "@angular/Http";
+import {Configuration} from '../../../../shared/app.constants';
+import {ChangePasswordObject} from '../../../../shared/models/utils/change-password-object';
+import {ChangeEmailObject} from '../../../../shared/models/utils/change-email-object';
+import {User} from '../../../../shared/models/user';
+import {Address} from '../../../../shared/models/address';
 
 @Component({
   selector: 'app-test-user-service',
   templateUrl: './test-user-service.component.html',
   styleUrls: ['./test-user-service.component.css'],
-  providers: [UserService,Configuration]
+  providers: [UserService, Configuration]
 })
 export class TestUserServiceComponent implements OnInit {
 
@@ -21,17 +21,17 @@ export class TestUserServiceComponent implements OnInit {
   userGetByUsername: Object;
   response: Object;
 
-  ChangeUserPassword : ChangePasswordObject={
-    oldPassword:"string",
+  ChangeUserPassword: ChangePasswordObject = {
+    oldPassword: "string",
     newPassword: "string",
     newPasswordConfirmation: "string"
   };
 
-  ChangeUserEmail : ChangeEmailObject={
-    email:"aaaaaaaa@e.com"
+  ChangeUserEmail: ChangeEmailObject = {
+    email: "aaaaaaaa@e.com"
   };
 
-  address1: Address= {
+  address1: Address = {
     postCode: 0,
     city: "string",
     country: "string",
@@ -40,11 +40,11 @@ export class TestUserServiceComponent implements OnInit {
 
   friends: User[];
 
-  UpdateUser : User={
+  UpdateUser: User = {
     firstname: "ya",
     lastname: "yo",
     username: "changeUserInfo",
-    birthDate: new Date(1998,11,27),
+    birthDate: new Date(1998, 11, 27),
     email: "aaaa125@e.com",
     password: "mdp",
     avatar: "string",
@@ -58,11 +58,11 @@ export class TestUserServiceComponent implements OnInit {
     updated_at: new Date()
   };
 
-  AddNewUser : User={
+  AddNewUser: User = {
     firstname: "ya",
     lastname: "yo",
     username: "yu",
-    birthDate: new Date(1998,11,27),
+    birthDate: new Date(1998, 11, 27),
     email: "test123456789@esport.com",
     password: "mdp",
     avatar: "string",
@@ -76,7 +76,8 @@ export class TestUserServiceComponent implements OnInit {
     updated_at: new Date()
   };
 
-  constructor(private userServiceInstance: UserService) { }
+  constructor(private userServiceInstance: UserService) {
+  }
 
   private getAllItemsUser(): void {
     this.userServiceInstance
@@ -95,7 +96,7 @@ export class TestUserServiceComponent implements OnInit {
       .subscribe(
         data => this.userGetById = data,
         error => console.log(error),
-        () => console.log('get One Item complete',this.userGetById)//console.log('get All Items complete')
+        () => console.log('get One Item complete', this.userGetById)//console.log('get All Items complete')
       );
   }
 
@@ -106,24 +107,24 @@ export class TestUserServiceComponent implements OnInit {
       .subscribe(
         data => this.userGetByUsername = data,
         error => console.log(error),
-        () => console.log('get One Item By Username',this.userGetByUsername)//console.log('get All Items complete')
+        () => console.log('get One Item By Username', this.userGetByUsername)//console.log('get All Items complete')
       );
   }
 
   private ChangeUserInfo(): void {
     console.log(JSON.stringify(this.UpdateUser));
     this.userServiceInstance
-      .ChangeUserInformation("583a9d3b95ecb33490f49896",this.UpdateUser)
+      .ChangeUserInformation("583a9d3b95ecb33490f49896", this.UpdateUser)
       .subscribe(
         data => this.response = data,
         error => console.log(error),
-        () => console.log('change user complete',this.response)
+        () => console.log('change user complete', this.response)
       );
   }
 
   private ChangePassword(): void {
     this.userServiceInstance
-        .ChangeUserPassword("583a9d3b95ecb33490f49896",this.ChangeUserPassword)
+      .ChangeUserPassword("583a9d3b95ecb33490f49896", this.ChangeUserPassword)
       .subscribe(
         data => this.response = data,
         error => console.log(error),
@@ -133,7 +134,7 @@ export class TestUserServiceComponent implements OnInit {
 
   private ChangeEmail(): void {
     this.userServiceInstance
-      .ChangeUserEmail("583a9d3b95ecb33490f49896",this.ChangeUserEmail)
+      .ChangeUserEmail("583a9d3b95ecb33490f49896", this.ChangeUserEmail)
       .subscribe(
         data => this.response = data,
         error => console.log(error),
@@ -144,12 +145,12 @@ export class TestUserServiceComponent implements OnInit {
   private addUser(): void {
     console.log(JSON.stringify(this.AddNewUser));
     this.userServiceInstance
-     .AddUser(this.AddNewUser)
-     .subscribe(
-     data => this.response = data,
-     error => console.log(error,this.response),
-     () => console.log('Add User complete', this.response)
-     );
+      .AddUser(this.AddNewUser)
+      .subscribe(
+        data => this.response = data,
+        error => console.log(error, this.response),
+        () => console.log('Add User complete', this.response)
+      );
   }
 
   private deleteUser(): void {
