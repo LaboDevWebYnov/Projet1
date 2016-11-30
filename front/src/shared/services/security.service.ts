@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http, Response, Headers} from '@angular/Http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Observable } from 'rxjs/Observable';
-import { Configuration } from '../app.constants';
-import { AuthObject } from '../models/utils/auth-object';
+import {Observable} from 'rxjs/Observable';
+import {Configuration} from '../app.constants';
+import {AuthObject} from '../models/utils/auth-object';
 
 @Injectable()
 export class SecurityService {
@@ -22,15 +22,15 @@ export class SecurityService {
 
 
   //test a faire
-  public verifyEmail = (email:string): Observable<String> => {
-    return this._http.get(this.actionUrl + 'user/verify/'+email)
+  public verifyEmail = (email: string): Observable<String> => {
+    return this._http.get(this.actionUrl + 'user/verify/' + email)
       .map(response => response.json())
   };
 
   //test a faire
-  public auth = (authObject:AuthObject): Observable<Response> => {
-    let JsonBody = JSON.stringify({ authObject });
-    return this._http.post(this.actionUrl+"auth", JsonBody, { headers: this.headers })
+  public auth = (authObject: AuthObject): Observable<Response> => {
+    let JsonBody = JSON.stringify({authObject});
+    return this._http.post(this.actionUrl + "auth", JsonBody, {headers: this.headers})
       .map((response => response.json()))
   };
 
