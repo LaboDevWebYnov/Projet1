@@ -1,4 +1,4 @@
-/*
+
 import { Component, OnInit } from '@angular/core';
 
 import { PlayerAccountService } from '../../../../shared/services/player-account.service';
@@ -13,22 +13,21 @@ import { PlayerAccount } from '../../../../shared/models/player-account';
 })
 export class TestPlayerAccountServiceComponent implements OnInit {
 
-  playerAccountApiJson: Object;
+  // playerAccountApiJson: Object;
 
   constructor(private playerAccountServiceInstance: PlayerAccountService) {}
 
-  private getAllItemsPlayerAccount(): void {
-    this.playerAccountServiceInstance
-      .GetAllPlayerAccount()
-      .subscribe(
-        data => this.playerAccountApiJson = data,
-        error => console.log(error),
-        () => console.log('get All Items complete', this.playerAccountApiJson)
-      );
-  }
+  // private getAllItemsPlayerAccount(): void {
+  //   this.playerAccountServiceInstance
+  //     .GetAllPlayerAccount()
+  //     .subscribe(
+  //       data => this.playerAccountApiJson = data,
+  //       error => console.log(error),
+  //       () => console.log('get All Items complete', this.playerAccountApiJson)
+  //     );
+  // }
   ngOnInit() {
-    this.getAllItemsPlayerAccount();
+    // this.getAllItemsPlayerAccount();
   }
 
 }
- */
