@@ -4,12 +4,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
-import { ChangePasswordObject } from '../models/utils/change-password-object';
-import { ChangeEmailObject } from '../models/utils/change-email-object';
-import { User } from '../models/user';
+import { PlayerAccount } from '../models/player-account';
 
 @Injectable()
-export class UserService {
+export class PlayerAccountService {
 
   private actionUrl: string;
   private headers: Headers;
@@ -26,9 +24,9 @@ export class UserService {
 
 
   //Fonctionne
-  public GetAllUsers = (): Observable<String> => {
+  public GetAllPlayerAccount = (): Observable<String> => {
     console.log(this.actionUrl);
-    return this._http.get(this.actionUrl + 'users/')
+    return this._http.get(this.actionUrl + 'player-account/')
       .map(response => response.json());
   };
 
@@ -52,26 +50,24 @@ export class UserService {
   //Fonctionne
   public ChangeUserPassword = (id: string,Variable:ChangePasswordObject): Observable<Response> => {
     let JsonBody = JSON.stringify(Variable);
-    console.log(JsonBody);
     return this._http.put(this.actionUrl + "users/" + id + "/updatePassword",JsonBody,{ headers: this.headers });
   };
 
   //Fonctionne
   public ChangeUserEmail = (id: string,Variable:ChangeEmailObject): Observable<Response> => {
-    let JsonBody = JSON.stringify(Variable);
-    console.log(JsonBody);
+    let JsonBody = JSON.stringify({ Variable });
     return this._http.put(this.actionUrl + "users/" + id + "/updateEmail",JsonBody,{ headers: this.headers });
   };
 
   //Fonctionne
   public ChangeUserInformation = (id:string,Variable:User): Observable<Response> => {
-    let JsonBody = JSON.stringify(Variable);
+    let JsonBody = JSON.stringify({ Variable });
     return this._http.put(this.actionUrl + "users/" + id + "/updateUser",JsonBody,{ headers: this.headers });
   };
 
   //Fonctionne
   public AddUser = (Variable:User): Observable<Response> => {
-    let JsonBody = JSON.stringify(Variable);
+    let JsonBody = JSON.stringify({ Variable });
     return this._http.post(this.actionUrl+"users/addUser", JsonBody, { headers: this.headers })
       .map((response => response.json()));
   };
