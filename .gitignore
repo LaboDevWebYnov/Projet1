@@ -1,5 +1,6 @@
 .idea
 node_modules
+*.log
 
 #back cache & logs
 back/logs/
