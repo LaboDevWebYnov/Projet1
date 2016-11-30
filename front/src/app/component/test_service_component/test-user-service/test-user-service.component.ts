@@ -163,7 +163,7 @@ export class TestUserServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.getAllItemsUser();
+    this.getAllItemsUser();
     //this.getItemUserById();
     //this.getItemUserByUsername();
     //this.ChangePassword();
