@@ -19,15 +19,16 @@ export class TestUserServiceComponent implements OnInit {
   usersApiJson: Object;
   userGetById: Object;
   userGetByUsername: Object;
+  response: Object;
 
   ChangeUserPassword : ChangePasswordObject={
     oldPassword:"string",
-    newPassword: "test",
-    newPasswordConfirmation: "test"
+    newPassword: "string",
+    newPasswordConfirmation: "string"
   };
 
   ChangeUserEmail : ChangeEmailObject={
-    email: "string"
+    email: "aaaaaaaa@e.com"
   };
 
   address1: Address= {
@@ -43,7 +44,7 @@ export class TestUserServiceComponent implements OnInit {
     firstname: "ya",
     lastname: "yo",
     username: "yu",
-    birthDate: "1998-11-27",
+    birthDate: new Date(1998,11,27),
     email: "aaaa@e.com",
     password: "mdp",
     avatar: "string",
@@ -51,30 +52,29 @@ export class TestUserServiceComponent implements OnInit {
     phoneNumber: "string",
     admin: true,
     friends: this.friends,
-    interests: "test",
+    interests: null,
     active: true,
-    created_at: "2016-11-27",
-    updated_at: "2016-11-27"
+    created_at: new Date(),
+    updated_at: new Date()
   };
 
-  AddNewUser : User; /*={
+  AddNewUser : User={
     firstname: "ya",
     lastname: "yo",
-    username: "yu",
-    birthDate: "1998-11-27",
-    email: "aaaa@e.com",
+    username: "string",
+    birthDate: new Date(1998,11,27),
+    email: "test123456@esport.com",
     password: "mdp",
     avatar: "string",
-    address: address1: Address,
+    address: this.address1,
     phoneNumber: "string",
     admin: true,
-    friends: [
-      {}
-    ],
+    friends: this.friends,
+    interests: null,
     active: true,
-    created_at: "2016-11-27",
-    updated_at: "2016-11-27"
-  };*/
+    created_at: new Date(),
+    updated_at: new Date()
+  };
 
   constructor(private userServiceInstance: UserService) { }
 
@@ -84,7 +84,7 @@ export class TestUserServiceComponent implements OnInit {
       .subscribe(
         data => this.usersApiJson = data,
         error => console.log(error),
-        () => console.log(this.usersApiJson)//console.log('get All Items complete')
+        () => console.log('get All Items complete', this.usersApiJson)
       );
   }
 
@@ -95,18 +95,18 @@ export class TestUserServiceComponent implements OnInit {
       .subscribe(
         data => this.userGetById = data,
         error => console.log(error),
-        () => console.log(this.userGetById)//console.log('get All Items complete')
+        () => console.log('get One Item complete',this.userGetById)//console.log('get All Items complete')
       );
   }
 
 
   private getItemUserByUsername(): void {
     this.userServiceInstance
-      .GetSingleUserByUsername("jimmydu69")
+      .GetSingleUserByUsername("string")
       .subscribe(
         data => this.userGetByUsername = data,
         error => console.log(error),
-        () => console.log(this.userGetByUsername)//console.log('get All Items complete')
+        () => console.log('get One Item By Username',this.userGetByUsername)//console.log('get All Items complete')
       );
   }
 
@@ -114,44 +114,63 @@ export class TestUserServiceComponent implements OnInit {
     this.userServiceInstance
       .ChangeUserInformation("5839a90d79de070f701d97d3",this.UpdateUser)
       .subscribe(
-        error => console.log(this.ChangeUserPassword),
+        data => this.response = data,
+        error => console.log(error),
+        () => console.log('change user complete',this.response)
       );
   }
 
   private ChangePassword(): void {
     this.userServiceInstance
-      .ChangeUserPassword("5839a90d79de070f701d97d3",this.ChangeUserPassword)
+        .ChangeUserPassword("583a9d3b95ecb33490f49896",this.ChangeUserPassword)
       .subscribe(
-        error => console.log(this.ChangeUserPassword),
+        data => this.response = data,
+        error => console.log(error),
+        () => console.log('change user password complete', this.response)
       );
   }
 
   private ChangeEmail(): void {
+    console.log(JSON.stringify(this.ChangeUserEmail))
     this.userServiceInstance
-      .ChangeUserEmail("5839a90d79de070f701d97d3",this.ChangeUserEmail)
+      .ChangeUserEmail("583a9d3b95ecb33490f49896",this.ChangeUserEmail)
       .subscribe(
-        error => console.log(this.ChangeUserEmail),
+        data => this.response = data,
+        error => console.log(error),
+        () => console.log('change user email complete', this.response)
       );
   }
 
   private addUser(): void {
+    console.log(JSON.stringify(this.AddNewUser));
     this.userServiceInstance
      .AddUser(this.AddNewUser)
      .subscribe(
-     error => console.log(JSON.stringify(this.AddNewUser)),
+     data => this.response = data,
+     error => console.log(error,this.response),
+     () => console.log('Add User complete', this.response)
      );
   }
 
   private deleteUser(): void {
     this.userServiceInstance
-      .Delete("5839a90d79de070f701d97d3")
+      .Delete("583a9d3b95ecb33490f49896")
       .subscribe(
+        data => this.response = data,
         error => console.log(error),
+        () => console.log('Delete User complete', this.response)
       );
   }
 
   ngOnInit() {
     this.getAllItemsUser();
+    this.getItemUserById('583a9d3b95ecb33490f49896');
+    this.getItemUserByUsername();
+    this.ChangePassword();
+    //this.ChangeEmail();
+    this.deleteUser();
+    //this.addUser();
+    //this.ChangeUserInfo();
   }
 
 }
