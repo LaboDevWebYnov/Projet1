@@ -8,19 +8,22 @@ import { SecurityService } from '../../../../shared/services/security.service';
 })
 export class TestSecurityServiceComponent implements OnInit {
 
+  // verifyEmail : string;
+
   constructor(private securityServiceInstance: SecurityService) { }
 
-  private verifyEmail(): void {
-    this.securityServiceInstance
-      .verifyEmail()
-      .subscribe(
-        data => this.userGetById = data,
-        error => console.log(error),
-        () => console.log('get One Item complete',this.userGetById)//console.log('get All Items complete')
-      );
-  }
+  // private verifyEmail(email:string): void {
+  //   this.securityServiceInstance
+  //     .verifyEmail(email)
+  //     .subscribe(
+  //       data => this.verifyEmail = data,
+  //       error => console.log(error),
+  //       () => console.log('get One Item complete',this.verifyEmail)//console.log('get All Items complete')
+  //     );
+  // }
 
   ngOnInit() {
+    // this.verifyEmail();
   }
 
 }
