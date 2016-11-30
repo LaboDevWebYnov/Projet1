@@ -4,18 +4,20 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/Http';
 import {RouterModule}   from '@angular/router';
 
-
 import {AppComponent} from './app.component';
 import {TestUserServiceComponent} from './component/test_service_component/test-user-service/test-user-service.component';
 import {TestTeamServiceComponent} from './component/test_service_component/test-team-service/test-team-service.component';
 import {TestSecurityServiceComponent} from './component/test_service_component/test-security-service/test-security-service.component';
 import {TestPlayerAccountServiceComponent} from './component/test_service_component/test-player-account-service/test-player-account-service.component';
+import { TestGameServiceComponent } from './component/test_service_component/test-game-service/test-game-service.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     TestUserServiceComponent,
     TestTeamServiceComponent,
+    TestGameServiceComponent,
     TestSecurityServiceComponent,
     TestPlayerAccountServiceComponent
   ],
@@ -39,6 +41,10 @@ import {TestPlayerAccountServiceComponent} from './component/test_service_compon
       {
         path: 'player-account',
         component: TestPlayerAccountServiceComponent
+      },
+      {
+        path: 'game',
+        component: TestGameServiceComponent
       }
 
     ])
