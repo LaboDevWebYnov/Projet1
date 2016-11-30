@@ -28,7 +28,7 @@ export class TestUserServiceComponent implements OnInit {
   };
 
   ChangeUserEmail : ChangeEmailObject={
-    email: "aaaaaaaa@e.com"
+    email:"aaaaaaaa@e.com"
   };
 
   address1: Address= {
@@ -43,9 +43,9 @@ export class TestUserServiceComponent implements OnInit {
   UpdateUser : User={
     firstname: "ya",
     lastname: "yo",
-    username: "yu",
+    username: "changeUserInfo",
     birthDate: new Date(1998,11,27),
-    email: "aaaa@e.com",
+    email: "aaaa125@e.com",
     password: "mdp",
     avatar: "string",
     address: this.address1,
@@ -61,9 +61,9 @@ export class TestUserServiceComponent implements OnInit {
   AddNewUser : User={
     firstname: "ya",
     lastname: "yo",
-    username: "string",
+    username: "yu",
     birthDate: new Date(1998,11,27),
-    email: "test123456@esport.com",
+    email: "test123456789@esport.com",
     password: "mdp",
     avatar: "string",
     address: this.address1,
@@ -89,9 +89,9 @@ export class TestUserServiceComponent implements OnInit {
   }
 
 
-  private getItemUserById(id: string): void {
+  private getItemUserById(): void {
     this.userServiceInstance
-      .GetSingleUserById(id)
+      .GetSingleUserById("583a9d3b95ecb33490f49896")
       .subscribe(
         data => this.userGetById = data,
         error => console.log(error),
@@ -111,8 +111,9 @@ export class TestUserServiceComponent implements OnInit {
   }
 
   private ChangeUserInfo(): void {
+    console.log(JSON.stringify(this.UpdateUser));
     this.userServiceInstance
-      .ChangeUserInformation("5839a90d79de070f701d97d3",this.UpdateUser)
+      .ChangeUserInformation("583a9d3b95ecb33490f49896",this.UpdateUser)
       .subscribe(
         data => this.response = data,
         error => console.log(error),
@@ -131,7 +132,6 @@ export class TestUserServiceComponent implements OnInit {
   }
 
   private ChangeEmail(): void {
-    console.log(JSON.stringify(this.ChangeUserEmail))
     this.userServiceInstance
       .ChangeUserEmail("583a9d3b95ecb33490f49896",this.ChangeUserEmail)
       .subscribe(
@@ -163,12 +163,12 @@ export class TestUserServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllItemsUser();
-    this.getItemUserById('583a9d3b95ecb33490f49896');
-    this.getItemUserByUsername();
-    this.ChangePassword();
+    //this.getAllItemsUser();
+    //this.getItemUserById();
+    //this.getItemUserByUsername();
+    //this.ChangePassword();
     //this.ChangeEmail();
-    this.deleteUser();
+    //this.deleteUser();
     //this.addUser();
     //this.ChangeUserInfo();
   }
