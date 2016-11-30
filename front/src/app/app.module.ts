@@ -8,12 +8,14 @@ import { RouterModule }   from '@angular/router';
 import { AppComponent } from './app.component';
 import { TestUserServiceComponent } from './component/test_service_component/test-user-service/test-user-service.component';
 import { TestTeamServiceComponent } from './component/test_service_component/test-team-service/test-team-service.component';
+import { TestGameServiceComponent } from './component/test_service_component/test-game-service/test-game-service.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TestUserServiceComponent,
-    TestTeamServiceComponent
+    TestTeamServiceComponent,
+    TestGameServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,11 @@ import { TestTeamServiceComponent } from './component/test_service_component/tes
         {
           path: 'teams',
           component: TestTeamServiceComponent
-        }
+        },
+      {
+        path: 'game',
+        component: TestGameServiceComponent
+      }
     ])
   ],
   providers: [],
