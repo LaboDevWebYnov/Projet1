@@ -18,22 +18,22 @@ export class TestGameServiceComponent implements OnInit {
 
   addNewGame: Game = {
     name: "Fifa 17",
-    releaseDate: "2016-11-30",
+    releaseDate: new Date(2016,11,30),
     multiPlayer: true,
     editor: "EA Sport",
     description: "Jeu de foot",
-    created_at: "2016-11-30",
-    updated_at: "2016-11-30"
+    created_at: new Date(),
+    updated_at: new Date()
   };
 
   updateGame: Game = {
     name: "FIFA 18",
-    releaseDate: "2016-11-30",
+    releaseDate: new Date(2016,11,30),
     multiPlayer: true,
     editor: "EA Sport 2",
     description: "Jeu de foot de malade",
-    created_at: "2016-11-30",
-    updated_at: "2016-11-30"
+    created_at: new Date(2016,11,30),
+    updated_at: new Date()
   };
 
   constructor(private gameServiceInstance: GameService) { }
