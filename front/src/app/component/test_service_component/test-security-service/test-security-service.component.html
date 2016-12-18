@@ -1,8 +1,10 @@
 
 <form>
-  <input type="text" (click)="onSelect(this.value)"
-         [class.selected]="user === selectedUser">
+  <input type="text" >
 
   <input type="text">
-  <button></button>
+  <button (click)="onSelect(this.value)"
+    [class.selected]="user === selectedUser"></button>
 </form>
+<!--[class.selected]="user === selectedUser"-->
+<!--(click)="onSelect(this.value)"-->

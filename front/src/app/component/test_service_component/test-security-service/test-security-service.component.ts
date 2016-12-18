@@ -48,4 +48,7 @@ export class TestSecurityServiceComponent implements OnInit {
     this.verifyAuth(this.authJson);
   }
 
+  private onSelect(email:string)
+  {}
+
 }
